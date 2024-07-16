@@ -1,2 +1,8 @@
 # GulsumIslamoglu.github.io
-Gulsum Islamoglu Portfolio
+
+Gulsum Islamoglu Website Portfolio
+Made using React
+
+To deploy changes:
+npm run build
+npm run deploy
