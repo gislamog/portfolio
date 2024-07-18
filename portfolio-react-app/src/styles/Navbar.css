@@ -1,0 +1,67 @@
+/* Navigation Bar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*background-color: rgba(128, 128, 128, 0.0);  % transparent grey */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Name Text */
+.navbar-name {
+    font-size: 24px;
+    padding: 10px 25px;
+    display: flex;
+    align-items: center;
+}
+    .navbar-name a {
+        color: var(--darkest-blue);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+        .navbar-name a:hover {
+            color: var(--blue);
+        }
+
+/* Logo */
+.navbar-logo {
+    height: 40px;
+    margin-right: 15px; /* Space between the logo and the text */
+}
+
+/* Links */
+.navbar-links {
+    position: relative;
+    font-size: 16px;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0px;
+    padding: 15px 30px;
+}
+    .navbar-links a {
+        text-decoration: none; /* Remove underline */
+    }
+
+/* Left Links */
+.left-links {
+    color: var(--darkest-blue);
+}
+    .left-links:hover {
+        color: var(--blue);
+    }
+
+/* Contact Link */
+.contact-link {
+    color: var(--off-white); /* Lighter text color */
+    background-color: var(--blue); /* Darker button color */
+    border: 8px solid var(--blue);
+    border-radius: 16px; /* Rounded corners */
+    transition: 0.3s ease; /* Smooth transition */
+}
+
+    .contact-link:hover {
+        background-color: var(--dark-blue);
+        border-color: var(--dark-blue);
+    }

@@ -1,0 +1,29 @@
+/* Color Definitions */
+:root {
+    /* navigation bar 
+    --navbar-background: #f7f7f7;
+    --navbar-background-dark: #d1cfcf;
+    --navbar-text: #454545;
+    --navbar-text-hover: #080808;
+    --navbar-text-underline: #00aef0;*/
+    /* body */
+    /*--body-background: #e8e8e8;*/
+    --darkest-blue: #0C0D16; /* text color */
+    --dark-blue: #111D2B; /* */
+    --blue: #3E4C57; /* text hover color, button color */
+    --off-white: #DBDADA;
+}
+
+/* Entire Site */
+
+/* Ensure the body and html take up the full height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+body {
+    background-image: url('../images/groovepaper.png');
+}
