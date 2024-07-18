@@ -1,16 +1,22 @@
 /* Navigation Bar */
 .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /*background-color: rgba(128, 128, 128, 0.0);  % transparent grey */
+    background-color: rgb(255, 255, 255, 0.6); /* % transparent grey */
     font-family: 'Courier New', Courier, monospace;
 }
 
 /* Name Text */
 .navbar-name {
     font-size: 24px;
-    padding: 10px 25px;
+    padding-left: 20px;
     display: flex;
     align-items: center;
 }
@@ -38,7 +44,7 @@
     display: flex;
     gap: 20px;
     margin: 0px;
-    padding: 15px 30px;
+    padding-right: 20px;
 }
     .navbar-links a {
         text-decoration: none; /* Remove underline */

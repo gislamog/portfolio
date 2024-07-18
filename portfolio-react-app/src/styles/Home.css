@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+/* ==================== HOME PAGE ==================== */
+.home {
+    height: 100vh; /* Single full page height */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.04); /* % transparent grey */
+    padding: 50px;
+    box-sizing: border-box;
+}
+
+/* ==================== LEFT SIDE ==================== */
+.home-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-right: -10%; /* Move image closer/further */
+}
+
+/* TEXT */
+.home-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+    .home-text .intro-text {
+        font-family: 'Poppins', sans-serif;
+        font-size: 3rem; /* Adjust as needed */
+        color: var(--darkest-blue); /* Adjust color as needed */
+        margin-top: 0;
+        margin-bottom: -10px; /* Bring it closer to the name */
+    }
+
+    .home-text .name {
+        font-family: 'Poppins', sans-serif;
+        font-size: 5.5rem; /* Adjust as needed */
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        margin: -25px 0; /* Adjust margin to make names closer */
+        background: linear-gradient(45deg, var(--beige-light), var(--blue-light), var(--beige-medium), var(--red-light), var(--beige-dark), var(--blue-dark), var(--beige-extra), var(--red-dark));
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: colorTransition 10s ease-in-out infinite;
+    }
+
+/* LINKS */
+.links {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+    margin-left: 60px;
+}
+
+.link {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.link-icons {
+    width: 40px; /* Adjust the size as needed */
+    height: auto; /* Maintain aspect ratio */
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+    .link-icons:hover {
+        transform: scale(1.2); /* Scale up on hover */
+    }
+        .link-icons:hover + .hover-text {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+.hover-text {
+    position: absolute;
+    bottom: -20px; /* Position the text below the icon */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* Center the text and move it down */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background-color: var(--off-black);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* ANIMATED TITLES */
+.home-animation {
+    margin-top: 0px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* RESUME BUTTON */
+.home-resume {
+    margin-top: 20px;
+}
+
+.resume-button {
+    display: inline-block;
+    padding: 10px 20px; /* button size */
+    font-size: 1.2rem; 
+    color: white; /* text color */
+    background-color: #007BFF; /* button color */
+    text-decoration: none; /* no underline */
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+    .resume-button:hover {
+        background-color: #0056b3;
+    }
+
+
+
+/* ==================== RIGHT SIDE ==================== */
+.home-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-image {
+    max-width: 100%;
+    max-height: 80vh; /* 80% of the viewport height */
+    height: auto; /* Maintain aspect ratio */
+}

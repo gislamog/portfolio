@@ -1,4 +1,4 @@
-/* Color Definitions */
+/* ==================== Color Definitions ==================== */
 :root {
     /* navigation bar 
     --navbar-background: #f7f7f7;
@@ -8,22 +8,45 @@
     --navbar-text-underline: #00aef0;*/
     /* body */
     /*--body-background: #e8e8e8;*/
+
     --darkest-blue: #0C0D16; /* text color */
     --dark-blue: #111D2B; /* */
     --blue: #3E4C57; /* text hover color, button color */
     --off-white: #DBDADA;
+    /* Colorful letters */
+    --beige-light: #b8a089; /* Darker light beige */
+    --beige-medium: #8c7b66; /* Darker medium beige */
+    --beige-dark: #5f5347; /* Darker dark beige */
+    --beige-extra: #40392e; /* Extra dark beige */
+    --blue-light: #5a9bd4; /* Light blue */
+    --blue-dark: #1f4e79; /* Dark blue */
+    --red-light: #e57373; /* Light red */
+    --red-dark: #d32f2f; /* Dark red */
+    --dark-blue: #00274d; /* Example color for h1 */
+    --blue: #0056b3; /* Example color for h2 */
+
+    --off-black: rgb(59, 59, 59);
 }
 
-/* Entire Site */
-
-/* Ensure the body and html take up the full height */
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    width: 100%;
+@keyframes colorTransition {
+    0% { background-position: 0% 50%;}
+    50% { background-position: 100% 50%;}
+    100% { background-position: 0% 50%;}
 }
+
+/* ==================== Entire Site ==================== */
 
 body {
-    background-image: url('../images/groovepaper.png');
+    background-image: url('../images/groovepaper.png'); /* background image for entire site */
+}
+
+.content {
+}
+
+.section {
+    height: 100vh; /* Single full page height */
+    padding: 50px; /* padding for left and right side for all pages */
+    box-sizing: border-box; /* Include padding in the height */
+    display: flex;
+    flex-direction: column;
 }

@@ -1,11 +1,12 @@
 import React from 'react';
 
-const Projects = () => {
+const About = () => {
     return (
-        <div id="projects" className="section">
-            <h1>Projects</h1>
+        <div id="about" className="section">
+            <h1>About</h1>
             <p>Hello, I am Gulsum Islamoglu. This is my portfolio website.</p>
         </div>
     );
 };
-export default Projects;
+
+export default About;

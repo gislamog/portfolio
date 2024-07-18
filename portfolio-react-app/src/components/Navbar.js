@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll';
 import logo from '../images/logo2.png';
 
 const Navbar = () => {
@@ -7,17 +8,25 @@ const Navbar = () => {
         <nav className="navbar">
 
             <div className="navbar-name">
-                <Link to="/">
+                <ScrollLink to="home" smooth={true} duration={500}>
                     <img src={logo} alt="Logo" className="navbar-logo" />
                     Gulsum Islamoglu
-                </Link>
+                </ScrollLink>
             </div>
 
             <ul className="navbar-links">
-                <li><Link to="/" className="left-links">/home</Link></li>
-                <li><Link to="/projects" className="left-links">/projects</Link></li>
-                <li><Link to="/resume" className="left-links">/resume</Link></li>
-                <li><Link to="/contact" className="contact-link">/contact</Link></li>
+                <li>
+                    <ScrollLink to="about" smooth={true} duration={500} className="left-links">/about</ScrollLink>
+                </li>
+                <li>
+                    <ScrollLink to="skills" smooth={true} duration={500} className="left-links">/skills</ScrollLink>
+                </li>
+                <li>
+                    <ScrollLink to="projects" smooth={true} duration={500} className="left-links">/projects</ScrollLink>
+                </li>
+                <li>
+                    <ScrollLink to="contact" smooth={true} duration={500} className="contact-link">/contact</ScrollLink>
+                </li>
             </ul>
 
         </nav>
