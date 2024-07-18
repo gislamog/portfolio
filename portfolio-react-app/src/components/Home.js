@@ -38,7 +38,7 @@ const Home = () => {
                 </div>
 
                 <div className="home-resume">
-                    <a href="./resume.pdf" target="_blank" rel="noopener noreferrer" className="resume-button">
+                    <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="resume-button">
                         Resume
                     </a>
                 </div>
