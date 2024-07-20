@@ -1,37 +1,14 @@
 /* ==================== Color Definitions ==================== */
 :root {
-    /* navigation bar 
-    --navbar-background: #f7f7f7;
-    --navbar-background-dark: #d1cfcf;
-    --navbar-text: #454545;
-    --navbar-text-hover: #080808;
-    --navbar-text-underline: #00aef0;*/
-    /* body */
-    /*--body-background: #e8e8e8;*/
-
-    --darkest-blue: #0C0D16; /* text color */
-    --dark-blue: #111D2B; /* */
-    --blue: #3E4C57; /* text hover color, button color */
+    /* Basic */
     --off-white: #DBDADA;
-    /* Colorful letters */
-    --beige-light: #b8a089; /* Darker light beige */
-    --beige-medium: #8c7b66; /* Darker medium beige */
-    --beige-dark: #5f5347; /* Darker dark beige */
-    --beige-extra: #40392e; /* Extra dark beige */
-    --blue-light: #5a9bd4; /* Light blue */
-    --blue-dark: #1f4e79; /* Dark blue */
-    --red-light: #e57373; /* Light red */
-    --red-dark: #d32f2f; /* Dark red */
-    --dark-blue: #00274d; /* Example color for h1 */
-    --blue: #0056b3; /* Example color for h2 */
-
-    --off-black: rgb(59, 59, 59);
-}
-
-@keyframes colorTransition {
-    0% { background-position: 0% 50%;}
-    50% { background-position: 100% 50%;}
-    100% { background-position: 0% 50%;}
+    --off-black: #3b3b3b;
+    /* Text */
+    --text: #141414;
+    --text-hover: #5c5c5c;
+    /* Buttons */
+    --button-background: #46677D;
+    --button-hover-background: #2a3e4b;
 }
 
 /* ==================== Entire Site ==================== */
@@ -49,4 +26,8 @@ body {
     box-sizing: border-box; /* Include padding in the height */
     display: flex;
     flex-direction: column;
+}
+
+.section-header {
+
 }

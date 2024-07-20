@@ -9,6 +9,7 @@
     background-color: rgba(0, 0, 0, 0.04); /* % transparent grey */
     padding: 50px;
     box-sizing: border-box;
+    position: relative; /* Ensure the paint streak can be positioned absolutely */
 }
 
 /* ==================== LEFT SIDE ==================== */
@@ -19,6 +20,8 @@
     justify-content: center;
     align-items: flex-start;
     margin-right: -10%; /* Move image closer/further */
+    position: relative;
+    z-index: 2; /* Ensure the text is above the paint streak */
 }
 
 /* TEXT */
@@ -30,31 +33,37 @@
 
     .home-text .intro-text {
         font-family: 'Poppins', sans-serif;
-        font-size: 3rem; /* Adjust as needed */
-        color: var(--darkest-blue); /* Adjust color as needed */
+        font-size: 3.5vw; /* Adjust as needed */
+        color: var(--text); /* Adjust color as needed */
         margin-top: 0;
-        margin-bottom: -10px; /* Bring it closer to the name */
+        margin-bottom: -2%; /* Bring it closer to the name */
     }
 
     .home-text .name {
         font-family: 'Poppins', sans-serif;
-        font-size: 5.5rem; /* Adjust as needed */
+        font-size: 6.5vw; /* Adjust as needed */
         font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        margin: -25px 0; /* Adjust margin to make names closer */
-        background: linear-gradient(45deg, var(--beige-light), var(--blue-light), var(--beige-medium), var(--red-light), var(--beige-dark), var(--blue-dark), var(--beige-extra), var(--red-dark));
-        background-size: 400% 400%;
+        text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
+        margin: -6% 0; /* Adjust margin to make names closer */
+        background: linear-gradient(270deg, #FF6F61, #FFC154, #6DC9C9, #2874A6, #FF6F61);
+        background-size: 200% 200%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        animation: colorTransition 10s ease-in-out infinite;
+        animation: colorTransition 10s linear infinite; /* Use linear for continuous direction */
     }
+        @keyframes colorTransition {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
 /* LINKS */
-.links {
+.links-container {
     display: flex;
-    gap: 40px;
-    margin-top: 20px;
-    margin-left: 60px;
+    gap: 10%;
+    margin-top: 3%;
+    margin-left: 10%;
+    width: 50%;
 }
 
 .link {
@@ -63,30 +72,32 @@
     text-align: center;
 }
 
-.link-icons {
-    width: 40px; /* Adjust the size as needed */
+.link-icon {
+    width: 3.5vw; /* Adjust the size as needed */
     height: auto; /* Maintain aspect ratio */
     cursor: pointer;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease;
 }
-    .link-icons:hover {
-        transform: scale(1.2); /* Scale up on hover */
-    }
-        .link-icons:hover + .hover-text {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+
+.link:hover .link-icon {
+    transform: scale(1.2); /* Scale up on hover */
+}
+
+.link:hover .hover-text {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
 .hover-text {
     position: absolute;
     bottom: -20px; /* Position the text below the icon */
-    left: 50%;
+    left: 60%;
     transform: translateX(-50%) translateY(10px); /* Center the text and move it down */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, transform 0.3s ease;
-    background-color: var(--off-black);
+    background-color: #000;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -103,7 +114,7 @@
 
 /* RESUME BUTTON */
 .home-resume {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .resume-button {
@@ -111,13 +122,13 @@
     padding: 10px 20px; /* button size */
     font-size: 1.2rem; 
     color: white; /* text color */
-    background-color: #007BFF; /* button color */
+    background-color: var(--button-background); /* button color */
     text-decoration: none; /* no underline */
     border-radius: 5px;
     transition: background-color 0.3s;
 }
     .resume-button:hover {
-        background-color: #0056b3;
+        background-color: var(--button-hover-background);
     }
 
 
@@ -128,10 +139,25 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    z-index: 2; /* Ensure the Flower Desk is above the paint streak */
 }
 
 .home-image {
     max-width: 100%;
     max-height: 80vh; /* 80% of the viewport height */
     height: auto; /* Maintain aspect ratio */
+}
+
+.home-paint-streak {
+    position: absolute;
+    justify-content: center;
+    right: 0%; /* Adjust horizontal position */
+    width: 80%;
+    z-index: 1;
+    
+}
+
+.paint-streak {
+    width: 100%;
 }
