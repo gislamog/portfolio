@@ -70,7 +70,7 @@
 
 /* Contact Link */
 .contact-link {
-    color: var(--off-white); /* Lighter text color */
+    color: white; /* Lighter text color */
     background-color: var(--button-background); /* Darker button color */
     border: 10px solid var(--button-background);
     border-radius: 8px; /* Rounded corners */

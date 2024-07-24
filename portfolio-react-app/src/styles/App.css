@@ -3,12 +3,19 @@
     /* Basic */
     --off-white: #DBDADA;
     --off-black: #3b3b3b;
+    --grey: #b5b5b5;
+    --transparent-section-background: rgba(0, 0, 0, 0.04); /* % transparent grey */
     /* Text */
     --text: #141414;
     --text-hover: #5c5c5c;
     /* Buttons */
     --button-background: #46677D;
     --button-hover-background: #2a3e4b;
+    --light-blue: #dfe4e8;
+    /* ASU Colors */
+    --asu-light-yellow: #F8ECC0;
+    --asu-gold: #FFC42A;
+    --asu-red: #901540;
 }
 
 /* ==================== Entire Site ==================== */
@@ -20,14 +27,40 @@ body {
 .content {
 }
 
-.section {
-    height: 100vh; /* Single full page height */
-    padding: 50px; /* padding for left and right side for all pages */
+/* Sections */
+.odd-section {
+    background-color: var(--transparent-section-background); /* % transparent grey */
+}
+
+.even-section {
+}
+
+.odd-section, .even-section {
+    min-height: 100vh; /* Single full page height */
+    padding-left: 4%; /* padding for left and right side for all pages */
+    padding-right: 4%;
+    padding-top: 45px;
+    padding-bottom: 30px;
     box-sizing: border-box; /* Include padding in the height */
     display: flex;
     flex-direction: column;
 }
 
-.section-header {
+/* Headers */
 
+.section-header {
+    margin-top: 10px;
+    margin-bottom: -10px;
+    padding: 20px;
+    text-align: center; /* Center align text */
+    font-family: 'Poppins', sans-serif; /* Nice font */
+    font-size: 2.5rem; /* Large font size */
+    color: var(--text); /* Dark text color */
+}
+
+.sub-header {
+    font-family: 'Poppins', sans-serif; /* Nice font */
+    font-size: 2rem; /* Sub-header font size */
+    margin-bottom: 0px; /* Space below */
+    color: var(--text-hover); /* Medium text color */
 }

@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.04); /* % transparent grey */
+    background-color: var(--transparent-section-background); /* % transparent grey */
     padding: 50px;
     box-sizing: border-box;
     position: relative; /* Ensure the paint streak can be positioned absolutely */

@@ -1,0 +1,49 @@
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.skill-group {
+    margin-bottom: 20px; /* Space between skill groups */
+}
+
+.skill-group-header {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    color: var(--text-hover);
+}
+
+.skill-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    min-width: 120px; /* Adjust as needed */
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+    .skill-card:hover {
+        background-color: var(--light-blue);
+    }
+
+.skill-logo {
+    max-height: 45px;
+    max-width: 45px;
+    margin-left: 6px;
+    margin-right: 8px;
+}
+
+.skill-name {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    color: var(--text);
+    margin-right: 6px;
+    max-width: 145px;
+}

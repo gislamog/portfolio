@@ -1,11 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Link as ScrollLink } from 'react-scroll';
 import logo from '../images/logo2.png';
 
 const Navbar = () => {
     return (
-        <nav className="navbar">
+
+        <nav
+
+            className="navbar">
 
             <div className="navbar-name">
                 <ScrollLink to="home" smooth={true} duration={500}>
