@@ -36,7 +36,7 @@
         font-size: 3.5vw; /* Adjust as needed */
         color: var(--text); /* Adjust color as needed */
         margin-top: 0;
-        margin-bottom: -2%; /* Bring it closer to the name */
+        margin-bottom: -1%; /* Bring it closer to the name */
     }
 
     .home-text .name {
@@ -44,7 +44,7 @@
         font-size: 6.5vw; /* Adjust as needed */
         font-weight: bold;
         text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
-        margin: -6% 0; /* Adjust margin to make names closer */
+        margin: -3% 0; /* Adjust margin to make names closer */
         background: linear-gradient(270deg, #FF6F61, #FFC154, #6DC9C9, #2874A6, #FF6F61);
         background-size: 200% 200%;
         -webkit-background-clip: text;

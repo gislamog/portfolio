@@ -24,15 +24,9 @@ body {
     background-image: url('../images/groovepaper.png'); /* background image for entire site */
 }
 
-.content {
-}
-
 /* Sections */
 .odd-section {
     background-color: var(--transparent-section-background); /* % transparent grey */
-}
-
-.even-section {
 }
 
 .odd-section, .even-section {
@@ -47,7 +41,6 @@ body {
 }
 
 /* Headers */
-
 .section-header {
     margin-top: 10px;
     margin-bottom: -10px;

@@ -1,37 +1,57 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import logo from '../images/logo2.png';
 
 const Navbar = () => {
+    const location = useLocation();
+    const isMainPage = location.pathname === '/';
+
     return (
-
-        <nav
-
-            className="navbar">
-
+        <nav className="navbar">
             <div className="navbar-name">
-                <ScrollLink to="home" smooth={true} duration={500}>
-                    <img src={logo} alt="Logo" className="navbar-logo" />
-                    Gulsum Islamoglu
-                </ScrollLink>
+                {isMainPage ? (
+                    <ScrollLink to="home" smooth={true} duration={500}>
+                        <img src={logo} alt="Logo" className="navbar-logo" />
+                        Gulsum Islamoglu
+                    </ScrollLink>
+                ) : (
+                    <RouterLink to="/">
+                        <img src={logo} alt="Logo" className="navbar-logo" />
+                        Gulsum Islamoglu
+                    </RouterLink>
+                )}
             </div>
-
             <ul className="navbar-links">
                 <li>
-                    <ScrollLink to="about" smooth={true} duration={500} className="left-links">/about</ScrollLink>
+                    {isMainPage ? (
+                        <ScrollLink to="about" smooth={true} duration={500} className="left-links">/about</ScrollLink>
+                    ) : (
+                        <RouterLink to="/" className="left-links">/about</RouterLink>
+                    )}
                 </li>
                 <li>
-                    <ScrollLink to="skills" smooth={true} duration={500} className="left-links">/skills</ScrollLink>
+                    {isMainPage ? (
+                        <ScrollLink to="skills" smooth={true} duration={500} className="left-links">/skills</ScrollLink>
+                    ) : (
+                        <RouterLink to="/" className="left-links">/skills</RouterLink>
+                    )}
                 </li>
                 <li>
-                    <ScrollLink to="projects" smooth={true} duration={500} className="left-links">/projects</ScrollLink>
+                    {isMainPage ? (
+                        <ScrollLink to="projects" smooth={true} duration={500} className="left-links">/projects</ScrollLink>
+                    ) : (
+                        <RouterLink to="/" className="left-links">/projects</RouterLink>
+                    )}
                 </li>
                 <li>
-                    <ScrollLink to="contact" smooth={true} duration={500} className="contact-link">/contact</ScrollLink>
+                    {isMainPage ? (
+                        <ScrollLink to="contact" smooth={true} duration={500} className="contact-link">/contact</ScrollLink>
+                    ) : (
+                        <RouterLink to="/" className="contact-link">/contact</RouterLink>
+                    )}
                 </li>
             </ul>
-
         </nav>
     );
 };

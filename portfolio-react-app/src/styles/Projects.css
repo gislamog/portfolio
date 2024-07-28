@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+
+/* entire page */
+.projects-section {
+    min-height: 100vh;
+    padding-left: 4%;
+    padding-right: 4%;
+    padding-top: 45px;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* single project, includes art and description text */
+.project-and-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+}
+
+/* description text only */
+.project-text {
+    width: 35%;
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    color: var(--text);
+    z-index: 1; /* text above image */
+}
+
+    .project-text ul {
+        padding-left: 20px;
+        list-style-type: disc;
+    }
+
+        .project-text ul li {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+/* holds image and project title */
+.wrapper {
+    position: relative;
+    height: 20%; /*300px*/
+    width: 60%; /*600px*/
+    margin: 50px 0;
+    display: flex;
+    flex-direction: row;
+    transition: all 200ms ease-in-out;
+}
+
+/* holds image only */
+.image-wrapper {
+    height: 300px;
+    width: 450px;
+    overflow: hidden;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.project-image {
+    height: 300px;
+    width: 450px;
+    object-fit: cover;
+    object-position: top; /* center if you want image centered */
+    transition: all 200ms ease-in-out;
+}
+
+/* Titles */
+.header-wrapper {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    height: 220px;
+    width: 300px;
+    left: 380px;
+    padding-top: 80px;
+    transition: all 200ms ease-in-out;
+    overflow: hidden;
+}
+
+.project-title, .see-project-text {
+    font-weight: 400; /* Use a bold weight for emphasis */
+    line-height: 1.2; /* Adjust line height for better readability */
+    letter-spacing: 0.05em; /* Slightly increase letter spacing */
+    text-align: center; /* Center-align the text */
+    color: #333; /* Use a color that contrasts well with the background */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle text shadow */
+    /*Testing above*/
+    font-family: 'Oswald', sans-serif; /* Ensure the font is imported */
+    position: relative;
+    bottom: 0;
+    text-transform: uppercase;
+    transition: all 200ms ease-in-out;
+}
+
+    .project-title {
+        font-size: 2.5rem;
+        margin-bottom: 80px;
+        opacity: 1;
+    }
+
+    .see-project-text {
+        font-size: 2rem;
+        opacity: 0;
+    }
+
+/* ANIMATIONS */
+.wrapper:hover .project-image {
+    transform: scale(2);
+}
+
+.wrapper:hover .see-project-text {
+    bottom: 200px;
+    transform: scale(0.9);
+    opacity: 1;
+}
+
+.wrapper:hover .project-title {
+    bottom: 200px;
+    transform: scale(0.9);
+    opacity: 0;
+}
+
+.wrapper:hover .image-wrapper {
+    width: 800px;
+}
