@@ -132,9 +132,9 @@ const Skills = () => {
                             <motion.div
                                 key={idx}
                                 className="skill-card"
-                                whileHover={{ y: -10 }}
+                                whileHover={{ y: -20 }}
                                 variants={skillCardVariants}
-                                transition={{ duration: 0.3, type: 'spring', stiffness: 50 }}
+                                transition={{ duration: 0.3, type: 'spring', stiffness: 200 }}
                             >
                                 <img src={skill.logo} alt={`${skill.name} logo`} className="skill-logo" />
                                 <div className="skill-name">{skill.name}</div>

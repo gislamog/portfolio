@@ -59,16 +59,11 @@ const Home = () => {
             </div>
 
             <div className="home-left">
-                <motion.div
-                    initial={{ y: '-5vh', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 1, type: 'spring', stiffness: 50 }}
-                    className="home-text"
-                >
+                <div className="home-text">
                     <h2 className="intro-text">Hi, I am</h2>
                     <h1 className="name">Gülsüm</h1>
                     <h1 className="name">Islamoğlu</h1>
-                </motion.div>
+                </div>
 
                 <div className="links-container" ref={linksContainerRef}>
                     {linkIcons.map((link, index) => (
@@ -89,14 +84,9 @@ const Home = () => {
                     ))}
                 </div>
 
-                <motion.div
-                    initial={{ y: '-5vh', opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 1, type: 'spring', stiffness: 50 }}
-                    className="home-animation"
-                >
+                <div className="home-animation">
                     <p>Software Engineer</p>
-                </motion.div>
+                </div>
 
                 <div className="home-resume">
                     <a href={`${process.env.PUBLIC_URL}/resume.pdf`} target="_blank" rel="noopener noreferrer" className="resume-button">
@@ -105,14 +95,9 @@ const Home = () => {
                 </div>
             </div>
 
-            <motion.div
-                initial={{ y: 0, opacity: 1, scale: 1.1 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                transition={{ duration: 2, type: 'spring', stiffness: 50 }}
-                className="home-right"
-            >
+            <div className="home-right">
                 <img src={BannerImage} alt="Flower Desk" className="home-image" />
-            </motion.div>
+            </div>
         </div>
     );
 };

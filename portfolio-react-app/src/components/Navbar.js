@@ -7,6 +7,14 @@ const Navbar = () => {
     const location = useLocation();
     const isMainPage = location.pathname === '/';
 
+    const scrollToSection = (section) => {
+        return (
+            <RouterLink to="/" state={{ scrollTo: section }} className="left-links">
+                {`/${section}`}
+            </RouterLink>
+        );
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-name">
@@ -27,28 +35,28 @@ const Navbar = () => {
                     {isMainPage ? (
                         <ScrollLink to="about" smooth={true} duration={500} className="left-links">/about</ScrollLink>
                     ) : (
-                        <RouterLink to="/" className="left-links">/about</RouterLink>
+                        scrollToSection('about')
                     )}
                 </li>
                 <li>
                     {isMainPage ? (
                         <ScrollLink to="skills" smooth={true} duration={500} className="left-links">/skills</ScrollLink>
                     ) : (
-                        <RouterLink to="/" className="left-links">/skills</RouterLink>
+                        scrollToSection('skills')
                     )}
                 </li>
                 <li>
                     {isMainPage ? (
                         <ScrollLink to="projects" smooth={true} duration={500} className="left-links">/projects</ScrollLink>
                     ) : (
-                        <RouterLink to="/" className="left-links">/projects</RouterLink>
+                        scrollToSection('projects')
                     )}
                 </li>
                 <li>
                     {isMainPage ? (
                         <ScrollLink to="contact" smooth={true} duration={500} className="contact-link">/contact</ScrollLink>
                     ) : (
-                        <RouterLink to="/" className="contact-link">/contact</RouterLink>
+                        <RouterLink to="/" state={{ scrollTo: 'contact' }} className="contact-link">/contact</RouterLink>
                     )}
                 </li>
             </ul>

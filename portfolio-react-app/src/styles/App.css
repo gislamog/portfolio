@@ -42,13 +42,23 @@ body {
 
 /* Headers */
 .section-header {
-    margin-top: 10px;
-    margin-bottom: -10px;
-    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 5vw; /* Adjust as needed */
     text-align: center; /* Center align text */
-    font-family: 'Poppins', sans-serif; /* Nice font */
-    font-size: 2.5rem; /* Large font size */
-    color: var(--text); /* Dark text color */
+    text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(270deg, #FF6F61, #FFC154, #6DC9C9, #2874A6, #FF6F61);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colorTransition 10s linear infinite; /* Use linear for continuous direction */
+}
+
+@keyframes colorTransition {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .sub-header {
@@ -57,3 +67,4 @@ body {
     margin-bottom: 0px; /* Space below */
     color: var(--text-hover); /* Medium text color */
 }
+

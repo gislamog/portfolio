@@ -101,6 +101,21 @@
         color: #666;
     }
 
+/* Sample code block */
+.code-block {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    color: #333;
+    max-width: 800px;
+    margin: 20px auto;
+    white-space: pre-wrap;
+    user-select: none; /* Prevent text selection */
+}
+
 /* images */
 .carousel-item img {
     max-width: 60%;
@@ -112,6 +127,11 @@
     padding: 10px;
     border-radius: 10px;
 }
+    .carousel-caption h3 {
+        padding: 00px;
+        margin: 0px;
+        margin-top: -10px;
+    }
 
 .carousel-indicators {
     position: absolute;
@@ -129,3 +149,20 @@
     border-radius: 50%;
     padding: 20px;
 }
+
+/* Triangle */
+.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+    .controls .form-group {
+        margin: 0 10px;
+    }
+
+    .controls button {
+        margin-right: 20px;
+    }

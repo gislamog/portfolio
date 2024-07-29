@@ -10,7 +10,6 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 /* single project, includes art and description text */
@@ -18,7 +17,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: -20px;
 }
 
 /* description text only */
@@ -69,6 +70,7 @@
     object-fit: cover;
     object-position: top; /* center if you want image centered */
     transition: all 200ms ease-in-out;
+    z-index: -1; /* Send the image to the background */
 }
 
 /* Titles */
@@ -90,13 +92,13 @@
     letter-spacing: 0.05em; /* Slightly increase letter spacing */
     text-align: center; /* Center-align the text */
     color: #333; /* Use a color that contrasts well with the background */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a subtle text shadow */
     /*Testing above*/
     font-family: 'Oswald', sans-serif; /* Ensure the font is imported */
     position: relative;
     bottom: 0;
     text-transform: uppercase;
     transition: all 200ms ease-in-out;
+    text-shadow: -1px -1px 1px #ffffff, 1px -1px 1px #ffffff, -1px 1px 1px #ffffff, 1px 1px 1px #ffffff; /* Adjust the color to make the border lighter or darker */
 }
 
     .project-title {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // styles
 import '../../styles/ProjectDetails.css';
@@ -7,22 +7,20 @@ import InnovationPosterboard from '../../images/projects/healthcare-consulting/p
 import Frontpage from '../../images/projects/healthcare-consulting/frontpage.png';
 import Screenshot3 from '../../images/projects/healthcare-consulting/Screenshot3.png';
 import Screenshot4 from '../../images/projects/healthcare-consulting/Screenshot4.png';
-import Screenshot5 from '../../images/projects/healthcare-consulting/Screenshot5.png';
+import SignInPage from '../../images/projects/healthcare-consulting/SignInPage.png';
 // image carousel
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const HealthcareWebApp = () => {
+    // for Back to Projects button
     const navigate = useNavigate();
 
-    const images = [
-        { src: InnovationPosterboard, description: 'Innovation Posterboard' },
-        { src: Frontpage, description: 'Front page' },
-        { src: Screenshot3, description: 'Description 3' },
-        { src: Screenshot4, description: 'Description 4' },
-        { src: Screenshot5, description: 'Description 5' },
-    ];
+    // to scroll to top of this page when user clicks on it in Projects page
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     return (
         <div className="project-detail">
@@ -33,39 +31,62 @@ const HealthcareWebApp = () => {
 
 
             <Carousel>
+
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
                         src={InnovationPosterboard}
-                        alt="First slide"
+                        alt="Innovation Posterboard"
                     />
                     <Carousel.Caption>
-                        <h3>First slide label</h3>
-                        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        <h3>Innovation Posterboard</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
+
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
-                        src={InnovationPosterboard}
-                        alt="Second slide"
+                        src={Frontpage}
+                        alt="Front page"
                     />
                     <Carousel.Caption>
-                        <h3>Second slide label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <h3>Front Page</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
+
                 <Carousel.Item>
                     <img
                         className="d-block w-100"
-                        src={InnovationPosterboard}
-                        alt="Third slide"
+                        src={SignInPage}
+                        alt="Sign-in Page"
                     />
                     <Carousel.Caption>
-                        <h3>Third slide label</h3>
-                        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                        <h3>Sign-in Page</h3>
                     </Carousel.Caption>
                 </Carousel.Item>
+
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src={Screenshot3}
+                        alt="Assessment Details"
+                    />
+                    <Carousel.Caption>
+                        <h3>Assessment Details</h3>
+                    </Carousel.Caption>
+                </Carousel.Item>
+
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src={Screenshot4}
+                        alt="Search Results"
+                    />
+                    <Carousel.Caption>
+                        <h3>Search Results</h3>
+                    </Carousel.Caption>
+                </Carousel.Item>
+
             </Carousel>
 
 
@@ -99,6 +120,7 @@ const HealthcareWebApp = () => {
                 <li>Spring</li>
                 <li>AWS</li>
                 <li>Amazon Cognito</li>
+                <li>Amazon S3</li>
                 <li>Auth0</li>
                 <li>AXIOS</li>
                 <li>MongoDB</li>

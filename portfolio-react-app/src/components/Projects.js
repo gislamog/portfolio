@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Projects.css';
 import project1 from '../images/projects/healthcare-consulting/frontpage.png';
 import project2 from '../images/projects/excel-vba/excel-vba-3.png';
+import project3 from '../images/projects/my-puzzle-adventure/MyPuzzleAdventure1.png';
+import project4 from '../images/projects/sierpinskis-triangle/SierpinskisTriangle.png';
+import useScrollToTop from './useScrollToTop';
 
 const Projects = ({ setCurrentProject }) => {
 
     const navigate = useNavigate();
+
+    useScrollToTop(['/projects']); // Specify the path for Projects page
 
     return (
         <div className="projects-section" id="projects">
@@ -63,6 +68,48 @@ const Projects = ({ setCurrentProject }) => {
 
 
 
+
+            <div className="project-and-text">
+                <div className="wrapper">
+                    <div className="image-wrapper" onClick={() => navigate('/projects/my-puzzle-adventure')}>
+                        <img src={project3} alt="Poster Art" className="project-image" />
+                    </div>
+                    <div className="header-wrapper">
+                        <div className="project-title" style={{marginTop: '30px'}} >My Puzzle Adventure</div>
+                        <div className="see-project-text" style={{ marginTop: '30px' }}>See Project</div>
+                    </div>
+                </div>
+
+                <div className="project-text">
+                    <ul>
+                        <li>Personal project developed using Java.</li>
+                        <li>2D pixel art graphics.</li>
+                        <li>Combines exploration, puzzle-solving, and combat in a labyrinth environment.</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div className="project-and-text">
+                <div className="wrapper">
+                    <div className="image-wrapper" onClick={() => navigate('/projects/sierpinskis-triangle')}>
+                        <img src={project4} alt="Poster Art" className="project-image" />
+                    </div>
+                    <div className="header-wrapper">
+                        <div className="project-title" style={{ marginTop: '30px' }} >Sierpinski's Triangle</div>
+                        <div className="see-project-text" style={{ marginTop: '30px' }}>See Project</div>
+                    </div>
+                </div>
+
+                <div className="project-text">
+                    <ul>
+                        <li>INTERACTIVE. Click to play!</li>
+                        <li>
+                            What happens when you make a dot, then keep making new dots halfway to one of the triangle's main points, and repeat infinitely?</li>
+                    </ul>
+                </div>
+            </div>
 
 
             
