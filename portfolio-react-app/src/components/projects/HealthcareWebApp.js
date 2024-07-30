@@ -24,8 +24,9 @@ const HealthcareWebApp = () => {
 
     return (
         <div className="project-detail">
-            <button onClick={() => navigate(-1)} className="back-button">Back to Projects</button>
-            <div className="section-header">Healthcare Consulting Web App</div>
+
+            <button onClick={() => navigate(-1)} className="back-button">Back</button>
+            <div className="project-details-header">Healthcare Consulting Web App</div>
 
 
 

@@ -104,10 +104,15 @@ const SierpinskiTriangle = () => {
         setReset(!reset);
     };
 
+    // to scroll to top of this page when user clicks on it in Projects page
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className="project-detail">
-            <button onClick={() => navigate(-1)} className="back-button">Back to Projects</button>
-            <div className="section-header">Sierpinski's Triangle</div>
+            <button onClick={() => navigate(-1)} className="back-button">Back</button>
+            <div className="project-details-header">Sierpinski's Triangle</div>
 
             {/* Interactive Game */}
             <div>
@@ -120,7 +125,7 @@ const SierpinskiTriangle = () => {
             </div>
 
             <div className="controls">
-                <button onClick={handleRestart} className="btn btn-primary">Restart</button>
+                <button onClick={handleRestart} className="restart-button">Restart</button>
                 <div className="form-group">
                     <label>Point Thickness (1-10):</label>
                     <input

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import emailjs from 'emailjs-com';
 import '../styles/Contact.css';
 import GithubIcon from '../images/icons/github-icon.png';
 import IndeedIcon from '../images/icons/indeed-icon.png';
@@ -26,6 +27,7 @@ const linkVariants = {
 const Contact = () => {
     const [inView, setInView] = useState(false);
     const contactLinksRef = useRef(null);
+    const formRef = useRef(null);
     const [copySuccess, setCopySuccess] = useState({ email: '', location: '' });
 
     const copyToClipboard = (text, type) => {
@@ -65,25 +67,42 @@ const Contact = () => {
         { href: links.location, icon: LocationIcon, text: 'Location' },
     ];
 
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        emailjs.sendForm('service_hdez0y9', 'template_fb6rq4n', e.target, 'A_R-4-5HMhZgFbB1D')
+            .then((result) => {
+                console.log(result.text);
+                alert('Message sent successfully!');
+                formRef.current.reset();    // clear form 
+            }, (error) => {
+                console.log(error.text);
+                alert('Failed to send message. Please try again later.');
+            });
+    };
+
     return (
         <div id="contact" className="contact-section">
             <div className="contact-minus-footer">
                 <div className="section-header">Contact</div>
                 <div className="contact-container">
                     <div className="contact-form-container">
+
                         <h2>Get in Touch</h2>
-                        <form>
+
+
+                        <form ref={formRef}  onSubmit={sendEmail}>
                             <label htmlFor="name">
                                 Name:
                                 <span className="required"> *</span>
                             </label>
-                            <input type="text" id="name" name="name" required />
+                            <input type="text" id="name" name="from_name" required />
 
                             <label htmlFor="email">
                                 Email:
                                 <span className="required"> *</span>
                             </label>
-                            <input type="email" id="email" name="email" required />
+                            <input type="email" id="email" name="reply_to" required />
 
                             <label htmlFor="message">
                                 Message:
@@ -93,6 +112,8 @@ const Contact = () => {
 
                             <button type="submit">Send</button>
                         </form>
+
+
                     </div>
 
                     <div className="contact-info-container">
