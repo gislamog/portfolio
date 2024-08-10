@@ -3,6 +3,7 @@
 /* ==================== HOME PAGE ==================== */
 .home {
     height: 100vh; /* Single full page height */
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -160,4 +161,45 @@
 
 .paint-streak {
     width: 100%;
+}
+
+
+/* MOBILE */
+@media screen and (max-width: 768px) {
+    .home {
+        flex-direction: column;
+        padding: 20px;
+        margin-top: 60px;
+    }
+
+    .home-left, .home-right {
+        margin: 0;
+        width: 100%;
+    }
+
+    .home-text .intro-text {
+        font-size: 6vw; /* Increase font size for mobile */
+    }
+
+    .home-text .name {
+        font-size: 10vw; /* Increase font size for mobile */
+    }
+
+    .links-container {
+        width: 100%;
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .link-icon {
+        width: 7vw; /* Adjust the size for mobile */
+    }
+
+    .hover-text {
+        font-size: 14px; /* Adjust font size for mobile */
+    }
+
+    .home-image {
+        max-height: 50vh; /* Adjust max height for mobile */
+    }
 }

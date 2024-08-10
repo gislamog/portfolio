@@ -69,6 +69,9 @@ const Projects = ({ setCurrentProject }) => {
 
 
 
+
+
+
             <div className="project-and-text">
                 <div className="wrapper">
                     <div className="image-wrapper" onClick={() => navigate('/projects/my-puzzle-adventure')}>
@@ -91,6 +94,9 @@ const Projects = ({ setCurrentProject }) => {
 
 
 
+
+
+
             <div className="project-and-text">
                 <div className="wrapper">
                     <div className="image-wrapper" onClick={() => navigate('/projects/sierpinskis-triangle')}>
@@ -110,6 +116,8 @@ const Projects = ({ setCurrentProject }) => {
                     </ul>
                 </div>
             </div>
+
+
 
 
             

@@ -1,22 +1,24 @@
 /* Navigation Bar */
 .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 1000; /* Ensure the navbar is above other content */
-    padding: 10px 0px;
+    /* display */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0px;
+    z-index: 1000; /* Ensure the navbar is above other content */
+    position: fixed; /* navbar doesn't disappear when scrolling down */
+    top: 0;
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+    overflow: hidden; /* Prevents overflow of the content */
+    /* color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     background-color: rgb(255, 255, 255, 0.6); /* % transparent grey */
-    font-family: 'Courier New', Courier, monospace;
     backdrop-filter: blur(1px); /* Apply blur effect */
     -webkit-backdrop-filter: blur(10px); /* For Safari support */
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8),
-        -2px -2px 4px rgba(255, 255, 255, 0.8),
-        2px -2px 4px rgba(255, 255, 255, 0.8),
-        -2px 2px 4px rgba(255, 255, 255, 0.8); /* Multiple shadows for thickness */
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8), -2px -2px 4px rgba(255, 255, 255, 0.8), 2px -2px 4px rgba(255, 255, 255, 0.8), -2px 2px 4px rgba(255, 255, 255, 0.8); /* Multiple shadows for thickness */
+    /* font */
+    font-family: 'Courier New', Courier, monospace;
 }
 
 /* Name Text */
@@ -27,12 +29,14 @@
     align-items: center;
     cursor: pointer;
 }
+
     .navbar-name a {
         color: var(--text);
         text-decoration: none;
         display: flex;
         align-items: center;
     }
+
         .navbar-name a:hover {
             color: var(--text-hover);
         }
@@ -55,6 +59,7 @@
     padding-right: 20px;
     cursor: pointer;
 }
+
     .navbar-links a {
         text-decoration: none; /* Remove underline */
     }
@@ -63,6 +68,7 @@
 .left-links {
     color: var(--text);
 }
+
     .left-links:hover {
         color: var(--text-hover);
         text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -82,3 +88,42 @@
         background-color: var(--button-hover-background);
         border-color: var(--button-hover-background);
     }
+
+.hamburger {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+
+    .hamburger {
+        display: block;
+        margin-right: 20px;
+        /*
+        background: none;
+        border: none;
+        font-size: 40px;
+        cursor: pointer;
+        padding-right: 40px;*/
+    }
+
+    .navbar-links {
+        display: none;
+    }
+        .navbar-links.open {
+            display: flex;
+            /*
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            width: 100%;
+            padding: 10px 0;
+            */
+        }
+
+        .navbar-links li {
+            padding: 10px 10px;
+        }
+}

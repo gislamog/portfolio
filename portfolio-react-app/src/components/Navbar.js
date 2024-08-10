@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React, { useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import logo from '../images/logo2.png';
@@ -6,13 +6,17 @@ import logo from '../images/logo2.png';
 const Navbar = () => {
     const location = useLocation();
     const isMainPage = location.pathname === '/';
+    const [menuOpen, setMenuOpen] = useState(false);
 
-    const scrollToSection = (section) => {
-        return (
-            <RouterLink to="/" state={{ scrollTo: section }} className="left-links">
-                {`/${section}`}
-            </RouterLink>
-        );
+    const scrollToSection = (section) => (
+        <RouterLink to="/" state={{ scrollTo: section }} className="left-links">
+            {`/${section}`}
+        </RouterLink>
+    );
+
+    // menu for mobile
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen);
     };
 
     return (
@@ -30,7 +34,15 @@ const Navbar = () => {
                     </RouterLink>
                 )}
             </div>
-            <ul className="navbar-links">
+
+
+            <button className="hamburger" onClick={toggleMenu}>
+                ☰
+            </button>
+
+
+
+            <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
                 <li>
                     {isMainPage ? (
                         <ScrollLink to="about" smooth={true} duration={500} className="left-links">/about</ScrollLink>

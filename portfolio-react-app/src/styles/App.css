@@ -17,7 +17,6 @@
     --asu-gold: #FFC42A;
     --asu-red: #901540;
 }
-
 /* ==================== Entire Site ==================== */
 
 body {
@@ -68,3 +67,14 @@ body {
     color: var(--text-hover); /* Medium text color */
 }
 
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .section-header {
+        font-size: 8vw; /* Adjust font size for mobile */
+    }
+
+    .sub-header {
+        font-size: 1.5rem; /* Adjust sub-header font size for mobile */
+    }
+}
