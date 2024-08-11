@@ -21,14 +21,14 @@ const Projects = ({ setCurrentProject }) => {
 
 
                 <div className="project-and-text">
-                    <div className="wrapper">
+                    <div className="wrapper" onClick={() => navigate('/projects/healthcare-web-app')}>
 
                         <div className="header-wrapper">
                             <div className="project-title">Healthcare Consulting Web App</div>
                             <div className="see-project-text">See Project</div>
                         </div>
 
-                        <div className="image-wrapper" onClick={() => navigate('/projects/healthcare-web-app')}>
+                        <div className="image-wrapper" >
                             <img src={project1} alt="Poster Art" className="project-image" />
                         </div>
                         
@@ -50,14 +50,14 @@ const Projects = ({ setCurrentProject }) => {
 
 
                 <div className="project-and-text">
-                    <div className="wrapper">
+                    <div className="wrapper" onClick={() => navigate('/projects/excel-vba')}>
 
                         <div className="header-wrapper">
                             <div className="project-title">Excel VBA Property Management</div>
                             <div className="see-project-text">See Project</div>
                         </div>
 
-                        <div className="image-wrapper" onClick={() => navigate('/projects/excel-vba')}>
+                        <div className="image-wrapper">
                             <img src={project2} alt="Poster Art" className="project-image" />
                         </div>
                         
@@ -77,14 +77,14 @@ const Projects = ({ setCurrentProject }) => {
 
 
                 <div className="project-and-text">
-                    <div className="wrapper">
+                    <div className="wrapper" onClick={() => navigate('/projects/my-puzzle-adventure')}>
 
                         <div className="header-wrapper">
                             <div className="project-title" style={{ marginTop: '30px' }} >My Puzzle Adventure</div>
                             <div className="see-project-text" style={{ marginTop: '30px' }}>See Project</div>
                         </div>
 
-                        <div className="image-wrapper" onClick={() => navigate('/projects/my-puzzle-adventure')}>
+                        <div className="image-wrapper">
                             <img src={project3} alt="Poster Art" className="project-image" />
                         </div>
                         
@@ -102,14 +102,14 @@ const Projects = ({ setCurrentProject }) => {
 
 
                 <div className="project-and-text">
-                    <div className="wrapper">
+                    <div className="wrapper" onClick={() => navigate('/projects/sierpinskis-triangle')}>
 
                         <div className="header-wrapper">
                             <div className="project-title" style={{ marginTop: '30px' }} >Sierpinski's Triangle</div>
                             <div className="see-project-text" style={{ marginTop: '30px' }}>See Project</div>
                         </div>
 
-                        <div className="image-wrapper" onClick={() => navigate('/projects/sierpinskis-triangle')}>
+                        <div className="image-wrapper">
                             <img src={project4} alt="Poster Art" className="project-image" />
                         </div>
                         

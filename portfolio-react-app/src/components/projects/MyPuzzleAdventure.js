@@ -17,44 +17,48 @@ const MyPuzzleAdventure = () => {
 
     return (
         <div className="project-detail">
-            <button onClick={() => navigate(-1)} className="back-button">Back</button>
-            <div className="project-details-header">My Puzzle Adventure</div>
+            <div className="section">
 
-            <Carousel>
-                <Carousel.Item>
-                    <img className="d-block w-100" src={MyPuzzleAdventure1} alt="My Puzzle Adventure 1" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img className="d-block w-100" src={MyPuzzleAdventure2} alt="My Puzzle Adventure 2" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img className="d-block w-100" src={MyPuzzleAdventure3} alt="My Puzzle Adventure 3" />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <img className="d-block w-100" src={MyPuzzleAdventure4} alt="My Puzzle Adventure 4" />
-                </Carousel.Item>
-            </Carousel>
+                <div className="details-header-wrapper">
+                    <button onClick={() => navigate(-1)} className="back-button">Back</button>
+                    <div className="section-header">My Puzzle Adventure</div>
+                </div>
 
-            <div className="project-subheader">Project Description</div>
-            <p className="project-description">
-                My Puzzle Adventure is a personal project developed using Java. It features 2D pixel art graphics made by myself, creating a nostalgic experience. The gameplay combines exploration, puzzle-solving, and combat within a labyrinth environment.
-            </p>
+                <Carousel className="carousel-wrapper">
+                    <Carousel.Item>
+                        <img className="d-block w-100" src={MyPuzzleAdventure1} alt="My Puzzle Adventure 1" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img className="d-block w-100" src={MyPuzzleAdventure2} alt="My Puzzle Adventure 2" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img className="d-block w-100" src={MyPuzzleAdventure3} alt="My Puzzle Adventure 3" />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img className="d-block w-100" src={MyPuzzleAdventure4} alt="My Puzzle Adventure 4" />
+                    </Carousel.Item>
+                </Carousel>
 
-            <div className="project-subheader">Technologies Used</div>
-            <ul className="technologies-used">
-                <li>Java</li>
-                <li>Eclipse</li>
-            </ul>
+                <div className="sub-header">Project Description</div>
+                <p className="project-description">
+                    My Puzzle Adventure is a personal project developed using Java. It features 2D pixel art graphics made by myself, creating a nostalgic experience. The gameplay combines exploration, puzzle-solving, and combat within a labyrinth environment.
+                </p>
 
-            <div className="project-subheader">Sample Code</div>
+                <div className="sub-header">Technologies Used</div>
+                <ul className="technologies-used">
+                    <li>Java</li>
+                    <li>Eclipse</li>
+                </ul>
 
-            <p className="project-description">
-                This code snippet is part of the CollisionChecker class, which is responsible for detecting collisions between the player or other entities and the tiles in the game world. The checkTile method calculates the entity's position and checks if it collides with any tiles based on its current direction and speed.
-            </p>
+                <div className="sub-header">Sample Code</div>
+
+                <p className="project-description">
+                    This code snippet is part of the CollisionChecker class, which is responsible for detecting collisions between the player or other entities and the tiles in the game world. The checkTile method calculates the entity's position and checks if it collides with any tiles based on its current direction and speed.
+                </p>
 
 
-            <pre className="code-block">
-                {`public void checkTile(Entity entity) {
+                <pre className="code-block">
+                    {`public void checkTile(Entity entity) {
     int entityLeftWorldX = entity.worldX + entity.solidArea.x;
     int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
     int entityTopWorldY = entity.worldY + entity.solidArea.y;
@@ -96,8 +100,8 @@ const MyPuzzleAdventure = () => {
         entity.collisionOn = true;
     }
 }`}
-            </pre>
-            
+                </pre>
+            </div>
         </div>
     );
 };

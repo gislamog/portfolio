@@ -31,7 +31,7 @@
 }
 
     .home-text .intro-text {
-        font-size: 5vw;
+        font-size: 4vw;
         margin-top: 0;
     }
 
@@ -156,7 +156,6 @@
     .section {
         flex-direction: column-reverse;
     }
-
 
     .home-right {
         width: 60%;

@@ -3,35 +3,59 @@ import { useNavigate } from 'react-router-dom';
 import '../../styles/ProjectDetails.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const displaySize = 500;
-const p1 = { x: displaySize / 2, y: 40 };
-const p2 = { x: 60, y: displaySize - 100 };
-const p3 = { x: displaySize - 80, y: displaySize - 100 };
-
-const getRandomPoint = () => {
-    const points = [p1, p2, p3];
-    return points[Math.floor(Math.random() * points.length)];
-};
-
-const getMidPoint = (point1) => {
-    const point2 = getRandomPoint();
-    return {
-        x: (point1.x + point2.x) / 2,
-        y: (point1.y + point2.y) / 2,
-    };
-};
-
-const SierpinskiTriangleGame = ({ pointThickness, delayTime, numOfPointsDrawn, reset }) => {
-    const [cells, setCells] = useState([p1, p2, p3]);
+const SierpinskiTriangleGame = ({ pointThickness, numOfPointsDrawn, reset }) => {
+    const [cells, setCells] = useState([]);
     const [currCell, setCurrCell] = useState(null);
     const canvasRef = useRef(null);
     const animationRef = useRef(null);
+    const [canvasSize, setCanvasSize] = useState(500);
+
+    // Function to calculate the triangle's vertices based on canvas size
+    const calculatePoints = (size) => {
+        return [
+            { x: size / 2, y: size * 0.1 },
+            { x: size * 0.1, y: size * 0.9 }, 
+            { x: size * 0.9, y: size * 0.9 }
+        ];
+    };
 
     useEffect(() => {
-        setCells([p1, p2, p3]);
+        // Resize canvas based on screen size
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setCanvasSize(window.innerWidth * 0.9);
+            } else {
+                setCanvasSize(500);
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        const points = calculatePoints(canvasSize);
+        setCells(points);
         setCurrCell(null);
         cancelAnimationFrame(animationRef.current);
-    }, [reset]);
+    }, [reset, canvasSize]);
+
+    const getRandomPoint = () => {
+        const points = calculatePoints(canvasSize);
+        return points[Math.floor(Math.random() * points.length)];
+    };
+
+    const getMidPoint = (point1) => {
+        const point2 = getRandomPoint();
+        return {
+            x: (point1.x + point2.x) / 2,
+            y: (point1.y + point2.y) / 2,
+        };
+    };
 
     const drawPoints = useCallback(() => {
         if (currCell) {
@@ -54,7 +78,7 @@ const SierpinskiTriangleGame = ({ pointThickness, delayTime, numOfPointsDrawn, r
             });
         }
         animationRef.current = requestAnimationFrame(drawPoints);
-    }, [currCell, pointThickness, numOfPointsDrawn]);
+    }, [currCell, pointThickness, numOfPointsDrawn, canvasSize]);
 
     useEffect(() => {
         animationRef.current = requestAnimationFrame(drawPoints);
@@ -85,13 +109,14 @@ const SierpinskiTriangleGame = ({ pointThickness, delayTime, numOfPointsDrawn, r
     return (
         <canvas
             ref={canvasRef}
-            width={displaySize}
-            height={displaySize}
-            style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}
+            width={canvasSize}
+            height={canvasSize}
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)', maxWidth: '100%' }}
             onClick={handleMouseClick}
         />
     );
 };
+
 
 const SierpinskiTriangle = () => {
     const navigate = useNavigate();
@@ -111,80 +136,85 @@ const SierpinskiTriangle = () => {
 
     return (
         <div className="project-detail">
-            <button onClick={() => navigate(-1)} className="back-button">Back</button>
-            <div className="project-details-header">Sierpinski's Triangle</div>
+            <div className="section">
 
-            {/* Interactive Game */}
-            <div>
-                <SierpinskiTriangleGame
-                    pointThickness={pointThickness}
-                    delayTime={delayTime}
-                    numOfPointsDrawn={numOfPointsDrawn}
-                    reset={reset}
-                />
-            </div>
+                <div className="details-header-wrapper">
+                    <button onClick={() => navigate(-1)} className="back-button">Back</button>
+                    <div className="section-header">Sierpinski's Triangle</div>
+                </div>
 
-            <div className="controls">
-                <button onClick={handleRestart} className="restart-button">Restart</button>
-                <div className="form-group">
-                    <label>Point Thickness (1-10):</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        value={pointThickness}
-                        min="1"
-                        max="10"
-                        onChange={(e) => setPointThickness(Number(e.target.value))}
+                {/* Interactive Game */}
+                <div>
+                    <SierpinskiTriangleGame
+                        pointThickness={pointThickness}
+                        delayTime={delayTime}
+                        numOfPointsDrawn={numOfPointsDrawn}
+                        reset={reset}
+                        className="triangle-game"
                     />
                 </div>
-                <div className="form-group">
-                    <label>Delay Time (1-200ms):</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        value={delayTime}
-                        min="1"
-                        max="200"
-                        onChange={(e) => setDelayTime(Number(e.target.value))}
-                    />
+
+                <div className="controls">
+                    <button onClick={handleRestart} className="restart-button">Restart</button>
+                    <div className="form-group">
+                        <label>Point Thickness (1-10):</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={pointThickness}
+                            min="1"
+                            max="10"
+                            onChange={(e) => setPointThickness(Number(e.target.value))}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Delay Time (1-200ms):</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={delayTime}
+                            min="1"
+                            max="200"
+                            onChange={(e) => setDelayTime(Number(e.target.value))}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Number of Points Drawn (1-1000):</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={numOfPointsDrawn}
+                            min="1"
+                            max="1000"
+                            onChange={(e) => setNumOfPointsDrawn(Number(e.target.value))}
+                        />
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label>Number of Points Drawn (1-1000):</label>
-                    <input
-                        type="number"
-                        className="form-control"
-                        value={numOfPointsDrawn}
-                        min="1"
-                        max="1000"
-                        onChange={(e) => setNumOfPointsDrawn(Number(e.target.value))}
-                    />
-                </div>
-            </div>
 
-            <div className="project-subheader">Project Description</div>
-            <p className="project-description">
-                Originally created in Java, this project was rewritten in React for this site.
-                To create a Sierpinski Triangle, you start by placing 3 dots at the vertices of a triangle.
-                Then, you add a dot anywhere within the triangle.
-                Next, you place another dot at the midpoint between the last dot and one of the triangle's vertices.
-                Repeating this process indefinitely will always produce the same triangular pattern.
-            </p>
+                <div className="sub-header">Project Description</div>
+                <p className="project-description">
+                    Originally created in Java, this project was rewritten in React for this site.
+                    To create a Sierpinski Triangle, you start by placing 3 dots at the vertices of a triangle.
+                    Then, you add a dot anywhere within the triangle.
+                    Next, you place another dot at the midpoint between the last dot and one of the triangle's vertices.
+                    Repeating this process indefinitely will always produce the same triangular pattern.
+                </p>
 
-            <div className="project-subheader">Technologies Used</div>
-            <ul className="technologies-used">
-                <li>Java</li>
-                <li>React.js</li>
-            </ul>
+                <div className="sub-header">Technologies Used</div>
+                <ul className="technologies-used">
+                    <li>Java</li>
+                    <li>React.js</li>
+                </ul>
 
-            <div className="project-subheader">Sample Code</div>
-            <p className="project-description">
-                This Java code creates a GUI application to display Sierpinski's Triangle.
-                It initializes three main points and updates the triangle by calculating midpoints between the current point and these main points.
-                The user can click to set the initial point, and the triangle updates and draws points at regular intervals.
-            </p>
+                <div className="sub-header">Sample Code</div>
+                <p className="project-description">
+                    This Java code creates a GUI application to display Sierpinski's Triangle.
+                    It initializes three main points and updates the triangle by calculating midpoints between the current point and these main points.
+                    The user can click to set the initial point, and the triangle updates and draws points at regular intervals.
+                </p>
 
-            <pre className="code-block">
-                {`package GUI;
+                <pre className="code-block">
+                    {`package GUI;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -302,7 +332,8 @@ public class mainGUI extends JPanel implements ActionListener{
 	}
 }
 `}
-            </pre>
+                </pre>
+            </div>
         </div>
     );
 };

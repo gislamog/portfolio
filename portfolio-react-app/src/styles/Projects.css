@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
 
 .projects-section .section {
-    flex-direction: column; /* Stack children vertically in the About section */
+    flex-direction: column; /* Stack children vertically */
 }
 
 /* single project, includes art and description text */
@@ -43,6 +43,7 @@
     display: flex;
     flex-direction: row;
     transition: all 200ms ease-in-out;
+    cursor: pointer;
 }
 
 /* holds image only */
@@ -51,7 +52,6 @@
     width: 450px;
     overflow: hidden;
     border-radius: 5px;
-    cursor: pointer;
     transition: all 200ms ease-in-out;
 }
 
@@ -71,7 +71,7 @@
     position: absolute;
     height: 220px;
     width: 300px;
-    left: 380px;
+    left: 55%;
     padding-top: 80px;
     transition: all 200ms ease-in-out;
     overflow: hidden;
@@ -170,7 +170,7 @@
         position: static;
         padding-top: 20px;
         text-align: center;
-        width: 100%;
+        width: auto;
         transition: none;
     }
 
@@ -179,8 +179,9 @@
     }
 
     .see-project-text {
-        opacity: 0;
+        display: none;
     }
+
     .wrapper:hover .see-project-text {
         opacity: 0;
     }

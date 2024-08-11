@@ -30,6 +30,7 @@
         text-decoration: none;
         display: flex;
         align-items: center;
+        color: var(--text); /* necessary for color in projects details page */
     }
         .navbar-name a:hover {
             color: var(--text-hover);

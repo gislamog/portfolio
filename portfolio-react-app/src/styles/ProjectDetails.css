@@ -1,16 +1,13 @@
 /* entire page */
-.project-detail {
-    min-height: 100vh; /* Single full page height */
-    padding-left: 4%; /* padding for left and right side for all pages */
-    padding-right: 4%;
-    padding-top: 45px;
-    padding-bottom: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align items */
-    position: relative; /* Relative positioning for the back button */
+.project-detail .section {
+    flex-direction: column; /* Stack children vertically */
+    align-items: center;
+    text-align: center;
 }
 
+.project-detail {
+    min-height: 100vh; /* Single full page height */
+}
 /* Header Container */
 .back-button {
     position: absolute;
@@ -25,18 +22,8 @@
     cursor: pointer;
 }
 
-.project-details-header {
-    font-size: 5vw; /* Adjust as needed */
-    text-align: center; /* Center align text */
-    text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
-    margin-top: 20px;
-    margin-bottom: 10px;
-    padding-left: 60px;
-    background: linear-gradient(270deg, #FF6F61, #FFC154, #6DC9C9, #2874A6, #FF6F61);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: colorTransition 10s linear infinite; /* Use linear for continuous direction */
+.details-header-wrapper .section-header {
+    margin-left: 65px;
 }
 
 /* Project description */
@@ -45,8 +32,7 @@
     font-size: 1rem;
     color: #666;
     line-height: 1.6;
-    max-width: 800px; /* Limit width for better readability */
-    text-align: center; /* Center align text */
+    padding: 0 8%;
 }
 
 /* Technologies used */
@@ -83,7 +69,7 @@
     background-color: rgba(0, 0, 0, 0.04);
     border-left: 4px solid #46677D;
     padding: 20px;
-    margin-top: 20px;
+    margin-bottom: 20px;
     max-width: 800px;
     font-family: 'Arial', sans-serif;
     color: #333;
@@ -100,20 +86,25 @@
 
 /* Sample code block */
 .code-block {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 5px;
-    overflow-x: auto;
+    /* text */
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.8rem;
     color: #333;
-    max-width: 800px;
+    text-align: left;
+    /* styles */
+    width: 90%;
+    background-color: #f0f0f0;
+    padding: 20px;
     margin: 20px auto;
-    white-space: pre-wrap;
+    border-radius: 5px;
     user-select: none; /* Prevent text selection */
 }
 
 /* images */
+.carousel-wrapper {
+    padding-bottom: 20px;
+}
+
 .carousel-item img {
     max-width: 60%;
     margin: auto;
@@ -123,6 +114,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px;
     border-radius: 10px;
+    transform: translateY(20px);
 }
     .carousel-caption h3 {
         padding: 00px;
@@ -147,13 +139,17 @@
     padding: 20px;
 }
 
-/* Triangle */
+/* Sierpinski Triangle Game */
+.triangle-game {
+}
+
 .controls {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
     margin: 20px 0;
+    width: 100%;
 }
 
     .controls .form-group {
@@ -178,3 +174,38 @@
     .restart-button:hover {
         background-color: var(--button-hover-background);
     }
+
+@media (max-width: 768px) {
+
+    .details-header-wrapper {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .back-button {
+        padding: 8px;
+    }
+
+    .details-header-wrapper .section-header {
+        margin-left: 0px;
+        margin-top: 50px;
+    }
+
+    /* Carousel */
+    .carousel-item img {
+        max-width: 100%;
+    }
+
+    .carousel-caption {
+        transform: translateY(20px);
+    }
+
+        .carousel-caption h3 {
+            font-size: 16px;
+        }
+
+    .technologies-used {
+        width: 100%;
+    }
+}
