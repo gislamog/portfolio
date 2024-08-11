@@ -31,13 +31,32 @@ const Contact = () => {
     const [copySuccess, setCopySuccess] = useState({ email: '', location: '' });
 
     const copyToClipboard = (text, type) => {
-        navigator.clipboard.writeText(text).then(() => {
-            setCopySuccess({ ...copySuccess, [type]: 'Copied!' });
-            setTimeout(() => setCopySuccess({ ...copySuccess, [type]: '' }), 2000);
-        }, (err) => {
-            console.error('Failed to copy: ', err);
-        });
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                setCopySuccess({ ...copySuccess, [type]: 'Copied!' });
+                setTimeout(() => setCopySuccess({ ...copySuccess, [type]: '' }), 2000);
+            }).catch((err) => {
+                console.error('Failed to copy: ', err);
+            });
+        } else {
+            // Fallback: Create a temporary input element to copy the text
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                setCopySuccess({ ...copySuccess, [type]: 'Copied!' });
+                setTimeout(() => setCopySuccess({ ...copySuccess, [type]: '' }), 2000);
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+            document.body.removeChild(textArea);
+        }
     };
+
+
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -83,90 +102,92 @@ const Contact = () => {
 
     return (
         <div id="contact" className="contact-section">
-            <div className="contact-minus-footer">
-                <div className="section-header">Contact</div>
-                <div className="contact-container">
-                    <div className="contact-form-container">
+            <div className="">
 
-                        <h2>Get in Touch</h2>
+                <div className="contact-minus-footer">
+                    <div className="section-header">Contact</div>
+                    <div className="contact-container">
+                        <div className="contact-form-container">
 
-
-                        <form ref={formRef}  onSubmit={sendEmail}>
-                            <label htmlFor="name">
-                                Name:
-                                <span className="required"> *</span>
-                            </label>
-                            <input type="text" id="name" name="from_name" required />
-
-                            <label htmlFor="email">
-                                Email:
-                                <span className="required"> *</span>
-                            </label>
-                            <input type="email" id="email" name="reply_to" required />
-
-                            <label htmlFor="message">
-                                Message:
-                                <span className="required"> *</span>
-                            </label>
-                            <textarea id="message" name="message" required />
-
-                            <button type="submit">Send</button>
-                        </form>
+                            <div className="sub-header">Get in Touch</div>
 
 
-                    </div>
+                            <form ref={formRef} onSubmit={sendEmail}>
+                                <label htmlFor="name">
+                                    Name:
+                                    <span className="required"> *</span>
+                                </label>
+                                <input type="text" id="name" name="from_name" required />
 
-                    <div className="contact-info-container">
-                        <h2>Contact Information</h2>
+                                <label htmlFor="email">
+                                    Email:
+                                    <span className="required"> *</span>
+                                </label>
+                                <input type="email" id="email" name="reply_to" required />
 
-                        <div className="contact-copy-container">
-                            <p>gulsumi147@gmail.com</p>
-                            <img src={CopyPaste} alt="Copy" className="copy-paste-icon"
-                                onClick={() => copyToClipboard('gulsumi147@gmail.com', 'email')} />
-                            {copySuccess.email && <span className="copy-success">{copySuccess.email}</span>}
+                                <label htmlFor="message">
+                                    Message:
+                                    <span className="required"> *</span>
+                                </label>
+                                <textarea id="message" name="message" required />
+
+                                <button type="submit">Send</button>
+                            </form>
+
+
                         </div>
 
-                        <div className="contact-copy-container">
-                            <p>Riverside, California, USA</p>
-                            <img src={CopyPaste} alt="Copy" className="copy-paste-icon"
-                                onClick={() => copyToClipboard('Riverside, California, USA', 'location')} />
-                            {copySuccess.location && <span className="copy-success">{copySuccess.location}</span>}
-                        </div>
+                        <div className="contact-info-container">
+                            <div className="sub-header">Contact Information</div>
 
-                        <div className="contact-links" ref={contactLinksRef}>
-                            {linkIcons.map((link, index) => (
-                                <motion.a
-                                    key={link.text}
-                                    href={link.href}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="link"
-                                    custom={index}
-                                    initial="hidden"
-                                    animate={inView ? "visible" : "hidden"}
-                                    variants={linkVariants}
-                                >
-                                    <img src={link.icon} alt={`${link.text} Icon`} className="link-icon" />
-                                    <span className="hover-text">{link.text}</span>
-                                </motion.a>
-                            ))}
+                            <div className="contact-copy-container">
+                                <p>gulsumi147@gmail.com</p>
+                                <img src={CopyPaste} alt="Copy" className="copy-paste-icon"
+                                    onClick={() => copyToClipboard('gulsumi147@gmail.com', 'email')} />
+                                {copySuccess.email && <span className="copy-success">{copySuccess.email}</span>}
+                            </div>
+
+                            <div className="contact-copy-container">
+                                <p>Riverside, California, USA</p>
+                                <img src={CopyPaste} alt="Copy" className="copy-paste-icon"
+                                    onClick={() => copyToClipboard('Riverside, California, USA', 'location')} />
+                                {copySuccess.location && <span className="copy-success">{copySuccess.location}</span>}
+                            </div>
+
+                            <div className="contact-links" ref={contactLinksRef}>
+                                {linkIcons.map((link, index) => (
+                                    <motion.a
+                                        key={link.text}
+                                        href={link.href}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="link"
+                                        custom={index}
+                                        initial="hidden"
+                                        animate={inView ? "visible" : "hidden"}
+                                        variants={linkVariants}
+                                    >
+                                        <img src={link.icon} alt={`${link.text} Icon`} className="link-icon" />
+                                        <span className="hover-text">{link.text}</span>
+                                    </motion.a>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <footer className="footer">
+                    <div className="footer-left">
+                    </div>
+                    <div className="footer-middle">
+                        <a href="#home">Home</a>|
+                        <a href="#about">About</a>|
+                        <a href="#skills">Skills</a>|
+                        <a href="#projects">Projects</a>
+                    </div>
+                    <div className="footer-right"></div>
+                </footer>
             </div>
-
-            <footer className="footer">
-                <div className="footer-left">
-                    Copyright &copy; 2024. All rights reserved.
-                </div>
-                <div className="footer-middle">
-                    <a href="#home">Home</a>|
-                    <a href="#about">About</a>|
-                    <a href="#skills">Skills</a>|
-                    <a href="#projects">Projects</a>
-                </div>
-                <div className="footer-right"></div>
-            </footer>
         </div>
     );
 };

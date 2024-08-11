@@ -4,7 +4,8 @@ import '../styles/About.css';
 const About = () => {
     return (
 
-        <div id="about" className="even-section">
+        <div id="about" className="about-section">
+            <div className="section">
 
             {/* About Me */}
             <div className="section-header">About</div>
@@ -74,7 +75,7 @@ const About = () => {
 
                 </div>
             </div>
-
+            </div>
         </div>
 
     );

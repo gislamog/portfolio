@@ -18,41 +18,40 @@
     --asu-red: #901540;
 }
 
-/* ==================== Entire Site ==================== */
+/* ==================== Global Styles ==================== */
 
-body {
+html, body {
     background-image: url('../images/groovepaper.png'); /* background image for entire site */
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    color: var(--text); /* Adjust color as needed */
 }
 
 /* Sections */
-.odd-section {
-    background-color: var(--transparent-section-background); /* % transparent grey */
-}
-
-.odd-section, .even-section {
-    min-height: 100vh; /* Single full page height */
+.section {
     padding-left: 4%; /* padding for left and right side for all pages */
     padding-right: 4%;
-    padding-top: 45px;
+    padding-top: 60px;
     padding-bottom: 30px;
-    box-sizing: border-box; /* Include padding in the height */
     display: flex;
-    flex-direction: column;
 }
 
-/* Headers */
 .section-header {
-    font-family: 'Poppins', sans-serif;
-    font-size: 5vw; /* Adjust as needed */
-    text-align: center; /* Center align text */
+    font-size: 400%;
+    text-align: center;
     text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
-    margin-top: 10px;
-    margin-bottom: 10px;
     background: linear-gradient(270deg, #FF6F61, #FFC154, #6DC9C9, #2874A6, #FF6F61);
     background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: colorTransition 10s linear infinite; /* Use linear for continuous direction */
+}
+
+.sub-header {
+    font-size: 2rem; /* Sub-header font size */
+    color: var(--text-hover); /* Medium text color */
+    margin-bottom: 10px;
 }
 
 @keyframes colorTransition {
@@ -61,10 +60,18 @@ body {
     100% { background-position: 0% 50%; }
 }
 
-.sub-header {
-    font-family: 'Poppins', sans-serif; /* Nice font */
-    font-size: 2rem; /* Sub-header font size */
-    margin-bottom: 0px; /* Space below */
-    color: var(--text-hover); /* Medium text color */
-}
+@media screen and (max-width: 768px) {
+    .App {
+        width: 100%;
+    }
 
+    .section-header {
+        font-size: 9vw; /* Adjust as needed */
+    }
+
+    .sub-header {
+        font-size: 1.5rem; /* Sub-header font size */
+    }
+
+
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import '../styles/Skills.css';
 import css from '../images/skills/css.png';
 import java from '../images/skills/java.png';
@@ -80,27 +80,7 @@ const skillsData = {
 };
 
 const Skills = () => {
-    const [inView, setInView] = useState(false);
     const skillsRef = useRef(null);
-
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setInView(entry.isIntersecting);
-            },
-            { threshold: 0.1 } // Adjust as needed
-        );
-
-        if (skillsRef.current) {
-            observer.observe(skillsRef.current);
-        }
-
-        return () => {
-            if (skillsRef.current) {
-                observer.unobserve(skillsRef.current);
-            }
-        };
-    }, []);
 
     const skillCardVariants = {
         hidden: { opacity: 1, y: 50 },
@@ -108,41 +88,32 @@ const Skills = () => {
     };
 
     return (
-        <div id="skills" className="odd-section" ref={skillsRef}>
-            <div className="section-header">Skills</div>
+        <div id="skills" className="skills-section" ref={skillsRef}>
+            <div className="section">
 
-            {Object.entries(skillsData).map(([group, skills], index) => (
-                <div key={index} className="skill-group">
-                    <h2 className="skill-group-header">{group}</h2>
+                <div className="section-header">Skills</div>
 
-                    <motion.div
-                        className="skills-container"
-                        initial="hidden"
-                        animate={inView ? "visible" : "hidden"}
-                        variants={{
-                            hidden: { opacity: 1 },
-                            visible: {
-                                transition: {
-                                    staggerChildren: 0.1,
-                                },
-                            },
-                        }}
-                    >
-                        {skills.map((skill, idx) => (
-                            <motion.div
-                                key={idx}
-                                className="skill-card"
-                                whileHover={{ y: -20 }}
-                                variants={skillCardVariants}
-                                transition={{ duration: 0.3, type: 'spring', stiffness: 200 }}
-                            >
-                                <img src={skill.logo} alt={`${skill.name} logo`} className="skill-logo" />
-                                <div className="skill-name">{skill.name}</div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-            ))}
+                {Object.entries(skillsData).map(([group, skills], index) => (
+                    <div key={index} className="skill-group">
+                        <h2 className="skill-group-header">{group}</h2>
+
+                        <div className="skills-container" >
+                            {skills.map((skill, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    className="skill-card"
+                                    whileHover={{ y: -10 }}
+                                    variants={skillCardVariants}
+                                    transition={{ duration: 0.3, type: 'spring', stiffness: 200 }}
+                                >
+                                    <img src={skill.logo} alt={`${skill.name} logo`} className="skill-logo" />
+                                    <div className="skill-name">{skill.name}</div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

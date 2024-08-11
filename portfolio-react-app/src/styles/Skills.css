@@ -1,3 +1,11 @@
+.skills-section .section {
+    flex-direction: column; /* Stack children vertically in the About section */
+}
+
+.skills-section {
+    background-color: var(--transparent-section-background); /* % transparent grey */
+}
+
 .skills-container {
     display: flex;
     flex-wrap: wrap;
@@ -10,7 +18,6 @@
 }
 
 .skill-group-header {
-    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
     margin-bottom: 20px;
     margin-top: 0px;
@@ -43,7 +50,6 @@
 .skill-name {
     font-family: 'Arial', sans-serif;
     font-size: 18px;
-    color: var(--text);
     margin-right: 6px;
     max-width: 145px;
 }

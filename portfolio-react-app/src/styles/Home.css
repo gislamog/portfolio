@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 
 /* ==================== HOME PAGE ==================== */
-.home {
-    height: 100vh; /* Single full page height */
+.home-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--transparent-section-background); /* % transparent grey */
-    padding: 50px;
-    box-sizing: border-box;
+    height: 100vh; /* Single full page height */
+    padding: 2%;
     position: relative; /* Ensure the paint streak can be positioned absolutely */
+    background-color: var(--transparent-section-background);
 }
 
 /* ==================== LEFT SIDE ==================== */
@@ -32,16 +31,12 @@
 }
 
     .home-text .intro-text {
-        font-family: 'Poppins', sans-serif;
-        font-size: 3.5vw; /* Adjust as needed */
-        color: var(--text); /* Adjust color as needed */
+        font-size: 5vw;
         margin-top: 0;
-        margin-bottom: -1%; /* Bring it closer to the name */
     }
 
     .home-text .name {
-        font-family: 'Poppins', sans-serif;
-        font-size: 6.5vw; /* Adjust as needed */
+        font-size: 7vw;
         font-weight: bold;
         text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
         margin: -3% 0; /* Adjust margin to make names closer */
@@ -51,19 +46,20 @@
         -webkit-text-fill-color: transparent;
         animation: colorTransition 10s linear infinite; /* Use linear for continuous direction */
     }
-        @keyframes colorTransition {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+
+.title-text {
+    margin-top: 0px;
+    font-size: 2.5vw;
+    font-weight: bold;
+}
 
 /* LINKS */
 .links-container {
     display: flex;
     gap: 10%;
-    margin-top: 3%;
+    margin-bottom: 4%;
     margin-left: 10%;
-    width: 50%;
+    width: 60%;
 }
 
 .link {
@@ -73,7 +69,8 @@
 }
 
 .link-icon {
-    width: 3.5vw; /* Adjust the size as needed */
+    width: 5vw;
+    max-width: 50px;
     height: auto; /* Maintain aspect ratio */
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -105,16 +102,9 @@
     white-space: nowrap;
 }
 
-/* ANIMATED TITLES */
-.home-animation {
-    margin-top: 0px;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
 
 /* RESUME BUTTON */
 .home-resume {
-    margin-top: 0px;
 }
 
 .resume-button {
@@ -135,12 +125,13 @@
 
 /* ==================== RIGHT SIDE ==================== */
 .home-right {
+    right: -5%;
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
-    z-index: 2; /* Ensure the Flower Desk is above the paint streak */
+    z-index: 1; /* Ensure the Flower Desk is above the paint streak */
 }
 
 .home-image {
@@ -152,12 +143,43 @@
 .home-paint-streak {
     position: absolute;
     justify-content: center;
-    right: 0%; /* Adjust horizontal position */
-    width: 80%;
-    z-index: 1;
-    
+    right: -10%; /* Adjust horizontal position */
+    width: 160%;
+    z-index: -1;
 }
 
 .paint-streak {
     width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    .section {
+        flex-direction: column-reverse;
+    }
+
+
+    .home-right {
+        width: 60%;
+        margin-top: -20px;
+        margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .home-text .intro-text {
+        font-size: 9vw;
+    }
+
+    .home-text .name {
+        font-size: 16vw;
+    }
+
+    .title-text {
+        margin-top: 12px;
+        font-size: 6vw;
+    }
+
+    .link-icon {
+        width: 10vw;
+    }
 }

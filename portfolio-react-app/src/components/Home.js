@@ -53,50 +53,55 @@ const Home = () => {
     ];
 
     return (
-        <div id="home" className="home">
-            <div className="home-paint-streak">
-                <PaintStreak />
-            </div>
+        <div id="home" className="home-section">
+            <div className="section">
+                
+                <div className="home-left">
+                    <div className="home-text">
+                        <h2 className="intro-text">Hi, I am</h2>
+                        <h1 className="name">Gülsüm</h1>
+                        <h1 className="name">Islamoğlu</h1>
+                    </div>
 
-            <div className="home-left">
-                <div className="home-text">
-                    <h2 className="intro-text">Hi, I am</h2>
-                    <h1 className="name">Gülsüm</h1>
-                    <h1 className="name">Islamoğlu</h1>
+                    <div className="title-text">
+                        <p>Software Engineer</p>
+                    </div>
+
+                    <div className="links-container" ref={linksContainerRef}>
+                        {linkIcons.map((link, index) => (
+                            <motion.a
+                                key={link.text}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="link"
+                                custom={index}
+                                initial="hidden"
+                                animate={inView ? "visible" : "hidden"}
+                                variants={linkVariants}
+                            >
+                                <img src={link.icon} alt={`${link.text} Icon`} className="link-icon" />
+                                <span className="hover-text">{link.text}</span>
+                            </motion.a>
+                        ))}
+                    </div>
+
+                    <div className="home-resume">
+                        <a href={`${process.env.PUBLIC_URL}/resume.pdf`} target="_blank" rel="noopener noreferrer" className="resume-button">
+                            Resume
+                        </a>
+                    </div>
                 </div>
 
-                <div className="links-container" ref={linksContainerRef}>
-                    {linkIcons.map((link, index) => (
-                        <motion.a
-                            key={link.text}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="link"
-                            custom={index}
-                            initial="hidden"
-                            animate={inView ? "visible" : "hidden"}
-                            variants={linkVariants}
-                        >
-                            <img src={link.icon} alt={`${link.text} Icon`} className="link-icon" />
-                            <span className="hover-text">{link.text}</span>
-                        </motion.a>
-                    ))}
-                </div>
+                <div className="home-right">
 
-                <div className="home-animation">
-                    <p>Software Engineer</p>
-                </div>
+                    <img src={BannerImage} alt="Flower Desk" className="home-image" />
 
-                <div className="home-resume">
-                    <a href={`${process.env.PUBLIC_URL}/resume.pdf`} target="_blank" rel="noopener noreferrer" className="resume-button">
-                        Resume
-                    </a>
-                </div>
-            </div>
+                    <div className="home-paint-streak">
+                        <PaintStreak />
+                    </div>
 
-            <div className="home-right">
-                <img src={BannerImage} alt="Flower Desk" className="home-image" />
+                </div>
             </div>
         </div>
     );

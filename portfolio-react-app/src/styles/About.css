@@ -1,12 +1,20 @@
 /* ==================== About Me Section ==================== */
+
+.about-section .section {
+    flex-direction: column; /* Stack children vertically in the About section */
+}
+
+.about-section {
+}
+
 .about-text {
-    font-family: 'Arial', sans-serif; /* Body text font */
-    font-size: 1.2rem; /* Body text size */
-    color: #666; /* Light text color */
-    line-height: 1.6; /* Increase line height for readability */
-    max-width: 80%; /* Limit width for better readability */
-    margin-left: 10%; /* Center the text horizontally */
-    margin-bottom: 2px; /* Space below */
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    max-width: 80%;
+    margin-left: 10%;
+    margin-bottom: 15px;
 }
 
 /* ==================== Education Section ==================== */
@@ -16,7 +24,7 @@
 
 .education-container {
     display: flex;
-    justify-content: center; /* Center the columns horizontally */
+    justify-content: center;
     gap: 10%; /* Space between columns */
 }
 
@@ -27,9 +35,7 @@
 }
 
     .education-column h3 {
-        font-family: 'Poppins', sans-serif; /* Column header font */
         font-size: 1.5rem; /* Column header size */
-        color: var(--text); /* Dark text color */
         margin-bottom: 10px; /* Space below */
     }
 
@@ -56,7 +62,6 @@
 .flip-card-front, .flip-card-back {
     position: absolute;
     display: flex;
-    box-sizing: border-box;
     flex-direction: column;
     width: 100%;
     height: 100%;
@@ -64,7 +69,6 @@
     justify-content: center;
     align-items: center;
     border-radius: 10px; /* rounded corners */
-    font-family: 'Poppins', sans-serif; /* Thick font */
     backface-visibility: hidden;
 }
 
@@ -111,7 +115,6 @@
 }
 
 .text-GPA {
-
 }
 
 .line-small {
@@ -120,4 +123,23 @@
     height: 2.5px; /* Adjust height as needed */
     width: 20px; /* Adjust height as needed */
     margin-top: 15px;
+}
+
+@media screen and (max-width: 768px) {
+
+    .education-container {
+        flex-direction: column;
+    }
+
+    .education-column {
+        flex: 1 1 100%; /* Allow full width on smaller screens */
+        max-width: 100%; /* Ensure it doesn't exceed the screen width */
+        margin: 0 30px 20px 30px;
+    }
+
+
+    .line {
+        display: none;
+    }
+
 }

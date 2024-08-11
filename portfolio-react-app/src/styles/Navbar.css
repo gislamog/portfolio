@@ -5,7 +5,7 @@
     width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000; /* Ensure the navbar is above other content */
-    padding: 10px 0px;
+    padding: 10px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -22,13 +22,11 @@
 /* Name Text */
 .navbar-name {
     font-size: 24px;
-    padding-left: 20px;
     display: flex;
     align-items: center;
     cursor: pointer;
 }
     .navbar-name a {
-        color: var(--text);
         text-decoration: none;
         display: flex;
         align-items: center;
@@ -52,7 +50,6 @@
     display: flex;
     gap: 20px;
     margin: 0px;
-    padding-right: 20px;
     cursor: pointer;
 }
     .navbar-links a {
@@ -82,3 +79,40 @@
         background-color: var(--button-hover-background);
         border-color: var(--button-hover-background);
     }
+
+.hamburger {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .navbar {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .navbar-name {
+        font-size: 5.5vw;
+    }
+
+    .navbar-links {
+        display: none;
+        text-align: center;
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: rgb(255, 255, 255, 0.8); /* % transparent grey */
+    }
+        .navbar-links.open {
+            display: flex; /* Show the links when menuOpen is true */
+            flex-direction: column;
+        }
+        .navbar-links a {
+            font-size: 20px;
+        }
+
+    .hamburger {
+        display: block;
+        font-size: 24px;
+        padding: 0px 10px;
+    }
+}
