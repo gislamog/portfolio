@@ -13,6 +13,7 @@ import HealthcareWebApp from './components/projects/HealthcareWebApp';
 import ExcelVBA from './components/projects/ExcelVBA';
 import MyPuzzleAdventure from './components/projects/MyPuzzleAdventure';
 import SierpinskisTriangle from './components/projects/SierpinskisTriangle';
+import DensityEstimation from './components/projects/DensityEstimation';
 // styles
 import './styles/App.css';
 import './styles/Navbar.css';
@@ -61,6 +62,7 @@ function App() {
                     <Route path="/projects/excel-vba" element={<ExcelVBA />} />
                     <Route path="/projects/my-puzzle-adventure" element={<MyPuzzleAdventure />} />
                     <Route path="/projects/sierpinskis-triangle" element={<SierpinskisTriangle />} />
+                    <Route path="/projects/density-estimation" element={<DensityEstimation />} />
                 </Routes>
             </div>
         </Router>

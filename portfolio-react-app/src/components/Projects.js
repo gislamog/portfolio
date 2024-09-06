@@ -5,6 +5,7 @@ import project1 from '../images/projects/healthcare-consulting/frontpage.png';
 import project2 from '../images/projects/excel-vba/excel-vba-3.png';
 import project3 from '../images/projects/my-puzzle-adventure/MyPuzzleAdventure1.png';
 import project4 from '../images/projects/sierpinskis-triangle/SierpinskisTriangle.png';
+import project5 from '../images/projects/density-estimation/density-2.png';
 import useScrollToTop from './useScrollToTop';
 
 const Projects = ({ setCurrentProject }) => {
@@ -45,6 +46,30 @@ const Projects = ({ setCurrentProject }) => {
                 </div>
 
 
+
+                <div className="project-and-text">
+                    <div className="wrapper" onClick={() => navigate('/projects/density-estimation')}>
+
+                        <div className="header-wrapper">
+                            <div className="project-title">Density Estimation and Classification</div>
+                            <div className="see-project-text">See Project</div>
+                        </div>
+
+                        <div className="image-wrapper" >
+                            <img src={project5} alt="Poster Art" className="project-image" />
+                        </div>
+
+                    </div>
+
+                    <div className="project-text">
+                        <ul>
+                            <li>Analyzed handwritten digits '0' and '1' to extract average brightness and brightness standard deviation.</li>
+                            <li>Trained a Naive Bayes classifier using these features for image classification.</li>
+                            <li>Evaluated classifier accuracy with test images, achieving 91.63% for '0' and 92.33% for '1'.</li>
+                            <li>Suggested adding a third feature (white line crossings) to improve accuracy.</li>
+                        </ul>
+                    </div>
+                </div>
 
 
 
