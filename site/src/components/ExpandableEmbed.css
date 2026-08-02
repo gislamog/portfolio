@@ -1,0 +1,119 @@
+.expandable-embed {
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.expandable-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+}
+
+.expandable-trigger:hover { color: var(--accent); }
+
+.expandable-icon {
+  color: var(--accent);
+  font-size: 0.9rem;
+  width: 1rem;
+}
+
+.expandable-desc {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  max-width: none;
+  line-height: 1.6;
+}
+
+.expandable-content {
+  margin-top: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.embed-pdf {
+  width: 100%;
+  height: min(80vh, 900px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.embed-image {
+  width: 100%;
+  max-height: min(80vh, 900px);
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.portfolio-star {
+  display: none;
+}
+
+.course-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.course-card.featured {
+  border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
+  box-shadow: inset 3px 0 0 var(--accent-2);
+}
+
+.course-card ul {
+  font-size: 0.88rem;
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.course-card li { margin-bottom: 0.3em; }
+
+.education-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0 2rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.education-toc a {
+  font-size: 0.88rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  text-decoration: none !important;
+  color: var(--text-muted);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.education-toc a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.degree-block {
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}

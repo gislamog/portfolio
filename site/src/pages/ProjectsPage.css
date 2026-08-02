@@ -1,0 +1,15 @@
+.projects-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.project-card h2 { font-size: 1.15rem; margin: 0.75rem 0 0.5rem; }
+.project-card ul { font-size: 0.88rem; margin: 0.75rem 0; }
+
+.project-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}

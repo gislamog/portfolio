@@ -1,0 +1,111 @@
+.hero {
+  padding: calc(var(--nav-h) + 4rem) 0 4rem;
+}
+
+.hero-inner {
+  display: grid;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+@media (min-width: 768px) {
+  .hero-inner { grid-template-columns: 1.5fr 1fr; }
+}
+
+.hero-profile {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.profile-photo {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  flex-shrink: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.hero-intro h1 { margin-top: 0.15rem; }
+
+.hero-asu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.hero-summary {
+  font-size: 1.05rem;
+  max-width: 62ch;
+  line-height: 1.7;
+}
+
+.hero-summary strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero-stats {
+  display: grid;
+  gap: 1rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat strong {
+  font-size: 0.95rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.stat span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.skills-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.skill-card h3 { color: var(--accent); font-size: 0.95rem; }
+.skill-card ul { font-size: 0.9rem; padding-left: 1rem; }
+
+.section-dim { background: var(--bg-section); border-block: 1px solid var(--border); }
+
+.explore-card {
+  text-decoration: none !important;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.explore-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transform: translateY(-2px);
+}
+.explore-card h3 { color: var(--text); }
+.explore-card p { margin: 0; font-size: 0.9rem; }
+
+@media (max-width: 520px) {
+  .hero-profile { flex-direction: column; align-items: center; text-align: center; }
+  .hero-asu { justify-content: center; }
+  .hero-intro .social-links { justify-content: center; }
+}

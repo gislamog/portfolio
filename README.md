@@ -1,19 +1,32 @@
-# GulsumIslamoglu.github.io
+# Gulsum Islamoglu — Portfolio (v2)
 
-Gulsum Islamoglu Website Portfolio
-Made using React
+Modern portfolio site built with **Vite + React + TypeScript**.
 
-To deploy changes to GitHub pages for public view:
-	- open terminal in /portfolio-react-app
-	- run the following:
-		npm run build
-		npm run deploy
-	- open site:
-		https://gislamog.github.io/portfolio/
+## Quick start
 
-To test using localhost:
-	- open terminal in /portfolio-react-app
-	- run the following:
-		npm start
-	- webpage will open automatically. If it does not, open:
-		http://localhost:3000/portfolio
+```powershell
+cd site
+npm install
+npm run dev
+```
+
+Open **http://localhost:3002/portfolio/** (port 3002 avoids WSL conflicts on Windows).
+
+## Deploy to GitHub Pages
+
+```powershell
+cd site
+npm run deploy
+```
+
+This builds to `dist/` and publishes via `gh-pages`. The site lives at [gislamog.github.io/portfolio](https://gislamog.github.io/portfolio/).
+
+## Structure
+
+- `site/src/data/` — all content (experience, education, blog, projects)
+- `site/public/docs/` — MCS portfolio PDF and Big Data certificate
+- `site/src/demos/` — interactive mini apps
+
+## Legacy
+
+The old Create React App lives in `portfolio-react-app/` (deprecated).

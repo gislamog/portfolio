@@ -1,0 +1,34 @@
+.social-links {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  text-decoration: none !important;
+  transition: color 0.15s, border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.social-links a:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transform: translateY(-1px);
+}
+
+.social-links-md a {
+  width: 42px;
+  height: 42px;
+  font-size: 1.15rem;
+}
+
+.social-links-sm a {
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+}
