@@ -1,78 +1,189 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
 import './Demos.css';
+import { randomWalkDelta } from './demoUtils';
 
-interface Ant {
-  theta: number;
-  phi: number;
-  vTheta: number;
-  vPhi: number;
+const WIDTH = 940;
+const HEIGHT = 660;
+const RADIUS = 200;
+
+type Ant = {
+  u: number;
+  v: number;
+  mesh: THREE.Mesh;
+};
+
+function spherical(u: number, v: number, r: number) {
+  // Same spherical mapping as the Processing sketch
+  return new THREE.Vector3(
+    r * Math.sin(u) * Math.cos(v),
+    r * Math.sin(u) * Math.sin(v),
+    r * Math.cos(u),
+  );
 }
 
-function project(theta: number, phi: number, cx: number, cy: number, r: number) {
-  const x3 = r * Math.sin(phi) * Math.cos(theta);
-  const y3 = r * Math.sin(phi) * Math.sin(theta);
-  const z3 = r * Math.cos(phi);
-  const scale = 200 / (200 + z3);
-  return { x: cx + x3 * scale, y: cy + y3 * scale, z: z3 };
+function stepAnt(ant: Ant, stepSize: number, speed: number, boost = 1) {
+  ant.u += randomWalkDelta(Math.random(), stepSize, speed) * boost;
+  ant.v += randomWalkDelta(Math.random(), stepSize, speed) * boost;
+  ant.mesh.position.copy(spherical(ant.u, ant.v, RADIUS + 2));
 }
 
 export function AntsOnSphereDemo() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const ants = useRef<Ant[]>(
-    Array.from({ length: 40 }, () => ({
-      theta: Math.random() * Math.PI * 2,
-      phi: Math.acos(2 * Math.random() - 1),
-      vTheta: (Math.random() - 0.5) * 0.02,
-      vPhi: (Math.random() - 0.5) * 0.01,
-    }))
-  );
-  const trails = useRef<{ x: number; y: number; age: number }[]>([]);
+  const mountRef = useRef<HTMLDivElement>(null);
+  const seedHeld = useRef(false);
+  const [stepSize, setStepSize] = useState(0.03);
+  const [speed, setSpeed] = useState(1);
+  const stepSizeRef = useRef(stepSize);
+  const speedRef = useRef(speed);
+  stepSizeRef.current = stepSize;
+  speedRef.current = speed;
 
   useEffect(() => {
-    let frame: number;
-    const loop = () => {
-      const ctx = canvasRef.current?.getContext('2d');
-      if (!ctx) return;
-      const w = 400;
-      const h = 400;
-      ctx.fillStyle = 'rgba(18, 20, 28, 0.25)';
-      ctx.fillRect(0, 0, w, h);
+    const mount = mountRef.current;
+    if (!mount) return;
 
-      ctx.strokeStyle = 'rgba(110, 231, 200, 0.15)';
-      ctx.beginPath();
-      ctx.arc(200, 200, 90, 0, Math.PI * 2);
-      ctx.stroke();
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, WIDTH / HEIGHT, 0.1, 4000);
+    camera.position.z = 620;
 
-      ants.current.forEach((ant, i) => {
-        ant.theta += ant.vTheta + Math.sin(Date.now() * 0.001 + i) * 0.003;
-        ant.phi = Math.max(0.2, Math.min(Math.PI - 0.2, ant.phi + ant.vPhi));
-        const p = project(ant.theta, ant.phi, 200, 200, 90);
-        trails.current.push({ x: p.x, y: p.y, age: 0 });
-        ctx.fillStyle = `rgba(110, 231, 200, ${0.4 + p.z / 200})`;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
-        ctx.fill();
-      });
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000);
+    mount.appendChild(renderer.domElement);
+    renderer.domElement.className = 'demo-canvas ants-canvas';
 
-      trails.current = trails.current
-        .map((t) => ({ ...t, age: t.age + 1 }))
-        .filter((t) => t.age < 60);
-      trails.current.forEach((t) => {
-        ctx.fillStyle = `rgba(139, 156, 246, ${1 - t.age / 60})`;
-        ctx.fillRect(t.x, t.y, 1, 1);
-      });
+    const loader = new THREE.TextureLoader();
+    const base = import.meta.env.BASE_URL;
 
-      frame = requestAnimationFrame(loop);
+    const bgTexture = loader.load(`${base}images/ants/space.jpg`);
+    bgTexture.colorSpace = THREE.SRGBColorSpace;
+    const bgGeo = new THREE.PlaneGeometry(2400, 1600);
+    const bgMat = new THREE.MeshBasicMaterial({ map: bgTexture });
+    const bg = new THREE.Mesh(bgGeo, bgMat);
+    bg.position.z = -900;
+    scene.add(bg);
+
+    const moonGroup = new THREE.Group();
+    scene.add(moonGroup);
+
+    const moonTex = loader.load(`${base}images/ants/moon.jpg`);
+    moonTex.colorSpace = THREE.SRGBColorSpace;
+    const moon = new THREE.Mesh(
+      new THREE.SphereGeometry(RADIUS, 64, 64),
+      new THREE.MeshStandardMaterial({ map: moonTex, roughness: 0.95, metalness: 0.05 }),
+    );
+    moonGroup.add(moon);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1.15);
+    light.position.set(350, 220, 400);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+
+    const antMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const ants: Ant[] = [];
+
+    const spawnAnt = (u = Math.random() * Math.PI, v = Math.random() * Math.PI * 2) => {
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(2.2, 10, 10), antMat);
+      const ant = { u, v, mesh };
+      stepAnt(ant, stepSizeRef.current, speedRef.current, 0);
+      moonGroup.add(mesh);
+      ants.push(ant);
+      return ant;
     };
-    frame = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frame);
+
+    // Match sketch: two walkers from the start
+    spawnAnt(0, 0);
+    spawnAnt(1.2, 2.1);
+
+    const pointer = { x: WIDTH / 2, y: HEIGHT / 2 };
+    const onMove = (e: PointerEvent) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      const sx = WIDTH / rect.width;
+      const sy = HEIGHT / rect.height;
+      pointer.x = (e.clientX - rect.left) * sx;
+      pointer.y = (e.clientY - rect.top) * sy;
+    };
+    renderer.domElement.addEventListener('pointermove', onMove);
+
+    let frame = 0;
+    const animate = () => {
+      frame = requestAnimationFrame(animate);
+
+      // Processing: rotateY(map(mouseX,0,width,-PI,PI)); rotateX(map(mouseY,0,width,-PI,PI));
+      moonGroup.rotation.y = THREE.MathUtils.mapLinear(pointer.x, 0, WIDTH, -Math.PI, Math.PI);
+      moonGroup.rotation.x = THREE.MathUtils.mapLinear(pointer.y, 0, WIDTH, -Math.PI, Math.PI);
+
+      // Always step both primary ants; holding SEED gives ant #2 an extra step.
+      if (ants[0]) stepAnt(ants[0], stepSizeRef.current, speedRef.current);
+      if (ants[1]) {
+        stepAnt(ants[1], stepSizeRef.current, speedRef.current);
+        if (seedHeld.current) stepAnt(ants[1], stepSizeRef.current, speedRef.current);
+      }
+      // Any extra ants from SEED presses keep wandering.
+      for (let i = 2; i < ants.length; i++) {
+        stepAnt(ants[i], stepSizeRef.current, speedRef.current);
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const onSeedDown = () => {
+      seedHeld.current = true;
+      if (ants.length < 24) spawnAnt();
+    };
+    const onSeedUp = () => { seedHeld.current = false; };
+    const seedButton = mount.querySelector('.seed-button') as HTMLButtonElement | null;
+    seedButton?.addEventListener('pointerdown', onSeedDown);
+    window.addEventListener('pointerup', onSeedUp);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      renderer.domElement.removeEventListener('pointermove', onMove);
+      seedButton?.removeEventListener('pointerdown', onSeedDown);
+      window.removeEventListener('pointerup', onSeedUp);
+      renderer.dispose();
+      moon.geometry.dispose();
+      (moon.material as THREE.Material).dispose();
+      antMat.dispose();
+      bgGeo.dispose();
+      bgMat.dispose();
+      if (renderer.domElement.parentElement === mount) mount.removeChild(renderer.domElement);
+    };
   }, []);
 
   return (
-    <div className="demo-wrap">
-      <canvas ref={canvasRef} width={400} height={400} className="demo-canvas" />
+    <div className="demo-wrap ants-wrap">
+      <div className="demo-controls demo-fields ants-controls">
+        <label>
+          Random step size
+          <input
+            type="number"
+            min="0"
+            max="0.12"
+            step="0.005"
+            value={stepSize}
+            onChange={(event) => setStepSize(Number(event.target.value))}
+          />
+        </label>
+        <label>
+          Movement speed
+          <input
+            type="number"
+            min="0"
+            max="4"
+            step="0.25"
+            value={speed}
+            onChange={(event) => setSpeed(Number(event.target.value))}
+          />
+        </label>
+      </div>
+      <div className="ants-stage" ref={mountRef}>
+        <button type="button" className="seed-button" aria-label="Seed another walker">SEED</button>
+      </div>
       <p className="demo-note">
-        Conceptual visualization inspired by the original Java &quot;Ants on a Sphere&quot; project and CSE 568 biocomputing themes (swarm behavior, trail following). Placeholder demo. Full Java version can be linked later.
+        Move the mouse to turn the sphere. White points take random walks on the surface—once random is visible, real paths (ants, roots, a rhumb line) can be compared against it. Hold SEED to add a walker and give one walker an extra step.
       </p>
     </div>
   );

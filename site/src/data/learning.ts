@@ -20,10 +20,11 @@ export const learningSections: LearningSection[] = [
         url: 'https://library.uc.edu.kh/userfiles/pdf/10.Information%20Assurance.pdf',
         note: 'CSE 543 textbook (Boyce & Jennings). Useful for Defense-in-Depth model details.',
       },
-      {
-        title: 'Kevin Mitnick books',
-        note: 'Books by the convicted hacker. Social engineering and security mindset.',
-      },
+      // Unpolished placeholder for recruiters.
+      // {
+      //   title: 'Kevin Mitnick books',
+      //   note: 'Books by the convicted hacker. Social engineering and security mindset.',
+      // },
       {
         title: 'Strange Attractors and TCP/IP Sequence Number Analysis',
         note: 'Michal Zalewski (AFL fuzzer author). Phase-space analysis showing many OS implementations were not truly random.',
@@ -42,10 +43,11 @@ export const learningSections: LearningSection[] = [
         url: 'https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html',
         note: 'Context-specific escaping rules for XSS prevention.',
       },
-      {
-        title: 'Real documentation (SSH, etc.)',
-        note: 'Read primary sources: OpenSSH docs, RFCs, and official protocol specifications.',
-      },
+      // Unpolished placeholder for recruiters.
+      // {
+      //   title: 'Real documentation (SSH, etc.)',
+      //   note: 'Read primary sources: OpenSSH docs, RFCs, and official protocol specifications.',
+      // },
     ],
   },
   {
@@ -72,62 +74,38 @@ export const learningSections: LearningSection[] = [
         title: 'Rainbow Tables',
         note: 'Build a tiny rainbow table yourself to understand how precomputed hash chains work.',
       },
-      {
-        title: 'MD5 and other hashes',
-        note: 'Recreate hash algorithms from scratch for deeper understanding.',
-      },
-      {
-        title: 'MD5 Hack',
-        note: 'Crack MD5 or prove why it cannot be cracked under given constraints.',
-      },
-      {
-        title: 'Session Cookie Attack',
-        note: 'Predict session cookies or craft fake URLs with session IDs (e.g. ?PHPSESSID=ABC123).',
-      },
+      // Unpolished study notes / to-dos hidden from recruiters.
+      // { title: 'MD5 and other hashes', note: 'Recreate hash algorithms from scratch for deeper understanding.' },
+      // { title: 'MD5 Hack', note: 'Crack MD5 or prove why it cannot be cracked under given constraints.' },
+      // { title: 'Session Cookie Attack', note: 'Predict session cookies or craft fake URLs with session IDs (e.g. ?PHPSESSID=ABC123).' },
       {
         title: 'Random Number Testers',
         note: 'Frequency tests, chi-square, Diehard tests, and other randomness validation.',
       },
     ],
   },
-  {
-    id: 'ml',
-    title: 'Machine Learning',
-    items: [
-      {
-        title: 'Review convolutional networks',
-        note: 'Revisit CNNs and related deep learning architectures from graduate coursework.',
-      },
-    ],
-  },
-  {
-    id: 'security-tools',
-    title: 'Security Tools & Labs',
-    items: [
-      {
-        title: 'SQLMap on localhost',
-        url: 'https://sqlmap.org/',
-        note: 'Crawl sites, detect injectable parameters, dump databases. Practice only on authorized targets.',
-      },
-      {
-        title: 'HAC (Hack All the Things)',
-        url: 'https://cacr.uwaterloo.ca/hac/',
-        note: 'Security challenge platform from University of Waterloo.',
-      },
-    ],
-  },
-  {
-    id: 'memory',
-    title: 'Memory & Binary Analysis',
-    items: [
-      {
-        title: 'pwn.college-style VM activities',
-        note: 'Walk through binaries with Ghidra. Understand how code, disk, and RAM interact.',
-      },
-      {
-        title: 'Reverse engineering tools',
-        note: 'Ghidra, angr, IDA Pro, Binary Ninja, Hopper, radare2, GDB.',
-      },
-    ],
-  },
+  // Unpolished to-do list. Hidden from nav until rewritten.
+  // {
+  //   id: 'ml',
+  //   title: 'Machine Learning',
+  //   items: [
+  //     { title: 'Review convolutional networks', note: 'Revisit CNNs and related deep learning architectures from graduate coursework.' },
+  //   ],
+  // },
+  // {
+  //   id: 'security-tools',
+  //   title: 'Security Tools & Labs',
+  //   items: [
+  //     { title: 'SQLMap on localhost', url: 'https://sqlmap.org/', note: 'Crawl sites, detect injectable parameters, dump databases. Practice only on authorized targets.' },
+  //     { title: 'HAC (Hack All the Things)', url: 'https://cacr.uwaterloo.ca/hac/', note: 'Security challenge platform from University of Waterloo.' },
+  //   ],
+  // },
+  // {
+  //   id: 'memory',
+  //   title: 'Memory & Binary Analysis',
+  //   items: [
+  //     { title: 'pwn.college-style VM activities', note: 'Walk through binaries with Ghidra. Understand how code, disk, and RAM interact.' },
+  //     { title: 'Reverse engineering tools', note: 'Ghidra, angr, IDA Pro, Binary Ninja, Hopper, radare2, GDB.' },
+  //   ],
+  // },
 ];

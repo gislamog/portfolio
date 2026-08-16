@@ -6,23 +6,31 @@ import '../components/ExpandableEmbed.css';
 
 function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
   return (
-    <article className={`card course-card ${course.portfolioFeatured ? 'featured' : ''}`}>
-      <div className="course-top">
-        <div className="course-tags">
-          <span className="tag">{course.code}</span>
-          {course.portfolioFeatured && (
-            <span className="portfolio-badge" title="Featured in MCS Portfolio Report">MCS Portfolio</span>
-          )}
+    <details className={`card course-card ${course.portfolioFeatured ? 'featured' : ''}`}>
+      <summary>
+        <div className="course-summary-main">
+          <div className="course-top">
+            <div className="course-tags">
+              <span className="tag">{course.code}</span>
+              {course.portfolioFeatured && (
+                <span className="portfolio-badge" title="Featured in MCS Portfolio Report">MCS Portfolio</span>
+              )}
+            </div>
+            <span className="course-term">{course.term}</span>
+          </div>
+          <h4>{course.title}</h4>
         </div>
-        <span className="course-term">{course.term}</span>
-      </div>
-      <h4>{course.title}</h4>
+          <span className="course-expand" aria-hidden>
+            <span className="course-expand-label" />
+            <span className="course-chevron">▾</span>
+          </span>
+      </summary>
       <ul>
         {course.bullets.map((b) => (
           <li key={b.slice(0, 30)}>{b}</li>
         ))}
       </ul>
-    </article>
+    </details>
   );
 }
 
@@ -63,7 +71,7 @@ export function EducationPage() {
     <div className="page-header page-content container">
       <p className="section-label">Academics</p>
       <h1>Education</h1>
-      <p className="page-lead">Graduate and undergraduate degrees from Arizona State University, with detailed coursework summaries.</p>
+      <p className="page-lead">Graduate and undergraduate degrees from Arizona State University. Expand a course for details.</p>
 
       <nav className="education-toc" aria-label="Education sections">
         <a href="#masters">Master&apos;s Degree</a>

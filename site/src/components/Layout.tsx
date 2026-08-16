@@ -11,7 +11,8 @@ const links = [
   { to: '/education', label: 'Education' },
   { to: '/projects', label: 'Projects' },
   { to: '/demos', label: 'Demos' },
-  { to: '/learning', label: 'Learning' },
+  // Hidden until the reading list is recruiter-ready (placeholders / study notes).
+  // { to: '/learning', label: 'Learning' },
   { to: '/contact', label: 'Contact' },
 ];
 

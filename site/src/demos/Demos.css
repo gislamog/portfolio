@@ -1,13 +1,125 @@
 .demo-wrap { margin-top: 1rem; }
 
+.demo-body {
+  margin-left: 3.7rem;
+}
+
 .demo-canvas {
   width: 100%;
-  max-width: 400px;
+  max-width: 520px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--bg-elevated);
   display: block;
 }
+
+.ants-wrap { max-width: 940px; }
+.ants-stage {
+  position: relative;
+  width: 100%;
+  max-width: 940px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+.ants-canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-width: none;
+  display: block;
+  border: none;
+  border-radius: 0;
+}
+.seed-button {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  width: 112px;
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: #c8c8c8;
+  color: #000;
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  user-select: none;
+  touch-action: none;
+}
+.seed-button:active {
+  background: #a8a8a8;
+  transform: translateX(-50%) scale(0.98);
+}
+
+.ants-controls {
+  margin: 0 0 0.75rem;
+}
+
+.robot-lab {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 900px) {
+  .robot-lab { grid-template-columns: minmax(0, 1.4fr) minmax(220px, 0.8fr); align-items: start; }
+  .robot-lab .demo-test-result { grid-column: 1 / -1; }
+}
+
+.csv-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  min-height: 220px;
+}
+.csv-title { margin: 0; color: var(--text); font-size: 0.95rem; }
+.csv-sub { margin: 0.2rem 0 0.6rem; font-size: 0.75rem; font-family: var(--mono); }
+.csv-table-wrap { overflow: visible; }
+.csv-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.72rem; }
+.csv-table th, .csv-table td { text-align: right; padding: 0.2rem 0.35rem; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+.csv-table th { color: var(--accent); font-weight: 500; }
+.csv-table td.hit { color: var(--danger); font-weight: 600; }
+.csv-ellipsis td { text-align: center; letter-spacing: 0.25em; }
+
+.demo-test-result {
+  width: 100%;
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  background: var(--accent-dim);
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.demo-fields label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+}
+.demo-fields input[type='number'] {
+  width: 7rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: var(--mono);
+}
+.check-label {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1.1rem;
+}
+.check-label input { accent-color: var(--accent); }
 
 .demo-controls {
   display: flex;
@@ -62,4 +174,10 @@
   margin-bottom: 0.75rem;
   max-width: none;
   line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .demo-body {
+    margin-left: 0;
+  }
 }

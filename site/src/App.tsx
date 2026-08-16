@@ -5,10 +5,10 @@ import { ExperiencePage } from './pages/ExperiencePage';
 import { EducationPage } from './pages/EducationPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { DemosPage } from './pages/DemosPage';
-import { LearningPage } from './pages/LearningPage';
 import { ContactPage } from './pages/ContactPage';
 import './pages/EducationPage.css';
 import './pages/ProjectsPage.css';
+import './components/ProjectVisual.css';
 
 export default function App() {
   return (
@@ -20,7 +20,8 @@ export default function App() {
           <Route path="/education" element={<EducationPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/demos" element={<DemosPage />} />
-          <Route path="/learning" element={<LearningPage />} />
+          {/* Hidden until the reading list is recruiter-ready. */}
+          {/* <Route path="/learning" element={<LearningPage />} /> */}
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>
