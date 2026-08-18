@@ -8,6 +8,7 @@ import {
   SiNuxt,
   SiVuedotjs,
   SiPytorch,
+  SiJoomla,
 } from 'react-icons/si';
 import { VscBeaker } from 'react-icons/vsc';
 import {
@@ -35,6 +36,7 @@ const techIcons: Record<(typeof profile.tech)[number], IconType> = {
   Nuxt: SiNuxt,
   Playwright: VscBeaker,
   Vue: SiVuedotjs,
+  Joomla: SiJoomla,
   PyTorch: SiPytorch,
 };
 
@@ -46,7 +48,7 @@ const skillIcons: Record<string, IconType> = {
 };
 
 const explore = [
-  { to: '/experience', title: 'Work', desc: 'Production features at an EdTech company and a software internship.', icon: FiBriefcase },
+  { to: '/experience', title: 'Work', desc: 'Development, automated testing, and quality assurance on production EdTech software and a software internship.', icon: FiBriefcase },
   { to: '/projects', title: 'Projects', desc: 'Analytics platform work, healthcare capstone, and ML portfolio pieces.', icon: FiLayers },
   { to: '/demos', title: 'Demos', desc: 'Interactive robot simulator, fractal, and swarm visualization.', icon: FiPlayCircle },
   { to: '/education', title: 'Education', desc: 'M.S. Computer Science and B.S. Software Engineering at ASU.', icon: FiBookOpen },

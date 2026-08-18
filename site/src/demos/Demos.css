@@ -2,6 +2,7 @@
 
 .demo-body {
   margin-left: 3.7rem;
+  margin-right: 3.7rem;
 }
 
 .demo-canvas {
@@ -179,5 +180,6 @@
 @media (max-width: 640px) {
   .demo-body {
     margin-left: 0;
+    margin-right: 0;
   }
 }

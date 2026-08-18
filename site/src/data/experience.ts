@@ -6,10 +6,10 @@ export const experience = [
     location: 'Remote',
     note: 'Promoted from contractor (March 2025) to full-time (October 2025).',
     highlights: [
-      'Shipped production features including counselor-facing workflow UI, reliability work that eliminated runtime crashes on incomplete student data, and front-door redirects onto a Nuxt experience during a platform migration.',
+      'Shipped production features including counselor-facing workflow UI and reliability work that eliminated runtime crashes on incomplete student data. Contributed to the Nuxt platform migration across legacy and modern surfaces.',
       'Led QA for the Analytics Visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles multi-year historical data with live, role-based account state so reporting matches real operational conditions. Contributed some development on the same project.',
       'Develop against a multi-service local platform (shared database/auth, hostname-based routing, and parallel branch previews), using AI-assisted workflows to move faster across legacy and Nuxt surfaces while reviewing outputs for correctness and edge cases.',
-      'Owned production triage for live-data defects using customer reports, code review, and PostHog session replay; authored and maintained 1,100+ Playwright regression tests covering authentication, billing, imports, role management, and analytics dashboards.',
+      'Owned production triage for live-data defects using customer reports, code review, and PostHog session replay; authored and maintained 1,100+ Playwright regression tests covering authentication, billing, imports, role management, and analytics dashboards. Fully automated every flow in the new Plan Sharing feature, which exposed multiple bugs and was run on every development update to minimize QA bottlenecks.',
     ],
   },
   {

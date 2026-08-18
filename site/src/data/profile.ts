@@ -22,10 +22,6 @@ export const profile = {
       label: 'Graduate Certificate, Big Data',
       detail: 'Arizona State University · Awarded 2026',
     },
-    {
-      label: 'Production web applications',
-      detail: 'Shipped features in EdTech product software',
-    },
   ],
   tech: [
     'JavaScript',
@@ -34,6 +30,7 @@ export const profile = {
     'Nuxt',
     'Playwright',
     'Vue',
+    'Joomla',
     'PyTorch',
   ] as const,
   skills: [

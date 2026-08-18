@@ -62,6 +62,10 @@
 .nav-link:hover { color: var(--text); background: var(--bg-elevated); }
 .nav-link.active { color: var(--accent); background: var(--accent-dim); }
 
+.header-inner > .theme-switch {
+  align-self: center;
+}
+
 .site-footer {
   border-top: 1px solid var(--border);
   padding: 2rem 0;

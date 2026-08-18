@@ -19,11 +19,11 @@ export const projects: Project[] = [
     tone: 'teal',
     image: img('projects/analytics-visualizations.png'),
     description:
-      'Led QA for an internal analytics visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles historical multi-year records with live role-based accounts.',
+      'Led QA and contributed development on an internal analytics visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles historical multi-year records with live role-based accounts.',
     highlights: [
       'Led QA across the refactor; helped define how historical and live account state should be joined for accurate reporting',
       'Validated calculation logic with Product Engineering against operational edge cases',
-      'Contributed some development support; primary ownership was QA, requirements, and validation',
+      'Contributed development alongside QA ownership for requirements and validation',
     ],
   },
   {

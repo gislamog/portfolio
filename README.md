@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:3002/portfolio/** (port 3002 avoids WSL conflicts on Windows).
+Open **http://localhost:3002/** (port 3002 avoids WSL conflicts on Windows).
 
 ## Deploy to GitHub Pages
 

@@ -1,6 +1,6 @@
 .project-visual {
   position: relative;
-  height: 160px;
+  height: 120px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -26,5 +26,3 @@
 .tone-violet { background: linear-gradient(145deg, rgba(167, 139, 250, 0.28), rgba(37, 32, 58, 0.95)); }
 .tone-gold { background: linear-gradient(145deg, rgba(251, 191, 36, 0.22), rgba(50, 40, 28, 0.95)); }
 .tone-coral { background: linear-gradient(145deg, rgba(255, 159, 107, 0.28), rgba(50, 32, 36, 0.95)); }
-
-[data-theme='b'] .tone-teal { background: linear-gradient(145deg, rgba(255, 159, 107, 0.28), rgba(50, 32, 40, 0.95)); }
