@@ -13,19 +13,6 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 'analytics-viz',
-    title: 'Analytics Visualizations',
-    tags: ['Product', 'Data Platform', 'EdTech'],
-    tone: 'teal',
-    description:
-      'Led QA and contributed development on an internal analytics visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles historical multi-year records with live role-based accounts.',
-    highlights: [
-      'Led QA across the refactor; helped define how historical and live account state should be joined for accurate reporting',
-      'Validated calculation logic with Product Engineering against operational edge cases',
-      'Contributed development alongside QA ownership for requirements and validation',
-    ],
-  },
-  {
     id: 'capstone',
     title: 'Healthcare Regulatory Assessment Platform',
     tags: ['React', 'Full-Stack', 'Capstone'],
@@ -37,6 +24,19 @@ export const projects: Project[] = [
       'React frontend with role-based access and AWS Cognito authentication',
       'Spring Boot middleware, MongoDB Atlas, AWS S3/EC2 hosting',
       'Software quality reporting and FOSSA compliance / SBOM integration',
+    ],
+  },
+  {
+    id: 'analytics-viz',
+    title: 'Analytics Visualizations',
+    tags: ['Product', 'Data Platform', 'EdTech'],
+    tone: 'teal',
+    description:
+      'Contributed development and led QA on an internal analytics visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles historical multi-year records with live role-based accounts.',
+    highlights: [
+      'Contributed development alongside QA ownership for requirements and validation',
+      'Helped define how historical and live account state should be joined for accurate reporting',
+      'Validated calculation logic with Product Engineering against operational edge cases',
     ],
   },
   {

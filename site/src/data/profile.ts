@@ -30,7 +30,6 @@ export const profile = {
     'Nuxt',
     'Playwright',
     'Vue',
-    'Joomla',
     'PyTorch',
   ] as const,
   skills: [
