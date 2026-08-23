@@ -12,6 +12,78 @@ export interface ReportSection {
   /** Nested subsections (`A.`, `B.`, ...) under a numbered section. */
   level?: 2 | 3;
   paragraphs: string[];
+  /**
+   * Figures placed inside this section, each after the paragraph at
+   * `afterParagraph` (0-based), matching where the source document puts them.
+   * Use -1 to place a figure before the section's first paragraph.
+   */
+  figures?: (ReportFigureTable & { afterParagraph: number })[];
+  /**
+   * Display equations set off from the text, anchored the same way figures
+   * are. The source documents print these standalone with a legend beneath,
+   * not inline in the paragraph that introduces them.
+   */
+  formulas?: (ReportFormula & { afterParagraph: number })[];
+  /**
+   * Plotted charts, anchored like figures. The source document embeds these as
+   * live charts rather than images, so the data travels with the report and is
+   * redrawn here instead of being screenshotted.
+   */
+  charts?: (ReportChart & { afterParagraph: number })[];
+}
+
+/**
+ * One piece of a display equation. A `text` part is set as-is; a `sum` part is
+ * a summation operator with its limits stacked under and over the sigma, as
+ * the source document prints them. Unicode sub/superscript characters are not
+ * used for the limits: there is no subscript glyph for every letter needed
+ * (`D` among them), and they render as undersized inline marks rather than the
+ * stacked limits the document shows.
+ */
+export type ReportFormulaPart =
+  | { text: string; italic?: boolean }
+  | { sum: { under: string; over?: string } }
+  /** A stacked fraction, e.g. the 1/N averaging term. */
+  | { frac: { num: string; den: string } };
+
+/**
+ * A standalone display equation, as printed in the source document: the
+ * expression centered on its own line with the symbol legend listed beneath.
+ * `speech` is the spoken reading assistive technology gets in place of the
+ * symbols, since the stacked layout carries meaning a flat character run does
+ * not.
+ */
+export interface ReportFormula {
+  parts: ReportFormulaPart[];
+  speech: string;
+  /** `symbol` = `meaning`, one line per entry, as the document lists them. */
+  legend: { symbol: string; meaning: string }[];
+  /**
+   * Equation number printed to the right, for equations the text refers back
+   * to by number (the second paper cites its loss function as "(1)").
+   */
+  number?: string;
+}
+
+/**
+ * A line-and-marker plot, captioned like the document's tables. The points
+ * carry the values from the chart embedded in the source document, so the
+ * figure is redrawn as SVG at any size and follows the site's theme, rather
+ * than being pasted in as a fixed-resolution screenshot.
+ */
+export interface ReportChart {
+  /** e.g. "SCATTER PLOT 1" */
+  label: string;
+  caption: string;
+  axisLabels: { x: string; y: string };
+  /**
+   * Spacing of the x-axis labels. Defaults to one label per distinct x value,
+   * which is right for a handful of points but crowds a 21-epoch run.
+   */
+  xTickStep?: number;
+  /** Long description for readers who cannot see the plot. */
+  description: string;
+  series: { name: string; points: { x: number; y: number }[] }[];
 }
 
 /**
@@ -28,10 +100,23 @@ export function sectionId(paperId: string, section: ReportSection): string {
   return `${paperId}-${label}-${slug}`;
 }
 
-export interface ReportFigure {
+/**
+ * A pair of plots shown side by side under a shared caption, matching the
+ * two-column layout tables in the source documents (TABLE I, 2 and 3). Each
+ * cell keeps the column label printed above the image in the paper.
+ */
+export interface ReportFigureTable {
+  /** e.g. "TABLE I" */
+  label: string;
+  /** e.g. "Data Visualization for K-Means Algorithm" */
   caption: string;
-  src: string;
-  alt: string;
+  /**
+   * Where the label and caption sit relative to the image, following the
+   * source document: tables and graphs are captioned above, figures below.
+   * Defaults to 'below'.
+   */
+  captionPosition?: 'above' | 'below';
+  cells: { heading: string; src: string; alt: string }[];
 }
 
 export interface ReportPaper {
@@ -41,7 +126,6 @@ export interface ReportPaper {
   courseCode: string;
   abstract?: string;
   sections: ReportSection[];
-  figure?: ReportFigure;
   references: string[];
 }
 
@@ -81,11 +165,6 @@ export const kMeansPaper: ReportPaper = {
   courseCode: 'CSE 575',
   abstract:
     'Clustering is a vital technique in unsupervised machine learning, enabling the grouping of similar data points based on patterns. This project explores and compares two prominent clustering algorithms: the basic K-Means and the enhanced K-Means++. Utilizing a dataset of 300 two-dimensional points, the study aims to determine the optimal number of clusters (K) by minimizing the Loss Function, which measures the compactness of clusters. The K-Means algorithm was implemented with K values ranging from 2 to 10, revealing that an optimal K of 5 provided a balanced trade-off between cluster compactness and model complexity, as identified using the Elbow method. Next, the K-Means++ algorithm was employed to improve the initial centroid selection process, leading to more strategically dispersed centroids. Comparative analysis demonstrated that the K-Means++ method not only achieved a smoother and more consistent decrease in the Loss Function but also converged faster and produced more well-defined clusters compared to the basic K-Means method. The project was conducted individually, using algorithm development, data visualization, performance analysis, and comprehensive documentation. Through this project, skills in algorithm implementation, data analysis, and visualization were acquired, alongside a deeper understanding of clustering methodologies and their practical implications. The findings show the K-Means++ technique’s ability to enhance clustering performance, making it the preferable choice for accurate data grouping.',
-  figure: {
-    caption: 'Fig. 1. K-Means clustering of the 300-point dataset.',
-    src: `${import.meta.env.BASE_URL}images/projects/kmeans-clustering.png`,
-    alt: 'Scatter plot of 300 two-dimensional points grouped into colored clusters with centroid markers.',
-  },
   sections: [
     {
       label: 'I',
@@ -124,6 +203,26 @@ export const kMeansPaper: ReportPaper = {
         'The dataset consists of 300 data points, each represented by coordinates (xᵢ, yᵢ). Initial visualization through scatter plots indicated the presence of approximately 5 to 7 clusters, although the exact number was to be determined mathematically using the Loss Function. For the K-Means implementation, the random initial centroid positions were given and can be visualized alongside the dataset in Table 1. For the K-Means++ implementation, the first centroid was randomly chosen, and all other centroids had to be strategically calculated.',
         'Although we did not need to preprocess the dataset in this project, it is a good idea to do so if the variables are measured in varying units or have differing magnitudes. You can normalize the data by centering the values around the mean and adjusting the range of data to ensure comparability across variables before applying K-Means clustering (Flynt & Dean, 2016).',
       ],
+      figures: [
+        {
+          afterParagraph: 0,
+          label: 'TABLE I',
+          captionPosition: 'above',
+          caption: 'Data Visualization for K-Means Algorithm',
+          cells: [
+            {
+              heading: 'K = 2 Initial Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeans-k2-initial.png`,
+              alt: 'Scatter plot of the 300-point dataset with two red centroids placed among the gray points.',
+            },
+            {
+              heading: 'K = 10 Initial Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeans-k10-initial.png`,
+              alt: 'Scatter plot of the same dataset with ten red centroids distributed across the points.',
+            },
+          ],
+        },
+      ],
     },
     {
       label: 'B',
@@ -132,6 +231,26 @@ export const kMeansPaper: ReportPaper = {
       paragraphs: [
         'The K-Means algorithm was implemented with K values ranging from 2 to 10. For each K, I assigned data points to the nearest centroid using the Euclidean distance formula. Then, I repositioned each centroid to the mean value of its assigned data points. This process was repeated until convergence was reached, which I defined as when the centroid positions changed by less than 10⁻⁴.',
         'The final centroid positions for K = 2 and K = 10 are depicted in Table 2. When K = 10, the centroids are precisely centered within their respective clusters, while for K = 2, centroids are broadly centered, capturing more generalized groupings.',
+      ],
+      figures: [
+        {
+          afterParagraph: 1,
+          label: 'TABLE 2',
+          captionPosition: 'above',
+          caption: 'Data Visualization for K-Means Algorithm',
+          cells: [
+            {
+              heading: 'K = 2 Final Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeans-k2-initial.png`,
+              alt: 'Scatter plot of the 300-point dataset with two red centroids after convergence.',
+            },
+            {
+              heading: 'K = 10 Final Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeans-k10-initial.png`,
+              alt: 'Scatter plot of the same dataset with ten red centroids after convergence.',
+            },
+          ],
+        },
       ],
     },
     {
@@ -142,6 +261,26 @@ export const kMeansPaper: ReportPaper = {
         'To enhance the initial centroid selection process, the K-Means++ algorithm was employed. For each value of K in the range 2 to 10, the initial centroid was randomly picked, and each subsequent centroid’s position was equal to the data point with the maximum average distance from all existing centroids, so long as a centroid was not already assigned there. This would ensure that the centroids were as dispersed as possible. This approach aligns with the findings of Tanir and Nuriyeva (2017), who highlighted that the initial center selection procedure plays a crucial role in improving the clustering solution. Their method also selects the farthest points as initial centers to ensure maximum distance between them, calculated using Euclidean distance. This strategy helps to achieve better cluster separation, as demonstrated in their experiments on the Rupini dataset, where the proposed method significantly outperformed random initialization in terms of error rate.',
         'Then, for each K value, I implemented the same iterative approach of assigning data points to their nearest centroid, then updating the centroid positions to the mean of all data points assigned to it. This process was repeated until the centroid positions stabilized (again, within a tolerance of 10⁻⁴).',
         'The graphs in Table 3 show the initial centroid positions after calculations were done to maximize their distance, as well as the final positions after convergence. The green centroid marks the initial randomly chosen centroid. Before convergence, the centroids are spread out as much as possible, while the final centroids are centered within clusters. Upon examining the graphs, the K-Means++ algorithm appears to represent the cluster centers more accurately after convergence compared to the standard K-Means algorithm.',
+      ],
+      figures: [
+        {
+          afterParagraph: 2,
+          label: 'TABLE 3',
+          captionPosition: 'above',
+          caption: 'Data Visualization for K-Means++ Algorithm',
+          cells: [
+            {
+              heading: 'K = 10 Initial Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeanspp-k10-initial.png`,
+              alt: 'K-Means++ initialization with the first centroid in green and nine further centroids pushed to the perimeter.',
+            },
+            {
+              heading: 'K = 10 Final Centroids',
+              src: `${import.meta.env.BASE_URL}images/report/kmeanspp-k10-final.png`,
+              alt: 'K-Means++ centroids after convergence, one per visible cluster, with the first centroid in green.',
+            },
+          ],
+        },
       ],
     },
     {
@@ -154,8 +293,26 @@ export const kMeansPaper: ReportPaper = {
       heading: 'Loss Function Analysis',
       level: 3,
       paragraphs: [
-        'The goal of the K-Means algorithm is to minimize the distance between each data point and its nearest centroid. After convergence, the Loss Function, defined as the sum of squared distances between data points and their assigned centroids, was used to evaluate the clustering performance for different values of K. Mathematically, it is expressed as the sum, over every cluster i from 1 to k, of the squared Euclidean distance ‖x − μᵢ‖² for each point x belonging to cluster Dᵢ, where μᵢ is the mean of cluster i and k is the number of clusters.',
+        'The goal of the K-Means algorithm is to minimize the distance between each data point and its nearest centroid. After convergence, the Loss Function, defined as the sum of squared distances between data points and their assigned centroids, was used to evaluate the clustering performance for different values of K. Mathematically, it is expressed as:',
         'As K increases, the Loss Function consistently decreases, indicating tighter clustering. A larger value indicates the cluster is more dispersed or the centroid is not well positioned. The goal is to minimize the Loss Function as much as possible, while being considerate of overfitting and ensuring the model can generalize effectively to new, unseen data. Striking a balance between minimizing the Loss Function and maintaining model flexibility is key to achieving optimal clustering performance.',
+      ],
+      formulas: [
+        {
+          afterParagraph: 0,
+          parts: [
+            { text: 'Loss = ' },
+            { sum: { under: 'i = 1', over: 'k' } },
+            { sum: { under: 'xᵢ ∈ Dᵢ' } },
+            { text: '‖x − μᵢ‖²', italic: true },
+          ],
+          speech:
+            'Loss equals the sum, over clusters i from 1 to k, of the sum over each data point x sub i in cluster D sub i, of the squared norm of x minus mu sub i.',
+          legend: [
+            { symbol: 'x', meaning: 'data point' },
+            { symbol: 'μᵢ', meaning: 'mean of cluster' },
+            { symbol: 'k', meaning: 'number of clusters' },
+          ],
+        },
       ],
     },
     {
@@ -168,6 +325,46 @@ export const kMeansPaper: ReportPaper = {
         'At higher values of K (K = 6 and beyond), the difference between the K-Means and K-Means++ methods become smaller, suggesting that the advantages of K-Means++ diminish as more clusters are introduced. Although the loss function continues to decrease as K increases, care must be taken to avoid overfitting the data. Overly tight clustering may not generalize well to new data.',
         'Furthermore, a decrease in the Loss Function alone is not an indicator of the quality of final centroid positions. Visually, we can see that the final centroid positions using the K-Means++ method did a better job representing the centers of clusters. The K-Means results seemed to have one centroid representing a large chunk of data points, while many centroids were cluttered together where data points were dense.',
         'To determine the optimal number of clusters for both algorithms, the Elbow method was utilized. This method involves identifying where the rate of decrease in the Loss Function sharply slows down, forming an ‘elbow’ that indicates the optimal number of clusters. If too many centroids are chosen, the model risks overfitting — becoming too complex and capturing irrelevant noise rather than meaningful patterns. Conversely, too few centroids result in underfitting, where the model fails to capture the data’s complexity. The Elbow method involves identifying the point on the graph where the Loss Function’s rate of decrease significantly slows, indicating the most appropriate K. Scatter Plot 1 suggests that K = 5 is a strong candidate for the optimal number of clusters for the K-Means algorithm, as this is where the last significant decrease in the Loss Function occurs. For the K-Means++ algorithm, this can be seen as early as K = 4 making it the method that converges more quickly.',
+      ],
+      charts: [
+        {
+          afterParagraph: 1,
+          label: 'SCATTER PLOT 1',
+          caption: 'Loss Function vs. Number of Clusters (K)',
+          axisLabels: { x: 'Number of Clusters (K)', y: 'Loss Function' },
+          description:
+            'Loss falls steeply from K = 2 to K = 5 for both algorithms and then flattens. The gap between them is widest at the small K values, where K-Means++ reaches 1921 against 2498 at K = 2 and 805 against 1115 at K = 4. From K = 6 onward the two curves sit almost on top of each other and trade places, ending at 242 for K-Means and 228 for K-Means++ at K = 10.',
+          series: [
+            {
+              name: 'K-Means',
+              points: [
+                { x: 2, y: 2498.11 },
+                { x: 3, y: 1294.3 },
+                { x: 4, y: 1114.87 },
+                { x: 5, y: 613.43 },
+                { x: 6, y: 476.3 },
+                { x: 7, y: 362.93 },
+                { x: 8, y: 313.79 },
+                { x: 9, y: 324.28 },
+                { x: 10, y: 241.59 },
+              ],
+            },
+            {
+              name: 'K-Means++',
+              points: [
+                { x: 2, y: 1921.03 },
+                { x: 3, y: 1293.78 },
+                { x: 4, y: 805.21 },
+                { x: 5, y: 592.07 },
+                { x: 6, y: 476.12 },
+                { x: 7, y: 367.67 },
+                { x: 8, y: 349.73 },
+                { x: 9, y: 277.39 },
+                { x: 10, y: 228.19 },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
@@ -211,11 +408,6 @@ export const neuralNetworkPaper: ReportPaper = {
   courseCode: 'CSE 571',
   abstract:
     'This project explores the application of neural networks in robotics, focusing on collision prediction to enable safe navigation in simulated environments. Initially, training data is collected using a simulated robot in a virtual environment. Data is collected from its sensor readings, the action performed, then whether or not a collision occurred. The data is then processed into DataLoaders using PyTorch, an open-source machine learning framework, to maintain balanced data distribution and to convert the data into a format compatible with PyTorch modules. Next, the data is processed through a custom neural network architecture. Finally, the model is trained to predict and prevent collisions with high accuracy. The project allows for hands-on learning of data collection, preprocessing, neural network implementation, and performance evaluation of the model. The final model demonstrated its ability to minimize collisions effectively, contributing to machine learning applications in robotics safety. Through this project, I gained knowledge in how data is processed through the layers of a neural network, as well as how to apply appropriate activation and loss functions to successfully train the model and evaluate its performance.',
-  figure: {
-    caption: 'Fig. 1. Robot navigation simulation collecting sensor and collision data.',
-    src: `${import.meta.env.BASE_URL}images/projects/neural-network-collision.png`,
-    alt: 'Simulated robot navigating a virtual environment with five distance sensors projected ahead of it.',
-  },
   sections: [
     {
       label: 'I',
@@ -255,6 +447,21 @@ export const neuralNetworkPaper: ReportPaper = {
         'The dataset consists of seven columns: five for the sensor readings, one for the action performed by the robot, and one for whether a collision occurred (0 for no collision, and 1 for collision). Figure 1 displays the simulation in action, collecting data as the robot navigates its environment.',
         'The final dataset is a CSV file containing 11,000 samples, with 9,206 representing non-collision cases (0) and 1,794 representing collision cases (1), resulting in an approximate 5:1 imbalance ratio.',
       ],
+      figures: [
+        {
+          afterParagraph: 1,
+          label: 'Fig. 1.',
+          caption: 'Robot Navigation Simulation',
+          captionPosition: 'above',
+          cells: [
+            {
+              heading: '',
+              src: `${import.meta.env.BASE_URL}images/report/robot-simulation.png`,
+              alt: 'Pygame window showing the robot as a green sphere with five colored sensor rays projected toward the surrounding walls and obstacles.',
+            },
+          ],
+        },
+      ],
     },
     {
       label: 'B',
@@ -286,9 +493,28 @@ export const neuralNetworkPaper: ReportPaper = {
       paragraphs: [
         'Training was conducted over 20 epochs, with loss values monitored for both training and testing datasets. The model’s performance improved significantly during the initial epochs and stabilized as the number of epochs increased. Limiting training to 20 epochs ensured computational efficiency while achieving strong performance. Extending training beyond 20 epochs could risk overfitting, where the model starts to memorize the training data instead of retaining the capability of learning generalizable patterns for unseen data.',
         'The Binary Cross-Entropy Loss (BCELoss) function was used to evaluate the performance of the neural network. This loss function is compatible with the Sigmoid activation function because it expects the output to be a probability, which the Sigmoid function provides. BCELoss measures the difference between the predicted probability and the actual collision status, penalizing predictions more heavily if the model is confident but wrong, such as if it shows a high probability of a collision occurring but no collision occurs.',
-        'This loss function helps the model learn from mistakes by adjusting weights for incorrectly predicted samples. Further, its use of the log function ensures smooth gradients for stable training. The function calculates a high loss if the collision probability is far from the actual collision result, and a low loss if it is close. Here, y is the actual collision result (0 or 1), ŷ is the predicted probability (or output of the sigmoid function, between 0 and 1), and N is the total number of samples: L = −(1/N) Σ [ y·log(ŷ) + (1 − y)·log(1 − ŷ) ].',
+        'This loss function helps the model learn from mistakes by adjusting weights for incorrectly predicted samples. Further, its use of the log function ensures smooth gradients for stable training. The function calculates a high loss if the collision probability is far from the actual collision result, and a low loss if it is close. Here, y is the actual collision result (0 or 1), ŷ is the predicted probability (or output of the sigmoid function, between 0 and 1), and N is the total number of samples.',
         'During each batch during the forward pass through the network, the loss function is calculated. During the backward pass, or backpropagation process, the Adam optimizer is used to calculate gradients to reduce this loss. More specifically, the optimizer figures out how much each weight and bias contributed to the error and updates the gradients, which tells you how to adjust the weights for more accurate performance.',
         'The Adam optimizer smooths out noisy gradients to avoid large jumps in updates and to make the optimization process smoother and more stable. It also adjusts the learning rates for each parameter, so important ones get bigger updates, and insignificant ones get smaller updates. These techniques allow the Adam optimizer to learn faster because it does not rely on a fixed value. Although the regular Adam optimizer is sufficient for this non-critical task, there exists an optimized version called ND-Adam (Normalized Direction-Preserving Adam), which preserves the direction of gradient and normalized the weight magnitudes. Rather than updating weights individually, it groups them based on related parameters and updates them together. This would ensure the updates follow the same overall gradient direction, improving the optimization process [4].',
+      ],
+      formulas: [
+        {
+          afterParagraph: 2,
+          number: '(1)',
+          parts: [
+            { text: 'L = −' },
+            { frac: { num: '1', den: 'N' } },
+            { sum: { under: 'i = 1', over: 'N' } },
+            { text: '[ yᵢ log(ŷᵢ) + (1 − yᵢ) log(1 − ŷᵢ) ]', italic: true },
+          ],
+          speech:
+            'L equals minus one over N, times the sum from i equals 1 to N, of y sub i times log of y hat sub i, plus one minus y sub i, times log of one minus y hat sub i.',
+          legend: [
+            { symbol: 'yᵢ', meaning: 'actual collision result (0 or 1)' },
+            { symbol: 'ŷᵢ', meaning: 'predicted probability' },
+            { symbol: 'N', meaning: 'total number of samples' },
+          ],
+        },
       ],
     },
     {
@@ -332,6 +558,70 @@ export const neuralNetworkPaper: ReportPaper = {
         'From epoch 2 onward, both losses continued to steadily but minimally decrease, reaching a final Train Loss of 0.0814 and Test Loss of 0.0932. The training loss converged smoothly, reflecting consistent updates to the model’s parameters and gradients. The testing loss, however, had minor variations and jumps after epoch 10, suggesting some sensitivity to the testing data, though the model maintained overall stability.',
         'The final evaluation metrics indicated high accuracy, with only 1 false positive and 5 collisions out of 1,000, demonstrating the model’s success in predicting collision risk. This could further be refined by collecting more data from the simulation or adding more layers into the network.',
       ],
+      charts: [
+        {
+          afterParagraph: 2,
+          label: 'GRAPH 1',
+          caption: 'Loss vs. Epochs for Training and Testing Data',
+          axisLabels: { x: 'Epochs', y: 'Loss' },
+          xTickStep: 5,
+          description:
+            'Test loss starts at 0.7586 and falls almost vertically to 0.1196 after the first epoch. Training loss enters at 0.2178 at epoch 1 and drops to 0.1181 by epoch 2. From there both curves flatten and run together just below 0.1, drifting down to a final training loss of 0.0814 and test loss of 0.0932, with the test curve showing small rebounds around epochs 11 and 13.',
+          series: [
+            {
+              name: 'Test Loss',
+              points: [
+                { x: 0, y: 0.7586 },
+                { x: 1, y: 0.1196 },
+                { x: 2, y: 0.106 },
+                { x: 3, y: 0.1 },
+                { x: 4, y: 0.097 },
+                { x: 5, y: 0.095 },
+                { x: 6, y: 0.093 },
+                { x: 7, y: 0.0935 },
+                { x: 8, y: 0.0935 },
+                { x: 9, y: 0.094 },
+                { x: 10, y: 0.094 },
+                { x: 11, y: 0.103 },
+                { x: 12, y: 0.0909 },
+                { x: 13, y: 0.097 },
+                { x: 14, y: 0.0889 },
+                { x: 15, y: 0.0889 },
+                { x: 16, y: 0.0889 },
+                { x: 17, y: 0.0879 },
+                { x: 18, y: 0.0869 },
+                { x: 19, y: 0.0889 },
+                { x: 20, y: 0.0932 },
+              ],
+            },
+            {
+              name: 'Train Loss',
+              points: [
+                { x: 1, y: 0.2178 },
+                { x: 2, y: 0.1181 },
+                { x: 3, y: 0.107 },
+                { x: 4, y: 0.103 },
+                { x: 5, y: 0.101 },
+                { x: 6, y: 0.098 },
+                { x: 7, y: 0.095 },
+                { x: 8, y: 0.094 },
+                { x: 9, y: 0.0889 },
+                { x: 10, y: 0.0889 },
+                { x: 11, y: 0.0879 },
+                { x: 12, y: 0.0859 },
+                { x: 13, y: 0.0849 },
+                { x: 14, y: 0.0839 },
+                { x: 15, y: 0.0849 },
+                { x: 16, y: 0.0829 },
+                { x: 17, y: 0.0849 },
+                { x: 18, y: 0.0829 },
+                { x: 19, y: 0.0819 },
+                { x: 20, y: 0.0814 },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       label: 'IV',
@@ -373,4 +663,96 @@ export const portfolioPapers: ReportPaper[] = [kMeansPaper, neuralNetworkPaper];
 export function paperHrefForCourse(courseCode: string): string | undefined {
   const paper = portfolioPapers.find((p) => p.courseCode === courseCode);
   return paper && `/education/mcs-portfolio#${paper.id}`;
+}
+
+/**
+ * A reference string split into plain text and the identifiers within it, so
+ * the page can render DOIs and URLs as links while leaving the IEEE citation
+ * text itself untouched.
+ */
+export type ReferencePart =
+  | { text: string; href?: undefined }
+  | { text: string; href: string };
+
+/**
+ * Matches a `doi:10.xxxx/yyyy` identifier or a bare http(s) URL. DOI suffixes
+ * run to the next whitespace; a trailing period is treated as sentence
+ * punctuation rather than part of the identifier.
+ */
+const REFERENCE_LINK = /(doi:(10\.\d{4,9}\/\S+?)|https?:\/\/\S+?)(?=[.,;]?(?:\s|$))/g;
+
+/** Splits one reference into renderable parts, linking any DOI or URL found. */
+export function linkifyReference(reference: string): ReferencePart[] {
+  const parts: ReferencePart[] = [];
+  let last = 0;
+
+  for (const match of reference.matchAll(REFERENCE_LINK)) {
+    const [token, , doiSuffix] = match;
+    const start = match.index ?? 0;
+    if (start > last) parts.push({ text: reference.slice(last, start) });
+    parts.push({
+      text: token,
+      href: doiSuffix ? `https://doi.org/${doiSuffix}` : token,
+    });
+    last = start + token.length;
+  }
+
+  if (last < reference.length) parts.push({ text: reference.slice(last) });
+  return parts;
+}
+
+/** Anchor id for reference `n` (1-based) in a paper's reference list. */
+export function referenceId(paperId: string, n: number): string {
+  return `${paperId}-ref-${n}`;
+}
+
+/**
+ * Inline citations, mapped to their 1-based position in the paper's reference
+ * list. The two papers cite differently: the K-Means paper uses author-year
+ * (`(Flynt & Dean, 2016)`), the neural network paper uses IEEE numerals
+ * (`[2]`). Numeric citations are resolved by their own number, so only the
+ * author-year forms need naming here.
+ */
+const AUTHOR_YEAR_CITATIONS: Record<string, Record<string, number>> = {
+  'kmeans-paper': {
+    'Flynt & Daepp, 2015': 1,
+    'Flynt & Dean, 2016': 2,
+    '2017': 3, // Tanir and Nuriyeva (2017), cited narratively
+    'Hartigan & Wong, 1979': 4,
+  },
+};
+
+/** A paragraph split into text and the inline citations within it. */
+export type CitationPart =
+  | { text: string; refNumber?: undefined }
+  | { text: string; refNumber: number };
+
+/** Matches `[3]` or a parenthetical ending in a four-digit year. */
+const CITATION = /\[(\d{1,2})\]|\(([^()]{0,80}?(?:19|20)\d{2}[a-z]?)\)/g;
+
+/**
+ * Splits a paragraph so inline citations can be rendered as links to the
+ * matching entry in the reference list. Anything that does not resolve to a
+ * known reference is left as plain text rather than linked to the wrong
+ * source.
+ */
+export function linkifyCitations(paragraph: string, paperId: string): CitationPart[] {
+  const parts: CitationPart[] = [];
+  const byName = AUTHOR_YEAR_CITATIONS[paperId] ?? {};
+  const refCount = portfolioPapers.find((p) => p.id === paperId)?.references.length ?? 0;
+  let last = 0;
+
+  for (const match of paragraph.matchAll(CITATION)) {
+    const [token, numeric, authorYear] = match;
+    const n = numeric ? Number(numeric) : byName[authorYear ?? ''];
+    if (!n || n < 1 || n > refCount) continue;
+
+    const start = match.index ?? 0;
+    if (start > last) parts.push({ text: paragraph.slice(last, start) });
+    parts.push({ text: token, refNumber: n });
+    last = start + token.length;
+  }
+
+  if (last < paragraph.length) parts.push({ text: paragraph.slice(last) });
+  return parts;
 }

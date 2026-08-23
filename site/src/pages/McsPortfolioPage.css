@@ -56,6 +56,8 @@
 }
 .report-columns > p { break-inside: auto; }
 .report-columns .report-figure,
+.report-columns .report-formula,
+.report-columns .report-chart,
 .report-columns .report-references { break-inside: avoid; }
 /* The first heading should not push a blank gap above itself. */
 .report-columns > .report-heading:first-child { margin-top: 0; }
@@ -75,18 +77,33 @@
   margin: 0 0 0.35rem;
   font-size: 1rem;
 }
+/* IEEE papers set the affiliation block in italics under the author name. */
 .report-affiliation {
   margin: 0;
   font-size: 0.88rem;
   color: var(--text-muted);
   line-height: 1.5;
+  font-style: italic;
 }
+/* The email is an address, not part of the italicized affiliation. */
+.report-email { font-style: normal; }
 .report-course {
   margin: 0.75rem 0 0;
   font-size: 0.82rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--accent);
+}
+/* Links to the course's card on the Education page. Underlined on hover only,
+   so the header keeps its printed-paper look at rest. */
+.report-course a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  transition: border-color 0.15s;
+}
+.report-course a:hover {
+  border-bottom-color: var(--accent);
 }
 
 /* IEEE abstracts are bold and justified, with the word "Abstract" italicized. */
@@ -133,19 +150,274 @@
   width: 100%;
   margin: 1.25rem auto;
 }
+/* The report figures are the originals from the submitted document: light
+   matplotlib plots and a Pygame screenshot. They sit on a near-white plate so
+   they read the same in both themes instead of burning a bright rectangle
+   into the dark page. */
 .report-figure img {
   display: block;
   width: 100%;
   height: auto;
   border: 1px solid var(--border);
   border-radius: 4px;
-  background: var(--bg-card);
+  background: #fff;
+  padding: 0.5rem;
 }
 .report-figure figcaption {
   margin-top: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* Reproduces the two-column layout tables from the source document: a row of
+   column headings over a row of plots, with the TABLE label and caption
+   centered beneath, as printed. */
+.report-figure-table {
+  width: 100%;
+  margin: 1.5rem auto;
+  break-inside: avoid;
+  /* Paired plots stay inside the text column so each figure sits with the
+     paragraph that introduces it, as it does in the source document. A
+     single-cell figure is narrow enough to read at column width; the paired
+     tables get a little extra room via their own grid gap. */
+}
+.report-figure-cells {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  align-items: end;
+}
+/* A single uncaptioned plot spans the full width rather than half of it. */
+.report-figure-cells[data-cells='1'] { grid-template-columns: 1fr; }
+
+.report-figure-cell-head {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+.report-figure-cell img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  padding: 0.35rem;
+}
+.report-figure-table figcaption {
+  margin-top: 0.6rem;
+  /* Set close to body size: at 0.78rem the table number and title read as fine
+     print next to the plots they label. */
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+/* A caption above its table sits tight to it and pushes its gap upward, so
+   the label reads as belonging to the table beneath rather than to the
+   paragraph above. */
+.report-figure-table figcaption:first-child {
+  margin: 0 0 0.5rem;
+}
+/* A figure number runs inline with its caption rather than sitting on its own
+   line, as IEEE sets figures. */
+.report-figure-label {
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+/* IEEE prints the table label in small caps above its title. */
+.report-table-label {
+  display: block;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+/* ---- Display equations ---- */
+
+/* The source document sets the Loss Function standalone, with its symbol
+   legend alongside. The equation and legend sit on one row, centered as a
+   pair; keeping the block together stops a column break from separating the
+   equation from the legend that explains it. */
+.report-formula {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 1.4rem;
+  margin: 1.4rem 0;
+  break-inside: avoid;
+}
+.report-formula-expression {
+  margin: 0;
+  text-align: center;
+  /* Set larger than body copy: this is the paper's one display equation and
+     the stacked summation limits need the room to stay legible. */
+  font-size: 1.5rem;
+  line-height: 1.25;
+  /* Cambria Math first, as the document sets it; the report serif behind it
+     covers the summation sign and norm bars on systems without it. */
+  font-family: 'Cambria Math', var(--report-font);
+}
+/* Variables are italicized, as they are in the document's math runs. */
+.report-formula-var { font-style: italic; }
+
+/* A summation sign with its limits stacked under and over it, as printed. The
+   limits are set small and centered on the sigma so the operator reads as a
+   single unit on the line. */
+.report-formula-sum {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin: 0 0.15rem;
+}
+.report-formula-sigma {
+  font-size: 1.5em;
+  line-height: 1;
+}
+.report-formula-limit {
+  font-size: 0.55em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+/* A stacked fraction: numerator over denominator with a rule between, sized
+   to sit on the same line as the rest of the expression. */
+.report-formula-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  margin: 0 0.2rem;
+  font-size: 0.72em;
+  line-height: 1.15;
+}
+.report-formula-num { padding: 0 0.15em; }
+.report-formula-den {
+  padding: 0 0.15em;
+  border-top: 1px solid currentColor;
+}
+
+/* Equations the text cites by number print that number to the right, as the
+   document does. It trails the whole block rather than the expression so the
+   legend beside the equation does not push it out of line. */
+.report-formula-number {
+  align-self: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Legend rows read `symbol = meaning`, one per line, stacked to the right of
+   the equation. */
+.report-formula-legend {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.report-formula-legend > div {
+  display: flex;
+  gap: 0.3rem;
+}
+.report-formula-legend dt {
+  font-family: 'Cambria Math', var(--report-font);
+  font-style: italic;
+  color: var(--text);
+}
+.report-formula-legend dd { margin: 0; }
+
+/* ---- Plotted charts ---- */
+
+/* Scatter Plot 1 is redrawn from data rather than embedded as an image, so it
+   is styled here instead of arriving with the picture. Captioned above, as the
+   document captions its tables and plots. */
+.report-chart {
+  width: 100%;
+  margin: 1.5rem auto;
+  break-inside: avoid;
+}
+.report-chart figcaption {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+.report-chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35rem;
+  overflow: visible;
+}
+.report-chart-grid {
+  stroke: currentColor;
+  stroke-opacity: 0.18;
+  stroke-width: 1;
+}
+.report-chart-tick,
+.report-chart-axis {
+  fill: var(--text-muted);
+  font-family: var(--report-font);
+}
+.report-chart-tick { font-size: 11px; }
+.report-chart-axis { font-size: 12px; }
+
+/* The two series take the site's accent pair, and differ in marker shape as
+   well as color so they stay distinguishable without it. */
+.report-chart-series polyline {
+  stroke-width: 1.8;
+}
+.report-chart-series-1 polyline { stroke: var(--accent); }
+.report-chart-series-1 circle { fill: var(--accent); }
+.report-chart-series-2 polyline { stroke: var(--accent-2); }
+.report-chart-series-2 rect { fill: var(--accent-2); }
+
+/* With markers off, the second series is dashed so the two curves stay
+   tellable apart where they overlap, and without relying on color. */
+.report-chart-dense .report-chart-series-2 polyline {
+  stroke-dasharray: 5 3;
+}
+.report-chart-dense .report-chart-key-2 .report-chart-swatch {
+  /* Matches the dashed line rather than showing a solid block. */
+  height: 0;
+  border-top: 2px dashed var(--accent-2);
+  border-radius: 0;
+  background: none;
+}
+
+/* Key sits under the plot, matching the order the series are drawn in. */
+.report-chart-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1.1rem;
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.report-chart-key > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.report-chart-swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+}
+.report-chart-key .report-chart-series-1 .report-chart-swatch { background: var(--accent); }
+/* Square, matching this series' markers in the plot. */
+.report-chart-key .report-chart-series-2 .report-chart-swatch {
+  background: var(--accent-2);
+  border-radius: 1px;
 }
 
 .report-references {
@@ -159,12 +431,69 @@
 /* References carry long DOIs and URLs that must not widen the page. */
 .report-references li { overflow-wrap: anywhere; }
 
+/* DOIs and URLs resolve to the source. Underlined only on hover so the list
+   still reads as printed citations rather than a wall of blue links. */
+.report-references a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  transition: border-color 0.15s;
+}
+.report-references a:hover { border-bottom-color: var(--accent); }
+
+/* Inline citations jump to their entry in the reference list. Kept close to
+   body text so the paragraphs still read as prose, not as a link farm. */
+.report-citation {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  transition: border-color 0.15s, background 0.15s;
+  border-radius: 2px;
+}
+.report-citation:hover {
+  border-bottom-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* The reference a citation just jumped to, highlighted long enough to find it
+   in the list and then faded out. */
+.report-references li {
+  border-radius: 4px;
+  transition: background 0.4s;
+  /* Clear the fixed header when a citation jumps to this entry. */
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+.report-reference-flash {
+  animation: report-ref-pulse 0.85s ease-out 3;
+}
+@keyframes report-ref-pulse {
+  0%, 100% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+  35% {
+    background: var(--accent-dim);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .report-reference-flash {
+    animation: none;
+    background: var(--accent-dim);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+  }
+}
+
 @media (max-width: 900px) {
   .report-intro-row { grid-template-columns: 1fr; }
   .report-columns { column-count: 1; }
 }
 
 @media (max-width: 640px) {
+  /* Two plots side by side are unreadable at phone width. */
+  .report-figure-cells { grid-template-columns: 1fr; gap: 0.85rem; }
+  /* The equation and its legend stop fitting on one row; the legend drops
+     beneath (the flex wrap already handles that) and the expression scales
+     back so the stacked limits do not overflow the column. */
+  .report-formula { gap: 0.5rem; }
+  .report-formula-expression { font-size: 1.2rem; }
   .report-paper-head h2 { font-size: 1.3rem; }
   /* Justification leaves distracting rivers in narrow columns. */
   .report-paper > p,
