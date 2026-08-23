@@ -42,29 +42,20 @@
   text-align: center;
 }
 
-.report-toc-list,
-.report-toc-sub {
+.report-toc-list {
   margin: 0;
   padding-left: 1.35rem;
 }
 .report-toc-list > li {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
   font-weight: 700;
 }
 .report-toc-list > li:last-child { margin-bottom: 0; }
 
-.report-toc-sub {
-  margin-top: 0.1rem;
-  list-style: none;
-  padding-left: 0.75rem;
-  font-weight: 400;
-  font-size: 0.92rem;
-}
-.report-toc-sub > li { margin-bottom: 0; }
-
 /* Dot-leader rows: the section name sits left, a dotted filler stretches to
    fill whatever space is left, and the parenthetical subsections align right,
    as on a printed contents page. */
+/* Flexed inside the li rather than on it, so the numbered marker survives. */
 .report-toc-row {
   display: flex;
   align-items: baseline;
@@ -89,15 +80,6 @@
   opacity: 0.5;
 }
 
-/* Lettered subsections ride on their parent's line in parentheses, keeping the
-   contents short while staying individually linkable. */
-.report-toc-inline {
-  flex: 0 1 auto;
-  min-width: 0;
-  text-align: right;
-  color: var(--text-muted);
-  font-size: 0.86rem;
-}
 
 .report-toc a {
   color: var(--text);
@@ -230,9 +212,4 @@
   }
   .report-toc-name { white-space: normal; }
   .report-toc-dots { display: none; }
-  .report-toc-inline {
-    display: block;
-    text-align: left;
-    padding-left: 0.9rem;
-  }
 }

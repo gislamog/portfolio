@@ -81,67 +81,27 @@ function Paper({ paper }: { paper: ReportPaper }) {
 }
 
 /**
- * Groups each numbered section with the lettered subsections that follow it,
- * so the contents can render `Introduction (Background Information, Goals and
- * Objectives)` on one line instead of a separate row per subsection.
+ * One dot-leader row per document. Section-level entries are deliberately left
+ * out: listing them made the contents longer than the summary it introduces,
+ * and every section is reachable from the report body itself.
  */
-function groupSections(paper: ReportPaper) {
-  const groups: { section: ReportSection; subsections: ReportSection[] }[] = [];
-  for (const section of paper.sections) {
-    if (section.level === 3 && groups.length > 0) {
-      groups[groups.length - 1].subsections.push(section);
-    } else {
-      groups.push({ section, subsections: [] });
-    }
-  }
-  return groups;
-}
-
-/** Contents mirroring the report: each paper, then its sections nested under it. */
 function TableOfContents() {
+  const entries = [
+    { href: `#${SUMMARY_ID}`, label: portfolioSummary.title },
+    ...portfolioPapers.map((p) => ({ href: `#${p.id}`, label: p.title })),
+  ];
+
   return (
     <nav className="report-toc" aria-label="Table of contents">
       <h2 className="report-toc-title">Table of Contents</h2>
       <ol className="report-toc-list">
-        <li>
-          <a href={`#${SUMMARY_ID}`}>{portfolioSummary.title}</a>
-        </li>
-        {portfolioPapers.map((paper) => (
-          <li key={paper.id}>
-            <a href={`#${paper.id}`}>{paper.title}</a>
-            <ol className="report-toc-sub">
-              {paper.abstract && (
-                <li className="report-toc-row">
-                  <a className="report-toc-name" href={`#${paper.id}-abstract`}>Abstract</a>
-                  <span className="report-toc-dots" aria-hidden="true" />
-                </li>
-              )}
-              {groupSections(paper).map(({ section, subsections }) => (
-                <li key={sectionId(paper.id, section)} className="report-toc-row">
-                  <a className="report-toc-name" href={`#${sectionId(paper.id, section)}`}>
-                    {section.label ? `${section.label}. ` : ''}
-                    {section.heading}
-                  </a>
-                  <span className="report-toc-dots" aria-hidden="true" />
-                  {subsections.length > 0 && (
-                    <span className="report-toc-inline">
-                      {'('}
-                      {subsections.map((sub, i) => (
-                        <span key={sectionId(paper.id, sub)}>
-                          {i > 0 && ', '}
-                          <a href={`#${sectionId(paper.id, sub)}`}>{sub.heading}</a>
-                        </span>
-                      ))}
-                      {')'}
-                    </span>
-                  )}
-                </li>
-              ))}
-              <li className="report-toc-row">
-                <a className="report-toc-name" href={`#${paper.id}-references`}>References</a>
-                <span className="report-toc-dots" aria-hidden="true" />
-              </li>
-            </ol>
+        {entries.map((e) => (
+          <li key={e.href}>
+            {/* Flexing an inner wrapper keeps the li's numbered marker. */}
+            <span className="report-toc-row">
+              <a className="report-toc-name" href={e.href}>{e.label}</a>
+              <span className="report-toc-dots" aria-hidden="true" />
+            </span>
           </li>
         ))}
       </ol>
