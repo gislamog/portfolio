@@ -149,16 +149,23 @@ export function EducationPage() {
 
       {mastersDegree.portfolio && (
         <section id="mcs-portfolio" className="degree-block">
-          <ExpandableEmbed
-            title={mastersDegree.portfolio.title}
-            description={mastersDegree.portfolio.description}
-          >
-            <iframe
-              title="MCS Portfolio Report"
-              src={mastersDegree.portfolio.pdfUrl}
-              className="embed-pdf"
-            />
-          </ExpandableEmbed>
+          <div className="card portfolio-callout">
+            <h3>{mastersDegree.portfolio.title}</h3>
+            <p>{mastersDegree.portfolio.description}</p>
+            <p className="portfolio-callout-actions">
+              <Link to="/education/mcs-portfolio" className="btn btn-primary">
+                Read the Report
+              </Link>
+              <a
+                className="btn btn-ghost"
+                href={mastersDegree.portfolio.pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Original PDF
+              </a>
+            </p>
+          </div>
         </section>
       )}
 

@@ -82,3 +82,45 @@
 
 .footer-inner p { margin: 0; font-size: 0.85rem; }
 .footer-links { display: flex; gap: 1rem; font-size: 0.85rem; }
+
+/* Sub-tab bar: shown under the header only while a section with children is
+   active (e.g. Education -> Overview / MCS Portfolio Report). Sticks directly
+   beneath the sticky header so it stays reachable while reading long pages. */
+.subnav-bar {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 99;
+  background: var(--header-bg, rgba(10, 11, 15, 0.85));
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.subnav {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.5rem 1rem;
+}
+.subnav::-webkit-scrollbar { display: none; }
+
+.subnav-link {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.subnav-link:hover {
+  color: var(--text);
+  border-color: var(--border);
+}
+.subnav-link.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+}
