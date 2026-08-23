@@ -57,25 +57,27 @@ function Paper({ paper }: { paper: ReportPaper }) {
         </p>
       )}
 
-      {paper.figure && (
-        <figure className="report-figure">
-          <img src={paper.figure.src} alt={paper.figure.alt} loading="lazy" />
-          <figcaption>{paper.figure.caption}</figcaption>
-        </figure>
-      )}
+      <div className="report-columns">
+        {paper.figure && (
+          <figure className="report-figure">
+            <img src={paper.figure.src} alt={paper.figure.alt} loading="lazy" />
+            <figcaption>{paper.figure.caption}</figcaption>
+          </figure>
+        )}
 
-      {paper.sections.map((s) => (
-        <Section key={sectionId(paper.id, s)} paperId={paper.id} section={s} />
-      ))}
-
-      <h3 id={`${paper.id}-references`} className="report-heading">
-        References
-      </h3>
-      <ol className="report-references">
-        {paper.references.map((r) => (
-          <li key={r.slice(0, 40)}>{r}</li>
+        {paper.sections.map((s) => (
+          <Section key={sectionId(paper.id, s)} paperId={paper.id} section={s} />
         ))}
-      </ol>
+
+        <h3 id={`${paper.id}-references`} className="report-heading">
+          References
+        </h3>
+        <ol className="report-references">
+          {paper.references.map((r) => (
+            <li key={r.slice(0, 40)}>{r}</li>
+          ))}
+        </ol>
+      </div>
     </article>
   );
 }
@@ -139,18 +141,30 @@ export function McsPortfolioPage() {
 
   return (
     <div className="page-header container report-page">
-      <div className="report-actions">
-        <a
-          className="btn btn-ghost"
-          href={portfolioMeta.pdfUrl}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Original PDF
-        </a>
-      </div>
+      {/* Intro on the left, contents on the right. */}
+      <div className="report-intro-row">
+        <div className="report-intro">
+          <p className="section-label">Master&apos;s Degree</p>
+          <h1>{portfolioMeta.title}</h1>
+          <p>
+            The degree completion artifact for my M.S. in Computer Science at Arizona
+            State University, collecting two graduate machine learning projects: an
+            unsupervised clustering study from CSE 575 and a supervised
+            collision-prediction network from CSE 571.
+          </p>
+          <p className="report-completed">Completed {portfolioMeta.completed}</p>
+          <a
+            className="btn btn-ghost"
+            href={portfolioMeta.pdfUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Original PDF
+          </a>
+        </div>
 
-      <TableOfContents />
+        <TableOfContents />
+      </div>
 
       <article id={SUMMARY_ID} className="report-paper">
         <header className="report-paper-head">

@@ -160,7 +160,13 @@ li { margin-bottom: 0.4em; }
 
 .grid-2 { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
-.page-header { padding: 1.75rem 0 2rem; }
+/* Shared page intro rhythm. Every page uses the same
+   .section-label / h1 / .page-lead block, so the spacing lives here to keep
+   the tabs consistent rather than being tuned per page. */
+.page-header { padding: 1.25rem 0 1.5rem; }
+.page-header > .section-label { margin-bottom: 0.5rem; }
+.page-header > h1 { margin-bottom: 0.1rem; }
+.page-header > .page-lead { margin-bottom: 0; }
 
 .page-content,
 .page-content p,

@@ -2,7 +2,6 @@
   display: grid;
   gap: 1rem;
   margin-top: 2rem;
-  max-width: 620px;
 }
 .contact-form h3 {
   margin: 0;

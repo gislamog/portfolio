@@ -51,6 +51,8 @@ export const portfolioMeta = {
   affiliation: 'Ira A. Fulton Schools of Engineering, Arizona State University',
   address: '1151 S. Forest Ave, Tempe, AZ, USA',
   email: 'gislamog@asu.edu',
+  /** Degree completion, i.e. the end of the MCS program. */
+  completed: 'July 2026',
   pdfUrl: `${import.meta.env.BASE_URL}docs/mcs-portfolio.pdf`,
 };
 

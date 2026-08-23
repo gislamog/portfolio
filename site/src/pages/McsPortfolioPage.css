@@ -4,7 +4,7 @@
    from the site tokens so it works in both themes. */
 .report-page {
   --report-font: 'Times New Roman', Times, Georgia, serif;
-  max-width: 1000px;
+  max-width: 1100px;
   font-family: var(--report-font);
 }
 
@@ -16,17 +16,34 @@
   font-family: var(--report-font);
 }
 
-.report-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+/* Intro text left, contents right. */
+.report-intro-row {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 380px);
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+.report-intro h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  margin-bottom: 0.4rem;
+}
+.report-intro > p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+.report-completed {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem !important;
 }
 
 /* ---- Table of contents ---- */
 
 .report-toc {
-  padding: 1.15rem 1.5rem;
+  padding: 1rem 1.15rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -35,8 +52,8 @@
 }
 
 .report-toc-title {
-  margin: 0 0 0.65rem;
-  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
@@ -44,11 +61,11 @@
 
 .report-toc-list {
   margin: 0;
-  padding-left: 1.35rem;
+  padding-left: 1.2rem;
 }
 .report-toc-list > li {
-  margin-bottom: 0.3rem;
-  font-weight: 700;
+  margin-bottom: 0.15rem;
+  font-weight: 400;
 }
 .report-toc-list > li:last-child { margin-bottom: 0; }
 
@@ -99,6 +116,26 @@
   border-top: 1px solid var(--border);
   scroll-margin-top: calc(var(--nav-h) + 1rem);
 }
+
+/* Two-column body, as in the printed paper. The title block and abstract span
+   the full width; everything after them flows through the columns. */
+.report-columns {
+  column-count: 2;
+  column-gap: 2.25rem;
+  column-rule: 1px solid var(--border);
+}
+/* Keep a heading with the text it introduces rather than stranding it at the
+   foot of a column. */
+.report-columns .report-heading,
+.report-columns .report-subheading {
+  break-after: avoid;
+  break-inside: avoid;
+}
+.report-columns > p { break-inside: auto; }
+.report-columns .report-figure,
+.report-columns .report-references { break-inside: avoid; }
+/* The first heading should not push a blank gap above itself. */
+.report-columns > .report-heading:first-child { margin-top: 0; }
 
 /* Title block is centered like the printed paper. */
 .report-paper-head {
@@ -156,7 +193,8 @@
 }
 
 /* Justified body text with a first-line indent, as in the source document. */
-.report-paper > p {
+.report-paper > p,
+.report-columns > p {
   margin: 0 0 0.85rem;
   font-size: 1rem;
   line-height: 1.6;
@@ -164,13 +202,13 @@
   text-indent: 1.75em;
   hyphens: auto;
 }
-.report-paper > .report-abstract { text-indent: 0; }
+.report-abstract { text-indent: 0; }
 
 /* Figures sit inline at roughly the column width of the printed paper, so they
    support the text instead of dominating the page. */
 .report-figure {
-  width: min(340px, 100%);
-  margin: 1.5rem auto;
+  width: 100%;
+  margin: 1.25rem auto;
 }
 .report-figure img {
   display: block;
@@ -197,6 +235,11 @@
 .report-references li { margin-bottom: 0.5rem; }
 /* References carry long DOIs and URLs that must not widen the page. */
 .report-references li { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  .report-intro-row { grid-template-columns: 1fr; }
+  .report-columns { column-count: 1; }
+}
 
 @media (max-width: 640px) {
   .report-paper-head h2 { font-size: 1.3rem; }
