@@ -6,7 +6,6 @@
     justify-content: space-between;
     align-items: center;
     height: 100vh; /* Single full page height */
-    padding: 2%;
     position: relative; /* Ensure the paint streak can be positioned absolutely */
     background-color: var(--transparent-section-background);
 }
@@ -36,7 +35,7 @@
     }
 
     .home-text .name {
-        font-size: 7vw;
+        font-size: 6vw;
         font-weight: bold;
         text-shadow: 0px 0px 0px rgba(0, 0, 0, 0.4); /* Darken text */
         margin: -3% 0; /* Adjust margin to make names closer */

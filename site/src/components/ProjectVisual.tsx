@@ -3,8 +3,13 @@ import {
   FiActivity,
   FiBarChart2,
   FiCpu,
+  FiEdit3,
+  FiGitMerge,
   FiGrid,
   FiHeart,
+  FiKey,
+  FiShield,
+  FiType,
 } from 'react-icons/fi';
 import type { Project } from '../data/projects';
 import './ProjectVisual.css';
@@ -14,6 +19,13 @@ const ICONS: Record<string, IconType> = {
   capstone: FiHeart,
   'mcs-collision': FiCpu,
   'mcs-kmeans': FiGrid,
+  'mcs-crypto': FiKey,
+  'mcs-income': FiBarChart2,
+  'mcs-glucose': FiActivity,
+  'mcs-mnist': FiEdit3,
+  'mcs-matching': FiGitMerge,
+  'mcs-lexer': FiType,
+  'mcs-sdn': FiShield,
   'ants-sphere': FiActivity,
 };
 

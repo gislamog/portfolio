@@ -58,15 +58,15 @@ const Home = () => {
                 
                 <div className="home-left">
                     <div className="home-text">
-                        <h2 className="intro-text">Hi, I am</h2>
-                        <h1 className="name">Gülsüm</h1>
-                        <h1 className="name">Islamoğlu</h1>
+                        <h2 className="intro-text">Hi, I'm</h2>
+                        <h1 className="name">Gülsüm Islamoğlu</h1>
                     </div>
 
                     <div className="title-text">
                         <p>Software Engineer</p>
                     </div>
 
+                    
                     <div className="links-container" ref={linksContainerRef}>
                         {linkIcons.map((link, index) => (
                             <motion.a
@@ -93,15 +93,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="home-right">
-
-                    <img src={BannerImage} alt="Flower Desk" className="home-image" />
-
-                    <div className="home-paint-streak">
-                        <PaintStreak />
-                    </div>
-
-                </div>
+               
             </div>
         </div>
     );

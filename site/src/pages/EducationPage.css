@@ -28,6 +28,13 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
+/* Flex column so the Try Demo button sits at the bottom edge of every card
+   in a row, regardless of how many bullets each course lists. */
+.course-card {
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+  display: flex;
+  flex-direction: column;
+}
 .course-card h4 { font-size: 1rem; color: var(--text); margin: 0.5rem 0 0; }
 .course-card p { font-size: 0.88rem; margin: 0; }
 .course-summary-main { min-width: 0; }
@@ -37,8 +44,37 @@
   border-top: 1px solid var(--border);
   font-size: 0.88rem;
 }
+/* Matches the specificity of `.course-card p` above, which sets margin: 0. */
+.course-card p.course-actions {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.course-actions .btn { font-size: 0.82rem; }
+
 .course-card.featured {
   border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
+}
+
+/* Flashed when arriving via a course link, e.g. /education#course-cse-571. */
+.course-card-flash {
+  animation: course-pulse 1s ease-out 3;
+}
+@keyframes course-pulse {
+  0%, 100% {
+    border-color: var(--border);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  40% {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .course-card-flash {
+    animation: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
 }
 
 .course-top {
