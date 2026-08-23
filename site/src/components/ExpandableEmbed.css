@@ -88,6 +88,7 @@
 
 .course-card li { margin-bottom: 0.3em; }
 
+.page-toc,
 .education-toc {
   display: flex;
   flex-wrap: wrap;
@@ -99,6 +100,7 @@
   border-radius: var(--radius);
 }
 
+.page-toc a,
 .education-toc a {
   font-size: 0.88rem;
   padding: 0.4rem 0.85rem;
@@ -109,6 +111,7 @@
   transition: border-color 0.15s, color 0.15s;
 }
 
+.page-toc a:hover,
 .education-toc a:hover {
   color: var(--accent);
   border-color: var(--accent);

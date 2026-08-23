@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { projects } from '../data/projects';
+import { courseHref, githubFolder, projects } from '../data/projects';
 import { ProjectVisual, projectIcon } from '../components/ProjectVisual';
 
 export function ProjectsPage() {
@@ -22,6 +22,12 @@ export function ProjectsPage() {
                 <ul>{p.highlights.map((h) => <li key={h.slice(0, 30)}>{h}</li>)}</ul>
                 <div className="project-actions">
                   {p.demoId && <Link to={`/demos#${p.demoId}`} className="btn btn-primary">Try Demo</Link>}
+                  {p.githubFolder && (
+                    <a href={githubFolder(p.githubFolder)} className="btn btn-ghost" target="_blank" rel="noreferrer">GitHub</a>
+                  )}
+                  {p.courseCode && (
+                    <Link to={courseHref(p.courseCode)} className="btn btn-ghost">{p.courseCode}</Link>
+                  )}
                 </div>
               </div>
             </article>

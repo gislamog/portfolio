@@ -1,12 +1,20 @@
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { bachelorsDegree, mastersDegree } from '../data/education';
+import { demoHref, demoIdForCourse } from '../data/projects';
 import { ExpandableEmbed } from '../components/ExpandableEmbed';
 import { AsuLogo } from '../components/AsuLogo';
 import '../components/AsuLogo.css';
 import '../components/ExpandableEmbed.css';
 
 function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
+  const demoId = demoIdForCourse(course.code);
+
   return (
-    <article className={`card course-card ${course.portfolioFeatured ? 'featured' : ''}`}>
+    <article
+      id={`course-${course.code.toLowerCase().replace(/\s+/g, '-')}`}
+      className={`card course-card ${course.portfolioFeatured ? 'featured' : ''}`}
+    >
       <div className="course-summary-main">
         <div className="course-top">
           <div className="course-tags">
@@ -24,6 +32,11 @@ function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
           <li key={b.slice(0, 30)}>{b}</li>
         ))}
       </ul>
+      {demoId && (
+        <p className="course-actions">
+          <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
+        </p>
+      )}
     </article>
   );
 }
@@ -60,7 +73,46 @@ function DegreeCourses({ degree, heading }: { degree: typeof mastersDegree; head
   );
 }
 
+/**
+ * Course links elsewhere in the site are router Links, so arriving at
+ * /education#course-cse-571 never triggers the browser's native anchor jump.
+ * Scroll to the target ourselves, then flash its border so the card is
+ * findable in a dense grid.
+ */
+function useCourseHashTarget() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.querySelector(hash);
+    if (!(el instanceof HTMLElement)) return;
+
+    // Wait a frame so layout has settled before measuring the scroll target.
+    const raf = requestAnimationFrame(() => {
+      el.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+        block: 'start',
+      });
+      // Restart the animation even if the same hash is clicked twice.
+      el.classList.remove('course-card-flash');
+      void el.offsetWidth;
+      el.classList.add('course-card-flash');
+    });
+
+    const clear = window.setTimeout(() => el.classList.remove('course-card-flash'), 3000);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(clear);
+      el.classList.remove('course-card-flash');
+    };
+  }, [hash]);
+}
+
 export function EducationPage() {
+  useCourseHashTarget();
+
   return (
     <div className="page-header page-content container">
       <p className="section-label">Academics</p>

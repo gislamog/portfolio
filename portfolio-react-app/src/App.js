@@ -55,7 +55,7 @@ function App() {
     return (
         <Router basename={process.env.PUBLIC_URL}>
             <div className="App">
-                <Navbar />
+                {/* <Navbar /> */}
                 <Routes>
                     <Route path="/" element={<MainPage />} />
                     <Route path="/projects/healthcare-web-app" element={<HealthcareWebApp />} />
