@@ -8,7 +8,10 @@ import './SocialLinks.css';
 interface NavItem {
   to: string;
   label: string;
-  /** Rendered as a sub-tab bar under the header while this section is active. */
+  /**
+   * Rendered inline, immediately right of the parent, as an outlined sub-tab.
+   * Only shown while the parent section is active so the top nav stays short.
+   */
   children?: { to: string; label: string }[];
 }
 
@@ -18,10 +21,7 @@ const links: NavItem[] = [
   {
     to: '/education',
     label: 'Education',
-    children: [
-      { to: '/education', label: 'Overview' },
-      { to: '/education/mcs-portfolio', label: 'MCS Portfolio Report' },
-    ],
+    children: [{ to: '/education/mcs-portfolio', label: 'MCS Portfolio' }],
   },
   { to: '/projects', label: 'Projects' },
   { to: '/demos', label: 'Demos' },
@@ -49,36 +49,34 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <ThemeToggle />
           <nav className="nav">
             {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                className={({ isActive }) =>
-                  isActive || activeParent?.to === l.to ? 'nav-link active' : 'nav-link'
-                }
-              >
-                {l.label}
-              </NavLink>
+              <span key={l.to} className="nav-item">
+                <NavLink
+                  to={l.to}
+                  end={l.to === '/'}
+                  className={({ isActive }) =>
+                    isActive || activeParent?.to === l.to ? 'nav-link active' : 'nav-link'
+                  }
+                >
+                  {l.label}
+                </NavLink>
+                {activeParent?.to === l.to &&
+                  l.children!.map((c) => (
+                    <NavLink
+                      key={c.to}
+                      to={c.to}
+                      end
+                      className={({ isActive }) =>
+                        isActive ? 'nav-sublink active' : 'nav-sublink'
+                      }
+                    >
+                      {c.label}
+                    </NavLink>
+                  ))}
+              </span>
             ))}
           </nav>
         </div>
       </header>
-      {activeParent && (
-        <div className="subnav-bar">
-          <nav className="container subnav" aria-label={`${activeParent.label} sections`}>
-            {activeParent.children!.map((c) => (
-              <NavLink
-                key={c.to}
-                to={c.to}
-                end
-                className={({ isActive }) => (isActive ? 'subnav-link active' : 'subnav-link')}
-              >
-                {c.label}
-              </NavLink>
-            ))}
-          </nav>
-        </div>
-      )}
       <main>{children}</main>
       <footer className="site-footer">
         <div className="container footer-inner">

@@ -83,44 +83,38 @@
 .footer-inner p { margin: 0; font-size: 0.85rem; }
 .footer-links { display: flex; gap: 1rem; font-size: 0.85rem; }
 
-/* Sub-tab bar: shown under the header only while a section with children is
-   active (e.g. Education -> Overview / MCS Portfolio Report). Sticks directly
-   beneath the sticky header so it stays reachable while reading long pages. */
-.subnav-bar {
-  position: sticky;
-  top: var(--nav-h);
-  z-index: 99;
-  background: var(--header-bg, rgba(10, 11, 15, 0.85));
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+/* Education -> MCS Portfolio sits inline, right of its parent tab. Smaller
+   and outlined rather than filled, so it reads as subordinate to the tab it
+   follows instead of competing with the top-level items. */
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
 }
 
-.subnav {
-  display: flex;
-  gap: 0.25rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  padding: 0.5rem 1rem;
-}
-.subnav::-webkit-scrollbar { display: none; }
-
-.subnav-link {
-  padding: 0.35rem 0.75rem;
+.nav-sublink {
+  padding: 0.25rem 0.6rem;
+  margin-left: 0.1rem;
   border-radius: 999px;
-  border: 1px solid transparent;
-  font-size: 0.8rem;
+  border: 1px dashed var(--border);
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-decoration: none !important;
   white-space: nowrap;
   transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
-.subnav-link:hover {
-  color: var(--text);
-  border-color: var(--border);
+.nav-sublink::before {
+  content: '↳';
+  margin-right: 0.3rem;
+  opacity: 0.6;
 }
-.subnav-link.active {
+.nav-sublink:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+.nav-sublink.active {
   color: var(--accent);
+  border-style: solid;
+  border-color: var(--accent);
   background: var(--accent-dim);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
