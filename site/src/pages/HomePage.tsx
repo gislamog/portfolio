@@ -48,7 +48,7 @@ const skillIcons: Record<string, IconType> = {
 const explore = [
   { to: '/experience', title: 'Work', desc: 'Development, automated testing, and quality assurance on production EdTech software and a software internship.', icon: FiBriefcase },
   { to: '/projects', title: 'Projects', desc: 'Healthcare capstone, analytics platform work, and ML portfolio pieces.', icon: FiLayers },
-  { to: '/demos', title: 'Demos', desc: 'Interactive robot simulator, fractal, and swarm visualization.', icon: FiPlayCircle },
+  { to: '/demos', title: 'Demos', desc: 'K-Means, crypto, income viz, robot ML, matching, lexer, and more.', icon: FiPlayCircle },
   { to: '/education', title: 'Education', desc: 'M.S. Computer Science and B.S. Software Engineering at ASU.', icon: FiBookOpen },
 ];
 

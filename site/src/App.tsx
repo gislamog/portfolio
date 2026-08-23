@@ -6,6 +6,7 @@ import { EducationPage } from './pages/EducationPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { DemosPage } from './pages/DemosPage';
 import { ContactPage } from './pages/ContactPage';
+import { CloudflareAnalytics } from './components/CloudflareAnalytics';
 import './pages/EducationPage.css';
 import './pages/ProjectsPage.css';
 import './components/ProjectVisual.css';
@@ -13,6 +14,7 @@ import './components/ProjectVisual.css';
 export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
+      <CloudflareAnalytics />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />

@@ -176,6 +176,7 @@ const Contact = () => {
                     </div>
                 </div>
 
+                {/* 
                 <footer className="footer">
                     <div className="footer-left">
                     </div>
@@ -187,6 +188,7 @@ const Contact = () => {
                     </div>
                     <div className="footer-right"></div>
                 </footer>
+                */}
             </div>
         </div>
     );
