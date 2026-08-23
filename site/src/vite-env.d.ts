@@ -2,6 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_CF_ANALYTICS_TOKEN?: string;
+  readonly VITE_FORMSPREE_ID?: string;
 }
 
 interface ImportMeta {

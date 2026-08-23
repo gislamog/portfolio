@@ -114,7 +114,7 @@ export function EducationPage() {
   useCourseHashTarget();
 
   return (
-    <div className="page-header page-content container">
+    <div className="page-header page-content container education-page">
       <p className="section-label">Academics</p>
       <h1>Education</h1>
       <p className="page-lead">Graduate and undergraduate degrees from Arizona State University.</p>

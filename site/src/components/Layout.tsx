@@ -9,8 +9,9 @@ interface NavItem {
   to: string;
   label: string;
   /**
-   * Rendered inline, immediately right of the parent, as an outlined sub-tab.
-   * Only shown while the parent section is active so the top nav stays short.
+   * Always rendered inline, immediately right of the parent, as a smaller
+   * sub-tab. Kept visible even when the parent section is not active so the
+   * report is discoverable without first opening Education.
    */
   children?: { to: string; label: string }[];
 }
@@ -59,19 +60,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 >
                   {l.label}
                 </NavLink>
-                {activeParent?.to === l.to &&
-                  l.children!.map((c) => (
-                    <NavLink
-                      key={c.to}
-                      to={c.to}
-                      end
-                      className={({ isActive }) =>
-                        isActive ? 'nav-sublink active' : 'nav-sublink'
-                      }
-                    >
-                      {c.label}
-                    </NavLink>
-                  ))}
+                {l.children?.map((c) => (
+                  <NavLink
+                    key={c.to}
+                    to={c.to}
+                    end
+                    className={({ isActive }) =>
+                      isActive ? 'nav-sublink active' : 'nav-sublink'
+                    }
+                  >
+                    {c.label}
+                  </NavLink>
+                ))}
               </span>
             ))}
           </nav>

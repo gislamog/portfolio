@@ -4,7 +4,7 @@
    from the site tokens so it works in both themes. */
 .report-page {
   --report-font: 'Times New Roman', Times, Georgia, serif;
-  max-width: 780px;
+  max-width: 1000px;
   font-family: var(--report-font);
 }
 
@@ -26,15 +26,17 @@
 /* ---- Table of contents ---- */
 
 .report-toc {
-  padding: 1.5rem 1.75rem;
+  padding: 1.15rem 1.5rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  /* Single-spaced, like the printed contents page. */
+  line-height: 1.25;
 }
 
 .report-toc-title {
-  margin: 0 0 1rem;
-  font-size: 1.15rem;
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
@@ -43,24 +45,59 @@
 .report-toc-list,
 .report-toc-sub {
   margin: 0;
-  padding-left: 1.5rem;
+  padding-left: 1.35rem;
 }
 .report-toc-list > li {
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.4rem;
   font-weight: 700;
 }
 .report-toc-list > li:last-child { margin-bottom: 0; }
 
 .report-toc-sub {
-  margin-top: 0.4rem;
+  margin-top: 0.1rem;
   list-style: none;
-  padding-left: 0.85rem;
+  padding-left: 0.75rem;
   font-weight: 400;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
-.report-toc-sub > li { margin-bottom: 0.2rem; }
-/* Lettered subsections indent under their numbered parent. */
-.report-toc-deep { padding-left: 1.4rem; }
+.report-toc-sub > li { margin-bottom: 0; }
+
+/* Dot-leader rows: the section name sits left, a dotted filler stretches to
+   fill whatever space is left, and the parenthetical subsections align right,
+   as on a printed contents page. */
+.report-toc-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+/* Never break the section name across lines - only the parenthetical wraps. */
+.report-toc-name {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.report-toc-dots {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  align-self: center;
+  height: 1px;
+  /* Dots rather than a rule, sized so they read as leaders at body size. */
+  background-image: radial-gradient(circle, var(--text-muted) 1px, transparent 1px);
+  background-position: bottom;
+  background-size: 5px 2px;
+  background-repeat: repeat-x;
+  opacity: 0.5;
+}
+
+/* Lettered subsections ride on their parent's line in parentheses, keeping the
+   contents short while staying individually linkable. */
+.report-toc-inline {
+  flex: 0 1 auto;
+  min-width: 0;
+  text-align: right;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+}
 
 .report-toc a {
   color: var(--text);
@@ -185,4 +222,17 @@
   /* Justification leaves distracting rivers in narrow columns. */
   .report-paper > p,
   .report-abstract { text-align: left; }
+
+  /* There is no room for dot leaders on a phone: drop them and stack the
+     parenthetical subsections under their section instead of ragging right. */
+  .report-toc-row {
+    display: block;
+  }
+  .report-toc-name { white-space: normal; }
+  .report-toc-dots { display: none; }
+  .report-toc-inline {
+    display: block;
+    text-align: left;
+    padding-left: 0.9rem;
+  }
 }
