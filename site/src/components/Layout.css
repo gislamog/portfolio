@@ -83,40 +83,35 @@
 .footer-inner p { margin: 0; font-size: 0.85rem; }
 .footer-links { display: flex; gap: 1rem; font-size: 0.85rem; }
 
-/* Education -> MCS Portfolio sits inline, right of its parent tab. It reads as
-   subordinate through size and a soft tinted fill rather than an outline, and
-   a short connector rule ties it back to the tab it belongs to. It stays
-   visible at all times so the report is reachable from any page. */
+/* Education and its MCS Portfolio sub-tab form one connected unit: Education
+   is a compact pill, and the sub-tab emerges from its right edge, shorter and
+   set in smaller type so the hierarchy is obvious. The sub-tab is always
+   visible so the report is reachable from any page. */
 .nav-item {
   display: inline-flex;
   align-items: center;
 }
 
-.nav-sublink {
-  position: relative;
-  margin-left: 0.5rem;
+/* Round only the outer edge of the parent so the pair reads as one shape. */
+.nav-item:has(.nav-sublink) > .nav-link {
   padding: 0.3rem 0.6rem;
-  border-radius: 7px;
-  font-size: 0.75rem;
+  border-radius: 999px 0 0 999px;
+  font-size: 0.78rem;
+}
+
+.nav-sublink {
+  padding: 0.2rem 0.55rem;
+  border-radius: 0 999px 999px 0;
+  border-left: 1px solid var(--border);
+  font-size: 0.68rem;
   font-weight: 500;
+  line-height: 1.4;
   color: var(--text-muted);
   background: var(--bg-elevated);
   text-decoration: none !important;
   white-space: nowrap;
   transition: color 0.15s, background 0.15s;
 }
-
-/* Connector from the parent tab to its sub-tab. */
-.nav-sublink::before {
-  content: '';
-  position: absolute;
-  left: -0.5rem;
-  top: 50%;
-  width: 0.5rem;
-  height: 1px;
-  background: var(--border);
-}
-
 .nav-sublink:hover {
   color: var(--text);
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
