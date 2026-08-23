@@ -10,11 +10,13 @@ function courseHref(code: string) {
 export function BigDataPage() {
   return (
     <div className="page-header container cert-page">
+      {/* The heading block keeps the shared .page-header spacing while the
+          courses panel rides alongside it at the top right. */}
       <div className="cert-intro-row">
         <div className="cert-intro">
           <p className="section-label">Graduate Certificate</p>
           <h1>{cert.title}</h1>
-          <p>
+          <p className="page-lead">
             Awarded by the {cert.awardedBy} for nine credit hours of graduate
             coursework in data mining, machine learning, and visualization.
           </p>

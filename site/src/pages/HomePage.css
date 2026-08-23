@@ -10,6 +10,10 @@
 
 @media (min-width: 900px) {
   .hero-inner { grid-template-columns: 1.45fr 0.9fr; gap: 2rem; }
+  /* Drop the credential column so the first card clears the top of the hero
+     text instead of sitting flush with it. Only needed in the two-column
+     layout; stacked, .hero-inner's row gap already separates them. */
+  .hero-stats { margin-top: 1.5rem; }
 }
 
 .hero-profile {

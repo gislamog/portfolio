@@ -55,7 +55,7 @@ export function ContactForm() {
   if (status === 'sent') {
     return (
       <div className="card contact-form contact-form-done" role="status">
-        <h3>Thanks — your message is on its way.</h3>
+        <h3>Thanks - your message is on its way.</h3>
         <p>I&apos;ll reply to the address you provided.</p>
         <button type="button" className="btn btn-ghost" onClick={() => setStatus('idle')}>
           Send another

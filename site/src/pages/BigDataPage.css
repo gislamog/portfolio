@@ -8,18 +8,19 @@
   display: grid;
   grid-template-columns: 1fr minmax(300px, 400px);
   gap: 2rem;
+  /* Both columns start at the top, so the courses panel sits level with the
+     section label rather than being pushed below the heading block. */
   align-items: start;
   margin-bottom: 2rem;
 }
 
-.cert-intro h1 {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-}
-.cert-intro > p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 0.6rem;
-}
+/* The heading lives inside .cert-intro rather than directly under
+   .page-header, so the shared `>`-scoped intro spacing cannot reach it.
+   Restate it here so this page's heading matches every other tab. */
+.cert-intro > .section-label { margin-bottom: 0.5rem; }
+.cert-intro > h1 { margin-bottom: 0; }
+.cert-intro > .page-lead { margin-bottom: 0; }
+
 /* Same row treatment as .report-actions on the MCS portfolio page. */
 .cert-actions {
   display: flex;

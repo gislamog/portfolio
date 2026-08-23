@@ -9,6 +9,7 @@ import { ProjectsPage } from './pages/ProjectsPage';
 import { DemosPage } from './pages/DemosPage';
 import { ContactPage } from './pages/ContactPage';
 import { CloudflareAnalytics } from './components/CloudflareAnalytics';
+import { ScrollToTop } from './components/ScrollToTop';
 import './pages/EducationPage.css';
 import './pages/ProjectsPage.css';
 import './components/ProjectVisual.css';
@@ -17,6 +18,7 @@ export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
       <CloudflareAnalytics />
+      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
