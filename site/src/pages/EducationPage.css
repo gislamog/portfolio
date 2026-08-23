@@ -1,3 +1,15 @@
+/* The Education page leads with a dense course grid, so the intro block is
+   tightened up: the global .page-header padding and heading margins leave a
+   lot of empty space above the first degree card. */
+.education-page {
+  padding-top: 0.75rem;
+}
+.education-page .section-label { margin-bottom: 0.35rem; }
+.education-page h1 { margin-bottom: 0.35rem; }
+.education-page .page-lead { margin-bottom: 0; }
+.education-page .education-toc { margin: 1rem 0 1.25rem; }
+.education-page .degree-block:first-of-type { margin-top: 1.25rem; }
+
 .degree-block { margin-top: 3rem; }
 .degree-header h2 { margin-bottom: 0.25rem; }
 .degree-header > p { margin-bottom: 1rem; }

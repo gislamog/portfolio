@@ -1,6 +1,7 @@
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGithub } from 'react-icons/fi';
 import { SiHandshake } from 'react-icons/si';
 import { profile } from '../data/profile';
+import { ContactForm } from '../components/ContactForm';
 
 const contacts = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: FiMail },
@@ -17,6 +18,8 @@ export function ContactPage() {
       <p className="section-label">Get in touch</p>
       <h1>Contact</h1>
       <p className="page-lead">Open to Software Engineer roles. Reach out via email or the links below.</p>
+
+      <ContactForm />
 
       <div className="grid-2 contact-grid">
         {contacts.map((item) => {
