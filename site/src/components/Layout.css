@@ -105,18 +105,25 @@
   margin: 0.3rem 0;
   /* Square by default; only the last sub-tab rounds the group's outer edge. */
   border-radius: 0;
-  border-left: 1px solid var(--border);
+  /* Faint divider so the sub-tabs still read as separate cells without the
+     hard line competing with the otherwise flat nav. */
+  border-left: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
   font-size: 0.62rem;
   font-weight: 500;
   color: var(--text-muted);
-  background: var(--bg-elevated);
+  /* A whisper of fill rather than the solid --bg-elevated the other nav tabs
+     only show on hover. Enough to group them under Education, not enough to
+     read as "these two tabs are highlighted". */
+  background: color-mix(in srgb, var(--bg-elevated) 35%, transparent);
   text-decoration: none !important;
   white-space: nowrap;
   transition: color 0.15s, background 0.15s;
 }
+/* Hover lands on the same solid --bg-elevated the top-level tabs use, so the
+   sub-tab visibly lifts out of its faint resting fill. */
 .nav-sublink:hover {
   color: var(--text);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated));
+  background: var(--bg-elevated);
 }
 .nav-sublink:last-child { border-radius: 0 8px 8px 0; }
 

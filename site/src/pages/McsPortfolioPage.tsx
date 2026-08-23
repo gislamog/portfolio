@@ -142,8 +142,8 @@ export function McsPortfolioPage() {
         collision-prediction network from CSE 571.
       </p>
 
+      {/* Same row as the Big Data page's .cert-actions: link leads, date trails. */}
       <p className="report-actions">
-        <span className="report-completed">Completed {portfolioMeta.completed}</span>
         <a
           className="btn btn-ghost"
           href={portfolioMeta.pdfUrl}
@@ -152,6 +152,7 @@ export function McsPortfolioPage() {
         >
           Original PDF
         </a>
+        <span className="report-completed">{portfolioMeta.completed}</span>
       </p>
 
       <TableOfContents />

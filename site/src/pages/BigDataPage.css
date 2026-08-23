@@ -20,26 +20,30 @@
   line-height: 1.6;
   margin-bottom: 0.6rem;
 }
+/* Same row treatment as .report-actions on the MCS portfolio page. */
+.cert-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0 !important;
+}
 .cert-awarded {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--accent);
-  margin-bottom: 1rem !important;
 }
 
 /* ---- Course list ---- */
 
 .cert-courses { padding: 1.25rem 1.35rem; }
 .cert-courses-title {
-  margin: 0 0 0.5rem;
+  /* Carries the full gap down to the pills now that the requirement blurb
+     that used to sit between them is gone. */
+  margin: 0 0 0.85rem;
   font-size: 0.95rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-.cert-requirement {
-  margin: 0 0 0.85rem;
-  font-size: 0.82rem;
-  line-height: 1.5;
 }
 
 .cert-course-list {

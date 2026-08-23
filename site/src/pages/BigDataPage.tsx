@@ -18,19 +18,21 @@ export function BigDataPage() {
             Awarded by the {cert.awardedBy} for nine credit hours of graduate
             coursework in data mining, machine learning, and visualization.
           </p>
-          <p className="cert-awarded">
-            {cert.term} · {cert.location}
+          {/* Mirrors the MCS report page's .report-actions row: the link and the
+              term sit on one line. Here the link leads, so it lands to the left
+              of the term. */}
+          <p className="cert-actions">
+            <a className="btn btn-ghost" href={cert.imageUrl} target="_blank" rel="noreferrer">
+              Original Certificate
+            </a>
+            <span className="cert-awarded">{cert.term}</span>
           </p>
-          <a className="btn btn-ghost" href={cert.imageUrl} target="_blank" rel="noreferrer">
-            Original Certificate
-          </a>
         </div>
 
         <aside className="card cert-courses" aria-labelledby="cert-courses-heading">
           <h2 id="cert-courses-heading" className="cert-courses-title">
             Certification Courses
           </h2>
-          <p className="cert-requirement">{cert.requirement}</p>
           <ul className="cert-course-list">
             {cert.courses.map((c) => (
               <li key={c.code} className={c.completed ? 'completed' : 'not-taken'}>

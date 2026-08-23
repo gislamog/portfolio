@@ -36,10 +36,18 @@ function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
             <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
           )}
           {paperHref && (
-            <Link to={paperHref} className="btn btn-ghost">MCS Portfolio</Link>
+            <Link to={paperHref} className="btn btn-portfolio">MCS Portfolio</Link>
           )}
           {certificateCourse && (
-            <Link to="/education/big-data" className="btn btn-ghost">Big Data Certificate</Link>
+            <Link
+              to="/education/big-data"
+              className="btn btn-certificate"
+              /* Shortened from "Big Data Certificate" so CSE 575's three
+                 pills stay on one row in the narrowest grid column. */
+              aria-label="Big Data Certificate"
+            >
+              Big Data Cert
+            </Link>
           )}
         </p>
       )}
