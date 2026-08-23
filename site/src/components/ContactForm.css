@@ -1,0 +1,116 @@
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.contact-form h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* Label left, input right, so the fields read as two columns rather than
+   stacking. The label column is fixed so every input starts at the same x,
+   giving the inputs a shared left edge down the form. */
+.field {
+  display: grid;
+  grid-template-columns: var(--field-label-col, 8.5rem) 1fr;
+  gap: 0.35rem 1rem;
+  align-items: start;
+}
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  /* Nudge down so the label's cap height lines up with the input's text
+     rather than the top border of the box. */
+  padding-top: 0.6rem;
+}
+.field-optional {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.field-required { color: var(--accent); }
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.contact-form textarea { resize: vertical; min-height: 120px; }
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--text-muted); }
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+/* Only flag invalid input the visitor has actually interacted with, so the
+   form does not look broken before it has been filled in. */
+.contact-form input:not(:placeholder-shown):invalid,
+.contact-form textarea:not(:placeholder-shown):invalid {
+  border-color: var(--danger);
+}
+
+.field-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.field-error {
+  margin: 0 0 0 calc(var(--field-label-col, 8.5rem) + 1rem);
+  font-size: 0.85rem;
+  color: var(--danger);
+}
+
+/* Sits under the inputs, sharing their left edge, rather than under the
+   labels. The grid on .contact-form is a single column, so this indents by
+   the label column width instead of using a grid line. */
+.contact-submit {
+  justify-self: start;
+  margin-left: calc(var(--field-label-col, 8.5rem) + 1rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.contact-form-done {
+  gap: 0.5rem;
+  text-align: left;
+}
+.contact-form-done p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.contact-form-done .btn { justify-self: start; margin-top: 0.5rem; }
+
+/* Below this the label column would squeeze the inputs too narrow, so the
+   fields fall back to the original stacked layout. */
+@media (max-width: 640px) {
+  .field {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+  .field-label { padding-top: 0; }
+  .contact-submit,
+  .field-error { margin-left: 0; }
+}

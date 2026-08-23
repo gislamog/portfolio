@@ -1,0 +1,173 @@
+/* The MCS Portfolio Report is an IEEE-style conference paper set in Times New
+   Roman. This page mirrors that typography rather than the site's DM Sans, so
+   the transcription reads like the document it came from. Colors still come
+   from the site tokens so it works in both themes. */
+.report-page {
+  --report-font: 'Times New Roman', Times, Georgia, serif;
+  max-width: 1100px;
+}
+
+/* The serif is scoped to the transcribed papers so the page intro and contents
+   match the site's other tabs. */
+.report-paper,
+.report-paper p,
+.report-paper li,
+.report-paper h2,
+.report-paper h3,
+.report-paper h4 {
+  font-family: var(--report-font);
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0 !important;
+}
+.report-completed {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+/* ---- Paper body ---- */
+
+.report-paper {
+  margin-top: 3rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+/* Two-column body, as in the printed paper. The title block and abstract span
+   the full width; everything after them flows through the columns. */
+.report-columns {
+  column-count: 2;
+  column-gap: 2.25rem;
+  column-rule: 1px solid var(--border);
+}
+/* Keep a heading with the text it introduces rather than stranding it at the
+   foot of a column. */
+.report-columns .report-heading,
+.report-columns .report-subheading {
+  break-after: avoid;
+  break-inside: avoid;
+}
+.report-columns > p { break-inside: auto; }
+.report-columns .report-figure,
+.report-columns .report-references { break-inside: avoid; }
+/* The first heading should not push a blank gap above itself. */
+.report-columns > .report-heading:first-child { margin-top: 0; }
+
+/* Title block is centered like the printed paper. */
+.report-paper-head {
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+.report-paper-head h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.3;
+}
+.report-author {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+.report-affiliation {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.report-course {
+  margin: 0.75rem 0 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* IEEE abstracts are bold and justified, with the word "Abstract" italicized. */
+.report-abstract {
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: justify;
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+.report-heading {
+  margin: 2rem 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  text-align: center;
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+.report-subheading {
+  margin: 1.35rem 0 0.5rem;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+/* Justified body text with a first-line indent, as in the source document. */
+.report-paper > p,
+.report-columns > p {
+  margin: 0 0 0.85rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: justify;
+  text-indent: 1.75em;
+  hyphens: auto;
+}
+.report-abstract { text-indent: 0; }
+
+/* Figures sit inline at roughly the column width of the printed paper, so they
+   support the text instead of dominating the page. */
+.report-figure {
+  width: 100%;
+  margin: 1.25rem auto;
+}
+.report-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+}
+.report-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.report-references {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.report-references li { margin-bottom: 0.5rem; }
+/* References carry long DOIs and URLs that must not widen the page. */
+.report-references li { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  .report-intro-row { grid-template-columns: 1fr; }
+  .report-columns { column-count: 1; }
+}
+
+@media (max-width: 640px) {
+  .report-paper-head h2 { font-size: 1.3rem; }
+  /* Justification leaves distracting rivers in narrow columns. */
+  .report-paper > p,
+  .report-abstract { text-align: left; }
+
+}

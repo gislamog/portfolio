@@ -1,5 +1,5 @@
 .hero {
-  padding: 1.75rem 0 3.5rem;
+  padding: 2rem 0 3.5rem;
 }
 
 .hero-inner {
@@ -29,13 +29,16 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
 }
 
-.hero-intro h1 { margin-top: 0.15rem; }
+/* The global h1 margin-bottom is 0.5em, which at the hero's clamped font size
+   (up to 3.2rem) leaves a ~51px gap under the name. Tighten it so the name
+   sits closer to the university line. */
+.hero-intro h1 { margin-top: 0.15rem; margin-bottom: 0.15em; }
 
 .hero-asu {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin: 0.5rem 0 0.75rem;
+  margin: 0.25rem 0 0.75rem;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
