@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { bachelorsDegree, mastersDegree } from '../data/education';
 import { demoHref, demoIdForCourse } from '../data/projects';
-import { ExpandableEmbed } from '../components/ExpandableEmbed';
 import { AsuLogo } from '../components/AsuLogo';
 import '../components/AsuLogo.css';
 import '../components/ExpandableEmbed.css';
@@ -121,7 +120,6 @@ export function EducationPage() {
 
       <nav className="education-toc" aria-label="Education sections">
         <a href="#masters">Master&apos;s Degree</a>
-        <a href="#big-data-cert">Big Data Certificate</a>
         <a href="#bachelors">Bachelor&apos;s Degree</a>
       </nav>
 
@@ -130,21 +128,6 @@ export function EducationPage() {
         <DegreeCourses degree={mastersDegree} heading="Graduate Courses" />
         <p className="portfolio-legend"><span className="portfolio-badge">MCS Portfolio</span> = featured in MCS Portfolio Report</p>
       </section>
-
-      {mastersDegree.certificate && (
-        <section id="big-data-cert" className="degree-block">
-          <ExpandableEmbed
-            title={mastersDegree.certificate.name}
-            description={mastersDegree.certificate.status}
-          >
-            <iframe
-              title="Big Data Professional Certificate"
-              src={mastersDegree.certificate.pdfUrl}
-              className="embed-pdf"
-            />
-          </ExpandableEmbed>
-        </section>
-      )}
 
       <section id="bachelors" className="degree-block">
         <DegreeHeader degree={bachelorsDegree} />

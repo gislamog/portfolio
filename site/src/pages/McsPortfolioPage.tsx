@@ -83,9 +83,10 @@ function Paper({ paper }: { paper: ReportPaper }) {
 }
 
 /**
- * One dot-leader row per document. Section-level entries are deliberately left
- * out: listing them made the contents longer than the summary it introduces,
- * and every section is reachable from the report body itself.
+ * One entry per document, styled like the Education page's section nav.
+ * Section-level entries are deliberately left out: listing them made the
+ * contents longer than the summary it introduces, and every section is
+ * reachable from the report body itself.
  */
 function TableOfContents() {
   const entries = [
@@ -94,19 +95,10 @@ function TableOfContents() {
   ];
 
   return (
-    <nav className="report-toc" aria-label="Table of contents">
-      <h2 className="report-toc-title">Table of Contents</h2>
-      <ol className="report-toc-list">
-        {entries.map((e) => (
-          <li key={e.href}>
-            {/* Flexing an inner wrapper keeps the li's numbered marker. */}
-            <span className="report-toc-row">
-              <a className="report-toc-name" href={e.href}>{e.label}</a>
-              <span className="report-toc-dots" aria-hidden="true" />
-            </span>
-          </li>
-        ))}
-      </ol>
+    <nav className="education-toc" aria-label="Table of contents">
+      {entries.map((e) => (
+        <a key={e.href} href={e.href}>{e.label}</a>
+      ))}
     </nav>
   );
 }
@@ -141,30 +133,28 @@ export function McsPortfolioPage() {
 
   return (
     <div className="page-header container report-page">
-      {/* Intro on the left, contents on the right. */}
-      <div className="report-intro-row">
-        <div className="report-intro">
-          <p className="section-label">Master&apos;s Degree</p>
-          <h1>{portfolioMeta.title}</h1>
-          <p>
-            The degree completion artifact for my M.S. in Computer Science at Arizona
-            State University, collecting two graduate machine learning projects: an
-            unsupervised clustering study from CSE 575 and a supervised
-            collision-prediction network from CSE 571.
-          </p>
-          <p className="report-completed">Completed {portfolioMeta.completed}</p>
-          <a
-            className="btn btn-ghost"
-            href={portfolioMeta.pdfUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Original PDF
-          </a>
-        </div>
+      <p className="section-label">Master&apos;s Degree</p>
+      <h1>{portfolioMeta.title}</h1>
+      <p className="page-lead">
+        The degree completion artifact for my M.S. in Computer Science at Arizona
+        State University, collecting two graduate machine learning projects: an
+        unsupervised clustering study from CSE 575 and a supervised
+        collision-prediction network from CSE 571.
+      </p>
 
-        <TableOfContents />
-      </div>
+      <p className="report-actions">
+        <span className="report-completed">Completed {portfolioMeta.completed}</span>
+        <a
+          className="btn btn-ghost"
+          href={portfolioMeta.pdfUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Original PDF
+        </a>
+      </p>
+
+      <TableOfContents />
 
       <article id={SUMMARY_ID} className="report-paper">
         <header className="report-paper-head">
@@ -174,9 +164,11 @@ export function McsPortfolioPage() {
           <p className="report-affiliation">{portfolioMeta.address}</p>
           <p className="report-affiliation">{portfolioMeta.email}</p>
         </header>
-        {portfolioSummary.paragraphs.map((p) => (
-          <p key={p.slice(0, 40)}>{p}</p>
-        ))}
+        <div className="report-columns">
+          {portfolioSummary.paragraphs.map((p) => (
+            <p key={p.slice(0, 40)}>{p}</p>
+          ))}
+        </div>
       </article>
 
       {portfolioPapers.map((p) => (

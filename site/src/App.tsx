@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage';
 import { ExperiencePage } from './pages/ExperiencePage';
 import { EducationPage } from './pages/EducationPage';
 import { McsPortfolioPage } from './pages/McsPortfolioPage';
+import { BigDataPage } from './pages/BigDataPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { DemosPage } from './pages/DemosPage';
 import { ContactPage } from './pages/ContactPage';
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/education" element={<EducationPage />} />
           <Route path="/education/mcs-portfolio" element={<McsPortfolioPage />} />
+          <Route path="/education/big-data" element={<BigDataPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/demos" element={<DemosPage />} />
           {/* Hidden until the reading list is recruiter-ready. */}

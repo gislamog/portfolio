@@ -1,0 +1,127 @@
+/* Big Data certificate page. Mirrors the report page's intro layout (summary
+   left, detail card right) so the two Education sub-pages feel like a set. */
+.cert-page {
+  max-width: 1100px;
+}
+
+.cert-intro-row {
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 400px);
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.cert-intro h1 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+}
+.cert-intro > p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+.cert-awarded {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem !important;
+}
+
+/* ---- Course list ---- */
+
+.cert-courses { padding: 1.25rem 1.35rem; }
+.cert-courses-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.cert-requirement {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.cert-course-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+/* Pills matching the Education page's section nav; completed courses link to
+   their card there, the untaken one is inert. */
+.cert-course-pill {
+  display: inline-block;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-decoration: none !important;
+  transition: border-color 0.15s, color 0.15s;
+}
+.cert-course-pill strong { color: var(--text); font-weight: 600; }
+
+a.cert-course-pill:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+a.cert-course-pill:hover strong { color: var(--accent); }
+
+/* Not taken: present for completeness, but visibly inactive. */
+.cert-course-list .not-taken .cert-course-pill {
+  opacity: 0.5;
+  border-style: dashed;
+}
+.cert-course-list .not-taken strong { color: var(--text-muted); font-weight: 500; }
+
+/* ---- Certificate body ---- */
+
+.cert-body { padding: 2rem; }
+
+.cert-citation {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.cert-presentation {
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.cert-presentation p { margin: 0; }
+
+.cert-presented-to { font-size: 0.95rem; }
+.cert-recipient {
+  margin: 0.35rem 0 1rem !important;
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.cert-for { font-size: 0.92rem; }
+.cert-award {
+  margin: 0.35rem 0 0.75rem !important;
+  font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.cert-awarded-by { font-size: 0.88rem; }
+
+@media (max-width: 900px) {
+  .cert-intro-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .cert-body { padding: 1.25rem; }
+  /* Justification leaves distracting rivers in narrow columns. */
+  .cert-citation { text-align: left; }
+}

@@ -5,107 +5,30 @@
 .report-page {
   --report-font: 'Times New Roman', Times, Georgia, serif;
   max-width: 1100px;
+}
+
+/* The serif is scoped to the transcribed papers so the page intro and contents
+   match the site's other tabs. */
+.report-paper,
+.report-paper p,
+.report-paper li,
+.report-paper h2,
+.report-paper h3,
+.report-paper h4 {
   font-family: var(--report-font);
 }
 
-.report-page p,
-.report-page li,
-.report-page h2,
-.report-page h3,
-.report-page h4 {
-  font-family: var(--report-font);
-}
-
-/* Intro text left, contents right. */
-.report-intro-row {
-  display: grid;
-  grid-template-columns: 1fr minmax(300px, 380px);
-  gap: 2rem;
-  align-items: start;
-  margin-bottom: 2.5rem;
-}
-.report-intro h1 {
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  margin-bottom: 0.4rem;
-}
-.report-intro > p {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 0.6rem;
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.25rem 0 0 !important;
 }
 .report-completed {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--accent);
-  margin-bottom: 1rem !important;
-}
-
-/* ---- Table of contents ---- */
-
-.report-toc {
-  padding: 1rem 1.15rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  /* Single-spaced, like the printed contents page. */
-  line-height: 1.25;
-}
-
-.report-toc-title {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  text-align: center;
-}
-
-.report-toc-list {
-  margin: 0;
-  padding-left: 1.2rem;
-}
-.report-toc-list > li {
-  margin-bottom: 0.15rem;
-  font-weight: 400;
-}
-.report-toc-list > li:last-child { margin-bottom: 0; }
-
-/* Dot-leader rows: the section name sits left, a dotted filler stretches to
-   fill whatever space is left, and the parenthetical subsections align right,
-   as on a printed contents page. */
-/* Flexed inside the li rather than on it, so the numbered marker survives. */
-.report-toc-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-}
-/* Never break the section name across lines - only the parenthetical wraps. */
-.report-toc-name {
-  flex: 0 0 auto;
-  white-space: nowrap;
-}
-
-.report-toc-dots {
-  flex: 1 1 auto;
-  min-width: 1.5rem;
-  align-self: center;
-  height: 1px;
-  /* Dots rather than a rule, sized so they read as leaders at body size. */
-  background-image: radial-gradient(circle, var(--text-muted) 1px, transparent 1px);
-  background-position: bottom;
-  background-size: 5px 2px;
-  background-repeat: repeat-x;
-  opacity: 0.5;
-}
-
-
-.report-toc a {
-  color: var(--text);
-  text-decoration: none !important;
-  border-bottom: 1px solid transparent;
-}
-.report-toc a:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
 }
 
 /* ---- Paper body ---- */
@@ -243,16 +166,8 @@
 
 @media (max-width: 640px) {
   .report-paper-head h2 { font-size: 1.3rem; }
-  .report-toc { padding: 1.15rem; }
   /* Justification leaves distracting rivers in narrow columns. */
   .report-paper > p,
   .report-abstract { text-align: left; }
 
-  /* There is no room for dot leaders on a phone: drop them and stack the
-     parenthetical subsections under their section instead of ragging right. */
-  .report-toc-row {
-    display: block;
-  }
-  .report-toc-name { white-space: normal; }
-  .report-toc-dots { display: none; }
 }

@@ -22,7 +22,10 @@ const links: NavItem[] = [
   {
     to: '/education',
     label: 'Education',
-    children: [{ to: '/education/mcs-portfolio', label: 'MCS Portfolio' }],
+    children: [
+      { to: '/education/mcs-portfolio', label: 'MCS Portfolio' },
+      { to: '/education/big-data', label: 'Big Data' },
+    ],
   },
   { to: '/projects', label: 'Projects' },
   { to: '/demos', label: 'Demos' },
