@@ -37,3 +37,8 @@ export const bigDataCertificate = {
     { code: 'CSE 578', title: 'Data Visualization', completed: true },
   ] as CertificateCourse[],
 };
+
+/** True when a course counted toward the Big Data certificate. */
+export function isCertificateCourse(courseCode: string): boolean {
+  return bigDataCertificate.courses.some((c) => c.code === courseCode && c.completed);
+}

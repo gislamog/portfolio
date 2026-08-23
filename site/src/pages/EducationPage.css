@@ -53,8 +53,12 @@
 .course-card p.course-actions {
   margin-top: auto;
   padding-top: 1rem;
+  /* A card can carry a demo, its portfolio paper, and the certificate. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
-.course-actions .btn { font-size: 0.82rem; }
+.course-actions .btn { font-size: 0.78rem; padding: 0.45rem 0.8rem; }
 
 .course-card.featured {
   border-color: color-mix(in srgb, var(--accent-2) 40%, transparent);
@@ -135,14 +139,6 @@
 }
 .note { font-size: 0.9rem; font-style: italic; }
 
-.portfolio-legend {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
 
 .portfolio-callout h3 {
   margin: 0 0 0.5rem;
