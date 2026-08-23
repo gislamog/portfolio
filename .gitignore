@@ -37,3 +37,6 @@ portfolio-react-app/.env
 
 # portable Node for local dev (optional)
 .tools/
+
+# TypeScript incremental build cache (regenerated on every build).
+/site/tsconfig.tsbuildinfo

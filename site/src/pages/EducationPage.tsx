@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { bachelorsDegree, mastersDegree } from '../data/education';
 import { demoHref, demoIdForCourse } from '../data/projects';
-import { ExpandableEmbed } from '../components/ExpandableEmbed';
+import { paperHrefForCourse } from '../data/mcsPortfolio';
+import { isCertificateCourse } from '../data/bigDataCertificate';
 import { AsuLogo } from '../components/AsuLogo';
 import '../components/AsuLogo.css';
 import '../components/ExpandableEmbed.css';
 
 function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
   const demoId = demoIdForCourse(course.code);
+  const paperHref = paperHrefForCourse(course.code);
+  const certificateCourse = isCertificateCourse(course.code);
 
   return (
     <article
@@ -17,12 +20,7 @@ function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
     >
       <div className="course-summary-main">
         <div className="course-top">
-          <div className="course-tags">
-            <span className="tag">{course.code}</span>
-            {course.portfolioFeatured && (
-              <span className="portfolio-badge" title="Featured in MCS Portfolio Report">MCS Portfolio</span>
-            )}
-          </div>
+          <span className="tag">{course.code}</span>
           <span className="course-term">{course.term}</span>
         </div>
         <h4>{course.title}</h4>
@@ -32,9 +30,25 @@ function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
           <li key={b.slice(0, 30)}>{b}</li>
         ))}
       </ul>
-      {demoId && (
+      {(demoId || paperHref || certificateCourse) && (
         <p className="course-actions">
-          <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
+          {demoId && (
+            <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
+          )}
+          {paperHref && (
+            <Link to={paperHref} className="btn btn-portfolio">MCS Portfolio</Link>
+          )}
+          {certificateCourse && (
+            <Link
+              to="/education/big-data"
+              className="btn btn-certificate"
+              /* Shortened from "Big Data Certificate" so CSE 575's three
+                 pills stay on one row in the narrowest grid column. */
+              aria-label="Big Data Certificate"
+            >
+              Big Data Cert
+            </Link>
+          )}
         </p>
       )}
     </article>
@@ -114,53 +128,20 @@ export function EducationPage() {
   useCourseHashTarget();
 
   return (
-    <div className="page-header page-content container">
+    <div className="page-header page-content container education-page">
       <p className="section-label">Academics</p>
       <h1>Education</h1>
       <p className="page-lead">Graduate and undergraduate degrees from Arizona State University.</p>
 
       <nav className="education-toc" aria-label="Education sections">
         <a href="#masters">Master&apos;s Degree</a>
-        <a href="#big-data-cert">Big Data Certificate</a>
-        <a href="#mcs-portfolio">MCS Portfolio Report</a>
         <a href="#bachelors">Bachelor&apos;s Degree</a>
       </nav>
 
       <section id="masters" className="degree-block">
         <DegreeHeader degree={mastersDegree} />
         <DegreeCourses degree={mastersDegree} heading="Graduate Courses" />
-        <p className="portfolio-legend"><span className="portfolio-badge">MCS Portfolio</span> = featured in MCS Portfolio Report</p>
       </section>
-
-      {mastersDegree.certificate && (
-        <section id="big-data-cert" className="degree-block">
-          <ExpandableEmbed
-            title={mastersDegree.certificate.name}
-            description={mastersDegree.certificate.status}
-          >
-            <iframe
-              title="Big Data Professional Certificate"
-              src={mastersDegree.certificate.pdfUrl}
-              className="embed-pdf"
-            />
-          </ExpandableEmbed>
-        </section>
-      )}
-
-      {mastersDegree.portfolio && (
-        <section id="mcs-portfolio" className="degree-block">
-          <ExpandableEmbed
-            title={mastersDegree.portfolio.title}
-            description={mastersDegree.portfolio.description}
-          >
-            <iframe
-              title="MCS Portfolio Report"
-              src={mastersDegree.portfolio.pdfUrl}
-              className="embed-pdf"
-            />
-          </ExpandableEmbed>
-        </section>
-      )}
 
       <section id="bachelors" className="degree-block">
         <DegreeHeader degree={bachelorsDegree} />

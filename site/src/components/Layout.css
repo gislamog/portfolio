@@ -82,3 +82,52 @@
 
 .footer-inner p { margin: 0; font-size: 0.85rem; }
 .footer-links { display: flex; gap: 1rem; font-size: 0.85rem; }
+
+/* Education and its MCS Portfolio sub-tab read as one connected unit. The
+   parent keeps the exact shape and size of every other nav tab; only its
+   right corners are squared off so the sub-tab can butt against it. The
+   sub-tab mirrors that shape at a smaller height and type size. */
+.nav-item {
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.nav-item:has(.nav-sublink) > .nav-link {
+  border-radius: 8px 0 0 8px;
+}
+
+.nav-sublink {
+  display: flex;
+  align-items: center;
+  /* Vertical padding is trimmed rather than set, so the sub-tab is shorter
+     than its parent while sharing the same corner radius. */
+  padding: 0.1rem 0.5rem;
+  margin: 0.3rem 0;
+  /* Square by default; only the last sub-tab rounds the group's outer edge. */
+  border-radius: 0;
+  /* Faint divider so the sub-tabs still read as separate cells without the
+     hard line competing with the otherwise flat nav. */
+  border-left: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  /* A whisper of fill rather than the solid --bg-elevated the other nav tabs
+     only show on hover. Enough to group them under Education, not enough to
+     read as "these two tabs are highlighted". */
+  background: color-mix(in srgb, var(--bg-elevated) 35%, transparent);
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: color 0.15s, background 0.15s;
+}
+/* Hover lands on the same solid --bg-elevated the top-level tabs use, so the
+   sub-tab visibly lifts out of its faint resting fill. */
+.nav-sublink:hover {
+  color: var(--text);
+  background: var(--bg-elevated);
+}
+.nav-sublink:last-child { border-radius: 0 8px 8px 0; }
+
+.nav-sublink.active {
+  color: var(--accent);
+  background: var(--accent-dim);
+}
