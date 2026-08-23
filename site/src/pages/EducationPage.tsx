@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { bachelorsDegree, mastersDegree } from '../data/education';
 import { ExpandableEmbed } from '../components/ExpandableEmbed';
 import { AsuLogo } from '../components/AsuLogo';
@@ -71,7 +70,6 @@ export function EducationPage() {
       <nav className="education-toc" aria-label="Education sections">
         <a href="#masters">Master&apos;s Degree</a>
         <a href="#big-data-cert">Big Data Certificate</a>
-        <a href="#mcs-portfolio">MCS Portfolio Report</a>
         <a href="#bachelors">Bachelor&apos;s Degree</a>
       </nav>
 
@@ -93,28 +91,6 @@ export function EducationPage() {
               className="embed-pdf"
             />
           </ExpandableEmbed>
-        </section>
-      )}
-
-      {mastersDegree.portfolio && (
-        <section id="mcs-portfolio" className="degree-block">
-          <div className="card portfolio-callout">
-            <h3>{mastersDegree.portfolio.title}</h3>
-            <p>{mastersDegree.portfolio.description}</p>
-            <p className="portfolio-callout-actions">
-              <Link to="/education/mcs-portfolio" className="btn btn-primary">
-                Read the Report
-              </Link>
-              <a
-                className="btn btn-ghost"
-                href={mastersDegree.portfolio.pdfUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Original PDF
-              </a>
-            </p>
-          </div>
         </section>
       )}
 

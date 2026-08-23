@@ -14,6 +14,20 @@ export interface ReportSection {
   paragraphs: string[];
 }
 
+/**
+ * Stable anchor id for a section. Headings alone are not unique within a paper
+ * (both `II.B` and `III.B` exist, and headings repeat across papers), so the
+ * id is scoped by paper and section label.
+ */
+export function sectionId(paperId: string, section: ReportSection): string {
+  const slug = section.heading
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  const label = (section.label ?? '').toLowerCase();
+  return `${paperId}-${label}-${slug}`;
+}
+
 export interface ReportFigure {
   caption: string;
   src: string;

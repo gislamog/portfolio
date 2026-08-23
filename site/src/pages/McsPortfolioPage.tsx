@@ -1,37 +1,35 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import {
   portfolioMeta,
   portfolioPapers,
   portfolioSummary,
+  sectionId,
   type ReportPaper,
   type ReportSection,
 } from '../data/mcsPortfolio';
 import './McsPortfolioPage.css';
 
-/**
- * Numbered sections in the source papers are `I.`, `II.`, ... with lettered
- * subsections nested underneath. A section carrying a roman label and no
- * paragraphs is a divider that only introduces the subsections below it.
- */
-function Section({ section }: { section: ReportSection }) {
-  const isSub = section.level === 3;
-  const label = section.label ? `${section.label}. ` : '';
+const SUMMARY_ID = 'summary';
 
-  if (isSub) {
-    return (
-      <>
-        <h4 className="report-subheading">{label}{section.heading}</h4>
-        {section.paragraphs.map((p) => (
-          <p key={p.slice(0, 40)}>{p}</p>
-        ))}
-      </>
-    );
-  }
+/**
+ * Numbered sections print as `I. INTRODUCTION` in small caps and lettered
+ * subsections as italic `A. Background Information`, matching the source
+ * papers. A numbered section with no paragraphs only introduces the
+ * subsections beneath it.
+ */
+function Section({ paperId, section }: { paperId: string; section: ReportSection }) {
+  const id = sectionId(paperId, section);
+  const label = section.label ? `${section.label}. ` : '';
+  const Heading = section.level === 3 ? 'h4' : 'h3';
+  const className = section.level === 3 ? 'report-subheading' : 'report-heading';
 
   return (
     <>
-      <h3 className="report-heading">{label}{section.heading}</h3>
+      <Heading id={id} className={className}>
+        {label}
+        {section.heading}
+      </Heading>
       {section.paragraphs.map((p) => (
         <p key={p.slice(0, 40)}>{p}</p>
       ))}
@@ -43,15 +41,19 @@ function Paper({ paper }: { paper: ReportPaper }) {
   return (
     <article id={paper.id} className="report-paper">
       <header className="report-paper-head">
-        <span className="tag">{paper.courseCode}</span>
         <h2>{paper.title}</h2>
-        <p className="report-course">{paper.course}</p>
+        <p className="report-author">{portfolioMeta.author}</p>
+        <p className="report-affiliation">{portfolioMeta.affiliation}</p>
+        <p className="report-affiliation">{portfolioMeta.address}</p>
+        <p className="report-affiliation">{portfolioMeta.email}</p>
+        <p className="report-course">
+          {paper.courseCode} — {paper.course}
+        </p>
       </header>
 
       {paper.abstract && (
-        <p className="report-abstract">
-          <span className="report-abstract-label">Abstract—</span>
-          {paper.abstract}
+        <p id={`${paper.id}-abstract`} className="report-abstract">
+          <em>Abstract</em>—{paper.abstract}
         </p>
       )}
 
@@ -63,10 +65,12 @@ function Paper({ paper }: { paper: ReportPaper }) {
       )}
 
       {paper.sections.map((s) => (
-        <Section key={`${s.label ?? ''}${s.heading}`} section={s} />
+        <Section key={sectionId(paper.id, s)} paperId={paper.id} section={s} />
       ))}
 
-      <h3 className="report-heading">References</h3>
+      <h3 id={`${paper.id}-references`} className="report-heading">
+        References
+      </h3>
       <ol className="report-references">
         {paper.references.map((r) => (
           <li key={r.slice(0, 40)}>{r}</li>
@@ -76,11 +80,50 @@ function Paper({ paper }: { paper: ReportPaper }) {
   );
 }
 
+/** Contents mirroring the report: each paper, then its sections nested under it. */
+function TableOfContents() {
+  return (
+    <nav className="report-toc" aria-label="Table of contents">
+      <h2 className="report-toc-title">Table of Contents</h2>
+      <ol className="report-toc-list">
+        <li>
+          <a href={`#${SUMMARY_ID}`}>{portfolioSummary.title}</a>
+        </li>
+        {portfolioPapers.map((paper) => (
+          <li key={paper.id}>
+            <a href={`#${paper.id}`}>{paper.title}</a>
+            <ol className="report-toc-sub">
+              {paper.abstract && (
+                <li>
+                  <a href={`#${paper.id}-abstract`}>Abstract</a>
+                </li>
+              )}
+              {paper.sections.map((s) => (
+                <li
+                  key={sectionId(paper.id, s)}
+                  className={s.level === 3 ? 'report-toc-deep' : undefined}
+                >
+                  <a href={`#${sectionId(paper.id, s)}`}>
+                    {s.label ? `${s.label}. ` : ''}
+                    {s.heading}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href={`#${paper.id}-references`}>References</a>
+              </li>
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
 /**
- * The in-page contents links are plain anchors, so arriving at
- * /education/mcs-portfolio#neural-network-paper from another route never fires
- * the browser's native anchor jump. Scroll to the target ourselves once the
- * route has rendered.
+ * Contents entries are plain anchors, so arriving from another route never
+ * fires the browser's native anchor jump. Scroll to the target ourselves once
+ * the route has rendered.
  */
 function useReportHashTarget() {
   const { hash } = useLocation();
@@ -106,28 +149,10 @@ export function McsPortfolioPage() {
   useReportHashTarget();
 
   return (
-    <div className="page-header page-content container report-page">
-      <p className="section-label">Master&apos;s Degree</p>
-      <h1>{portfolioMeta.title}</h1>
-      <p className="page-lead">
-        The degree completion artifact for my MCS, presented here as readable text.
-        It collects two graduate machine learning projects: unsupervised clustering
-        in CSE 575 and a supervised collision-prediction network in CSE 571.
-      </p>
-
-      <div className="report-byline">
-        <p className="report-author">{portfolioMeta.author}</p>
-        <p>{portfolioMeta.affiliation}</p>
-        <p>{portfolioMeta.address}</p>
-        <p>
-          <a href={`mailto:${portfolioMeta.email}`}>{portfolioMeta.email}</a>
-        </p>
-      </div>
-
+    <div className="page-header container report-page">
       <div className="report-actions">
-        <Link to="/education" className="btn btn-ghost">← Back to Education</Link>
         <a
-          className="btn btn-primary"
+          className="btn btn-ghost"
           href={portfolioMeta.pdfUrl}
           target="_blank"
           rel="noreferrer"
@@ -136,16 +161,15 @@ export function McsPortfolioPage() {
         </a>
       </div>
 
-      <nav className="education-toc" aria-label="Report contents">
-        <a href="#summary">Portfolio Summary</a>
-        {portfolioPapers.map((p) => (
-          <a key={p.id} href={`#${p.id}`}>{p.title.replace(' Project', '')}</a>
-        ))}
-      </nav>
+      <TableOfContents />
 
-      <article id="summary" className="report-paper">
+      <article id={SUMMARY_ID} className="report-paper">
         <header className="report-paper-head">
           <h2>{portfolioSummary.title}</h2>
+          <p className="report-author">{portfolioMeta.author}</p>
+          <p className="report-affiliation">{portfolioMeta.affiliation}</p>
+          <p className="report-affiliation">{portfolioMeta.address}</p>
+          <p className="report-affiliation">{portfolioMeta.email}</p>
         </header>
         {portfolioSummary.paragraphs.map((p) => (
           <p key={p.slice(0, 40)}>{p}</p>
