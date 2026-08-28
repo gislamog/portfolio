@@ -35,26 +35,28 @@ export const mastersDegree: Degree = {
       'Degree completion artifact featuring K-Means clustering (CSE 575) and a PyTorch neural network for robot collision prediction (CSE 571), trained on simulated 5-sensor robot data.',
     pdfUrl: `${import.meta.env.BASE_URL}docs/mcs-portfolio.pdf`,
   },
-  // Ordered by difficulty / software-engineering relevance for recruiters.
+  // Ordered by recruiter impressiveness: ML/AI first, then crypto/security, then the rest.
   courses: [
     {
-      code: 'CSE 551',
-      title: 'Foundations of Algorithms',
-      term: 'Fall 2025',
+      code: 'CSE 571',
+      title: 'Artificial Intelligence',
+      term: 'Fall 2024',
+      portfolioFeatured: true,
       bullets: [
-        'Stable matching, greedy methods, dynamic programming, network flows',
-        'NP-completeness and approximation algorithms',
-        '8 coding assignments plus proctored exams',
+        'Autonomous agents, reinforcement learning, and robotics',
+        'Portfolio Project #2: PyTorch collision predictor',
+        '5 distance sensors + steering; 1 FP and 5 missed collisions in 1,000 tests',
       ],
     },
     {
-      code: 'CSE 545',
-      title: 'Software Security',
-      term: 'Spring 2026',
+      code: 'CSE 575',
+      title: 'Statistical Machine Learning',
+      term: 'Fall 2024',
+      portfolioFeatured: true,
       bullets: [
-        'Buffer overflows, x86-64 assembly, ELF binaries',
-        'Web exploitation: SQL injection, session hijacking',
-        'Offensive techniques to inform defensive design',
+        'Supervised/unsupervised learning: Naive Bayes, SVMs, neural networks, CNNs',
+        'Portfolio Project #1: K-Means vs K-Means++ on 300 2D points',
+        'Elbow Method analysis; optimal K ≈ 5',
       ],
     },
     {
@@ -78,16 +80,6 @@ export const mastersDegree: Degree = {
       ],
     },
     {
-      code: 'CSE 340',
-      title: 'Principles of Programming Languages',
-      term: 'Fall 2024',
-      bullets: [
-        'Lexical and syntax analysis, semantics, and type systems',
-        'Lambda calculus and formal language foundations',
-        'FIRST/FOLLOW sets and LL parsing techniques',
-      ],
-    },
-    {
       code: 'CSE 543',
       title: 'Information Assurance & Security',
       term: 'Summer 2026',
@@ -98,25 +90,23 @@ export const mastersDegree: Degree = {
       ],
     },
     {
-      code: 'CSE 571',
-      title: 'Artificial Intelligence',
-      term: 'Fall 2024',
-      portfolioFeatured: true,
+      code: 'CSE 551',
+      title: 'Foundations of Algorithms',
+      term: 'Fall 2025',
       bullets: [
-        'Autonomous agents, reinforcement learning, and robotics',
-        'Portfolio Project #2: PyTorch collision predictor',
-        '5 distance sensors + steering; 1 FP and 5 missed collisions in 1,000 tests',
+        'Stable matching, greedy methods, dynamic programming, network flows',
+        'NP-completeness and approximation algorithms',
+        '8 coding assignments plus proctored exams',
       ],
     },
     {
-      code: 'CSE 575',
-      title: 'Statistical Machine Learning',
-      term: 'Fall 2024',
-      portfolioFeatured: true,
+      code: 'CSE 545',
+      title: 'Software Security',
+      term: 'Spring 2026',
       bullets: [
-        'Supervised/unsupervised learning: Naive Bayes, SVMs, neural networks, CNNs',
-        'Portfolio Project #1: K-Means vs K-Means++ on 300 2D points',
-        'Elbow Method analysis; optimal K ≈ 5',
+        'Buffer overflows, x86-64 assembly, ELF binaries',
+        'Web exploitation: SQL injection, session hijacking',
+        'Offensive techniques to inform defensive design',
       ],
     },
     {
@@ -147,6 +137,16 @@ export const mastersDegree: Degree = {
         'Visualization design grounded in cognition and perception',
         'Python/Jupyter: scatter plots, choropleths, time series',
         'Course project: income-driven marketing analysis with Census-style data',
+      ],
+    },
+    {
+      code: 'CSE 340',
+      title: 'Principles of Programming Languages',
+      term: 'Fall 2024',
+      bullets: [
+        'Lexical and syntax analysis, semantics, and type systems',
+        'Lambda calculus and formal language foundations',
+        'FIRST/FOLLOW sets and LL parsing techniques',
       ],
     },
   ],
