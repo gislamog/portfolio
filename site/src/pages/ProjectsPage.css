@@ -9,6 +9,7 @@
   overflow: hidden;
   display: grid;
   grid-template-columns: minmax(280px, 40%) minmax(0, 1fr);
+  align-items: center; /* don't stretch the visual to the text column's height */
   scroll-margin-top: calc(var(--nav-h) + 1rem);
 }
 
@@ -35,12 +36,14 @@
 
 .project-card .project-visual {
   border-radius: 0;
-  height: 100%;
-  min-height: 180px;
+  height: auto;
+  aspect-ratio: 4 / 3; /* fixed ratio, so the box no longer tracks the text height */
+  align-self: center; /* center the image block vertically in the card */
 }
 
 .project-card .project-visual-img {
   object-fit: contain;
+  object-position: center;
   background: #fff;
 }
 
@@ -63,6 +66,7 @@
   }
 
   .project-card .project-visual {
+    aspect-ratio: 16 / 10; /* shorter band when stacked above the text */
     min-height: 140px;
   }
 }
