@@ -48,8 +48,6 @@ export interface Project {
   githubFolder?: string;
   /** Full URL for a standalone repo (used instead of githubFolder). */
   githubUrl?: string;
-  /** When true, the GitHub action is labeled Private. */
-  githubPrivate?: boolean;
 }
 
 export const projects: Project[] = [
@@ -94,7 +92,6 @@ export const projects: Project[] = [
       'Symlink-mirror worktrees: a large PHP application tree stays shared; only the directories that change per branch are unique',
     ],
     githubUrl: REPO_SKILLS,
-    githubPrivate: true,
   },
   {
     id: 'mcs-collision',

@@ -162,7 +162,7 @@ li { margin-bottom: 0.4em; }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn-ghost:hover { background: var(--bg-elevated); }
 
-/* Compact GitHub / course pills (Demos, private-repo links on Projects). */
+/* Compact GitHub / course pills on Demos. */
 .demo-links {
   display: flex;
   flex-wrap: wrap;

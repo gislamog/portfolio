@@ -59,24 +59,19 @@ export function ProjectsPage() {
                 <ul>{p.highlights.map((h) => <li key={h.slice(0, 30)}>{h}</li>)}</ul>
                 <div className="project-actions">
                   {p.demoId && <Link to={`/demos#${p.demoId}`} className="btn btn-primary">Try Demo</Link>}
-                  {githubHref && p.githubPrivate && (
-                    <span className="demo-links">
-                      <a
-                        href={githubHref}
-                        target="_blank"
-                        rel="noreferrer"
-                        title="This repository is private. Contact me and I will share access."
-                      >
-                        GitHub
-                        <span className="repo-private">Private, please request</span>
-                      </a>
-                    </span>
-                  )}
-                  {githubHref && !p.githubPrivate && (
-                    <a href={githubHref} className="btn btn-ghost" target="_blank" rel="noreferrer">GitHub</a>
-                  )}
                   {p.courseCode && (
                     <Link to={courseHref(p.courseCode)} className="btn btn-ghost">{p.courseCode}</Link>
+                  )}
+                  {githubHref && (
+                    <a
+                      href={githubHref}
+                      className="btn btn-ghost"
+                      target="_blank"
+                      rel="noreferrer"
+                      title="This repository is private. Contact me and I will share access."
+                    >
+                      GitHub (Private)
+                    </a>
                   )}
                 </div>
               </div>
