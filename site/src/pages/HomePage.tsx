@@ -21,7 +21,7 @@ import {
   FiShield,
 } from 'react-icons/fi';
 import { profile } from '../data/profile';
-import { projects } from '../data/projects';
+import { projectHref, projects } from '../data/projects';
 import { BioSummary } from '../components/BioSummary';
 import { SocialLinks } from '../components/SocialLinks';
 import { AsuLogo } from '../components/AsuLogo';
@@ -109,10 +109,10 @@ export function HomePage() {
             {featured.map((p) => {
               const Icon = projectIcon(p.id);
               return (
-                <Link key={p.id} to="/projects" className="featured-card">
+                <Link key={p.id} to={projectHref(p.id)} className="featured-card">
                   <ProjectVisual project={p} Icon={Icon} />
                   <div className="featured-body">
-                    <div>{p.tags.slice(0, 2).map((t) => <span key={t} className="tag">{t}</span>)}</div>
+                    <div>{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
                     <h3>{p.title}</h3>
                     <p>{p.description}</p>
                   </div>

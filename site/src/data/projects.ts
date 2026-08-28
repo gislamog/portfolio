@@ -6,6 +6,10 @@ export function courseHref(code: string) {
   return `/education#course-${code.toLowerCase().replace(/\s+/g, '-')}`;
 }
 
+export function projectHref(id: string) {
+  return `/projects#${id}`;
+}
+
 export function demoHref(demoId: string) {
   return `/demos#${demoId}`;
 }
@@ -22,8 +26,14 @@ export function githubFolder(folder: string) {
   return `${MCS_GITHUB}/tree/main/${folder}`;
 }
 
+export function projectGithubHref(project: Project): string | undefined {
+  if (project.githubUrl) return project.githubUrl;
+  if (project.githubFolder) return githubFolder(project.githubFolder);
+}
+
 // Standalone repos that live outside mcs-projects
 export const REPO_COLLISION_PREDICTOR = 'https://github.com/gislamog/cse571-collision-prediction';
+export const REPO_SKILLS = 'https://github.com/gislamog/skills';
 
 export interface Project {
   id: string;
@@ -36,6 +46,10 @@ export interface Project {
   demoId?: string;
   courseCode?: string;
   githubFolder?: string;
+  /** Full URL for a standalone repo (used instead of githubFolder). */
+  githubUrl?: string;
+  /** When true, the GitHub action is labeled Private. */
+  githubPrivate?: boolean;
 }
 
 export const projects: Project[] = [
@@ -46,11 +60,11 @@ export const projects: Project[] = [
     tone: 'navy',
     image: img('projects/healthcare.png'),
     description:
-      'Two-semester senior capstone for Nash Consulting. Cloud-based platform helping healthcare facilities navigate regulatory assessments.',
+      'Primary frontend developer on a two-semester Nash Consulting capstone. React and Spring Boot platform that replaced Word-and-email workflows for healthcare regulatory assessments.',
     highlights: [
-      'React frontend with role-based access and AWS Cognito authentication',
-      'Spring Boot middleware, MongoDB Atlas, AWS S3/EC2 hosting',
-      'Software quality reporting and FOSSA compliance / SBOM integration',
+      'Set up the React and Spring Boot project, including routing and primary navigation',
+      'Implemented Auth0 (later AWS Cognito) with roles on the token so administrators could review the full engagement and employees were limited to their assigned work',
+      'Built employee scheduling with absence tracking, double-booking prevention, and an admin Agenda for assigning review tasks',
     ],
   },
   {
@@ -65,6 +79,22 @@ export const projects: Project[] = [
       'Helped define how historical and live account state should be joined for accurate reporting',
       'Validated calculation logic with Product Engineering against operational edge cases',
     ],
+  },
+  {
+    id: 'git-worktrees',
+    title: 'Git Worktree Workflows',
+    tags: ['Git', 'nginx', 'Caddy', 'Docker'],
+    tone: 'navy',
+    image: img('projects/git-worktrees.png'),
+    description:
+      'Automated parallel git worktrees behind Caddy and nginx so several branches run locally at once, each with its own checkout, upstream port, and hostname. A bash operator CLI generates reverse-proxy config and Docker bind mounts instead of hardcoding ports and paths per branch. Session cookies pass through the proxy unchanged on the shared parent domain.',
+    highlights: [
+      'Split the proxy stack: Caddy for frontends that do not execute PHP and can keep running; nginx for PHP apps that reload to pick up new server blocks',
+      'Dynamic nginx include of generated *.conf fragments, bind-mounted into the container via Docker Compose so worktree routes are imported rather than hardcoded',
+      'Symlink-mirror worktrees: a large PHP application tree stays shared; only the directories that change per branch are unique',
+    ],
+    githubUrl: REPO_SKILLS,
+    githubPrivate: true,
   },
   {
     id: 'mcs-collision',

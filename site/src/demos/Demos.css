@@ -267,30 +267,6 @@
 .tok-error { color: var(--danger); }
 .lexer-input { width: 100%; min-height: 8rem; resize: vertical; }
 .glucose-svg { width: 100%; max-width: 640px; color: var(--accent); background: var(--bg-elevated); border-radius: var(--radius); border: 1px solid var(--border); }
-.demo-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-  margin-top: 0.45rem;
-  font-size: 0.82rem;
-}
-.demo-links a {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.18rem 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: var(--bg-elevated);
-  color: var(--accent-2);
-  text-decoration: none;
-  line-height: 1.5;
-  transition: border-color 140ms ease, background 140ms ease;
-}
-.demo-links a:hover {
-  border-color: var(--accent-2);
-  background: var(--accent-dim);
-}
 
 @media (max-width: 640px) {
   .demo-body {
@@ -384,17 +360,6 @@
   font-weight: 600;
   letter-spacing: 0.02em;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
-}
-
-/* Private-repo notice, nested inside the GitHub pill */
-.repo-private {
-  margin-left: 0.45rem;
-  padding-left: 0.45rem;
-  border-left: 1px solid var(--border);
-  color: var(--text-muted);
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.01em;
 }
 
 /* Distribution-shift note shown while driving */

@@ -4,6 +4,7 @@ import {
   FiBarChart2,
   FiCpu,
   FiEdit3,
+  FiGitBranch,
   FiGitMerge,
   FiGrid,
   FiHeart,
@@ -17,6 +18,7 @@ import './ProjectVisual.css';
 const ICONS: Record<string, IconType> = {
   'analytics-viz': FiBarChart2,
   capstone: FiHeart,
+  'git-worktrees': FiGitBranch,
   'mcs-collision': FiCpu,
   'mcs-kmeans': FiGrid,
   'mcs-crypto': FiKey,

@@ -162,6 +162,43 @@ li { margin-bottom: 0.4em; }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn-ghost:hover { background: var(--bg-elevated); }
 
+/* Compact GitHub / course pills (Demos, private-repo links on Projects). */
+.demo-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
+}
+.demo-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elevated);
+  color: var(--accent-2);
+  text-decoration: none;
+  line-height: 1.5;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.demo-links a:hover {
+  border-color: var(--accent-2);
+  background: var(--accent-dim);
+}
+
+/* Private-repo notice, nested inside a GitHub pill */
+.repo-private {
+  margin-left: 0.45rem;
+  padding-left: 0.45rem;
+  border-left: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.01em;
+}
+
 .grid-2 { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 
 /* Shared page intro rhythm. Every page uses the same
