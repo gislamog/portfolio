@@ -70,6 +70,7 @@ export const projects: Project[] = [
     title: 'Analytics Visualizations',
     tags: ['Product', 'Data Platform', 'EdTech'],
     tone: 'teal',
+    image: img('projects/analytics-visualizations.jpg'),
     description:
       'Contributed development and led QA on an internal analytics visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles historical multi-year records with live role-based accounts.',
     highlights: [
