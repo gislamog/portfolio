@@ -1,53 +1,88 @@
-/* Style A: Soft slate */
+/* ============================================================
+   NEO-EDITORIAL
+   A swiss-editorial system rather than the usual glassy dev
+   portfolio. Three rules drive everything below:
+     1. Depth is displacement, not blur — cards sit on a hard
+        offset ink shadow, and lift by moving toward it on hover.
+     2. Geometry is square. Radii are near-zero; the only curves
+        are the ones a browser control forces.
+     3. Structure is visible. Hairline rules, a marginal index
+        number on every section, and mono microtype do the work
+        that gradients used to.
+   ============================================================ */
+
+/* Style A: Ink — near-black newsprint, signal orange */
 :root,
 [data-theme='a'] {
-  --bg: #1c2333;
-  --bg-elevated: #252d42;
-  --bg-card: #2a334a;
-  --bg-section: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.1);
-  --text: #eef1f8;
-  --text-muted: #a8b0c4;
-  --accent: #5eead4;
-  --accent-dim: rgba(94, 234, 212, 0.14);
-  --accent-2: #93a8f8;
+  --bg: #0b0b0d;
+  --bg-elevated: #17171c;
+  --bg-card: #111114;
+  --bg-section: #0e0e11;
+  --border: #2b2b33;
+  --border-strong: #43434f;
+  --text: #f4f2ed;
+  --text-muted: #8d8d9b;
+  --accent: #ff5b1f;
+  --accent-dim: rgba(255, 91, 31, 0.11);
+  --accent-2: #4de2c2;
   /* Third accent, used for the Big Data Certificate pill so it reads apart
-     from both the teal --accent and the indigo --accent-2. */
-  --cert-accent: #f0b429;
-  --danger: #f87171;
-  --hero-glow-1: rgba(94, 234, 212, 0.12);
-  --hero-glow-2: rgba(147, 168, 248, 0.1);
-  --mesh-1: rgba(94, 234, 212, 0.06);
-  --mesh-2: rgba(147, 168, 248, 0.08);
-  --mesh-3: rgba(120, 140, 200, 0.05);
-  --radius: 14px;
-  --font: 'DM Sans', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --max: 1120px;
-  --nav-h: 64px;
-  --header-bg: rgba(28, 35, 51, 0.88);
+     from both --accent and --accent-2. */
+  --cert-accent: #ffd447;
+  --danger: #ff6b5f;
+  --hero-glow-1: rgba(255, 91, 31, 0.13);
+  --hero-glow-2: rgba(77, 226, 194, 0.09);
+  --mesh-1: rgba(255, 91, 31, 0.05);
+  --mesh-2: rgba(77, 226, 194, 0.04);
+  --mesh-3: rgba(255, 212, 71, 0.03);
+  --header-bg: rgba(11, 11, 13, 0.9);
+  /* Ink used for the hard offset shadow under every raised surface. */
+  --ink: #000000;
+  --on-accent: #140600;
+  /* Ruled-paper line, tiled behind the whole page. */
+  --paper-line: rgba(244, 242, 237, 0.045);
 }
 
-/* Style C: Paper light */
+/* Style C: Newsprint — warm paper, the same orange, black rules */
 [data-theme='c'] {
-  --bg: #e7e3d9;
-  --bg-elevated: #f8f6f0;
-  --bg-card: #ffffff;
-  --bg-section: rgba(40, 55, 70, 0.04);
-  --border: rgba(29, 39, 51, 0.22);
-  --text: #1d2733;
-  --text-muted: #5b6775;
-  --accent: #0f766e;
-  --accent-dim: rgba(15, 118, 110, 0.12);
-  --accent-2: #1d4ed8;
-  --cert-accent: #a16207;
-  --danger: #dc2626;
-  --hero-glow-1: rgba(15, 118, 110, 0.08);
-  --hero-glow-2: rgba(29, 78, 216, 0.06);
-  --mesh-1: rgba(15, 118, 110, 0.07);
-  --mesh-2: rgba(29, 78, 216, 0.05);
-  --mesh-3: rgba(180, 140, 90, 0.06);
-  --header-bg: rgba(243, 241, 234, 0.92);
+  --bg: #f2efe6;
+  --bg-elevated: #ffffff;
+  --bg-card: #fffdf7;
+  --bg-section: #e9e5d9;
+  --border: #17171a;
+  --border-strong: #17171a;
+  --text: #17171a;
+  --text-muted: #5e5e6a;
+  --accent: #d94209;
+  --accent-dim: rgba(217, 66, 9, 0.09);
+  --accent-2: #0d7361;
+  --cert-accent: #8a5e00;
+  --danger: #c62828;
+  --hero-glow-1: rgba(217, 66, 9, 0.07);
+  --hero-glow-2: rgba(13, 115, 97, 0.05);
+  --mesh-1: rgba(217, 66, 9, 0.04);
+  --mesh-2: rgba(13, 115, 97, 0.03);
+  --mesh-3: rgba(138, 94, 0, 0.03);
+  --header-bg: rgba(242, 239, 230, 0.93);
+  --ink: #17171a;
+  --on-accent: #fffdf7;
+  --paper-line: rgba(23, 23, 26, 0.05);
+}
+
+/* Structural tokens are theme-independent: the geometry does not
+   change between Ink and Newsprint, only the pigment does. */
+:root {
+  --radius: 0px;
+  --font: 'Space Grotesk', 'DM Sans', system-ui, sans-serif;
+  --display: 'Bricolage Grotesque', 'Space Grotesk', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+  --max: 1180px;
+  --nav-h: 64px;
+  /* Offset of the hard ink shadow, and how far a surface travels
+     into it on hover. Every raised element shares these two. */
+  --lift: 5px;
+  --lift-hover: 2px;
+  --shadow-hard: var(--lift) var(--lift) 0 var(--ink);
+  --shadow-hard-hover: var(--lift-hover) var(--lift-hover) 0 var(--ink);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -64,30 +99,78 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
+/* Ruled paper. A 32px horizontal rhythm tiled over the whole page,
+   plus two faint accent washes so the field is not perfectly flat.
+   This replaces the old three-blob radial mesh. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 60% at 15% -5%, var(--mesh-1), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 85% 5%, var(--mesh-2), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 50% 100%, var(--mesh-3), transparent 55%);
+    repeating-linear-gradient(
+      to bottom,
+      var(--paper-line) 0 1px,
+      transparent 1px 32px
+    ),
+    radial-gradient(ellipse 80% 50% at 10% -10%, var(--mesh-1), transparent 60%),
+    radial-gradient(ellipse 60% 45% at 92% 4%, var(--mesh-2), transparent 55%);
   pointer-events: none;
   z-index: -1;
   transition: background 0.3s;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+/* A single vertical margin rule down the left of the measure, the way a
+   ruled notebook has one. Hidden on narrow screens where there is no margin
+   to draw it in. */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: max(1rem, calc(50% - var(--max) / 2 - 2.5rem));
+  width: 1px;
+  background: var(--border);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: -1;
+}
 
-h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 0.5em; font-weight: 600; }
-h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; }
-h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; }
-h3 { font-size: 1.1rem; }
+@media (max-width: 1320px) {
+  body::after { display: none; }
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  /* Underline is drawn as a background so it can animate from the left
+     rather than simply appearing. */
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.2s ease;
+}
+a:hover {
+  text-decoration: none;
+  background-size: 100% 1px;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  line-height: 1.05;
+  margin: 0 0 0.5em;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+h1 { font-size: clamp(2.4rem, 6.5vw, 4.4rem); text-transform: uppercase; }
+h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
+h3 { font-size: 1.05rem; letter-spacing: -0.015em; }
 
 p { margin: 0 0 1em; color: var(--text-muted); }
-ul { margin: 0; padding-left: 1.2em; color: var(--text-muted); }
+ul { margin: 0; padding-left: 1.1em; color: var(--text-muted); }
 li { margin-bottom: 0.4em; }
+/* Square markers instead of round bullets, to match the geometry. */
+ul li::marker { color: var(--accent); content: '▪  '; }
 
 .container {
   width: min(var(--max), calc(100% - 2rem));
@@ -95,72 +178,110 @@ li { margin-bottom: 0.4em; }
 }
 
 .section { padding: 5rem 0; }
+
+/* The eyebrow above every section heading. It carries a short rule to its
+   left, so the label reads as a margin annotation rather than a caption. */
 .section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.22em;
   color: var(--accent);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+.section-label::before {
+  content: '';
+  width: 1.6rem;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
 }
 
+/* Cards are flat planes on a hard offset shadow. On hover the plane travels
+   toward its shadow, so it reads as being pressed rather than floated. */
 .card {
+  position: relative;
   background: var(--bg-card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   padding: 1.5rem;
-  transition: border-color 0.3s, background 0.3s;
+  box-shadow: var(--shadow-hard);
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
 }
 
-[data-theme='c'] .card {
-  box-shadow: 0 6px 18px rgba(30, 55, 80, 0.09);
+.card:hover {
+  transform: translate(calc(var(--lift) - var(--lift-hover)), calc(var(--lift) - var(--lift-hover)));
+  box-shadow: var(--shadow-hard-hover);
+  border-color: var(--accent);
 }
 
 .tag {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.7rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: 999px;
-  background: var(--accent-dim);
+  font-size: 0.68rem;
+  padding: 0.18rem 0.5rem;
+  border-radius: var(--radius);
+  background: transparent;
   color: var(--accent);
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border: 1px solid currentColor;
+  letter-spacing: 0.04em;
   margin: 0 0.35rem 0.35rem 0;
 }
 
 .portfolio-badge {
   display: inline-block;
   font-family: var(--mono);
-  font-size: 0.65rem;
+  font-size: 0.63rem;
   font-weight: 600;
-  padding: 0.2rem 0.5rem;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--accent-2) 18%, transparent);
-  color: var(--accent-2);
-  border: 1px solid color-mix(in srgb, var(--accent-2) 35%, transparent);
-  letter-spacing: 0.03em;
+  padding: 0.18rem 0.45rem;
+  border-radius: var(--radius);
+  background: var(--accent-2);
+  color: var(--bg);
+  border: 1px solid var(--accent-2);
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
+/* Buttons share the card's press-into-shadow behaviour so the whole
+   interface responds the same way. */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.65rem 1.2rem;
-  border-radius: 999px;
+  gap: 0.45rem;
+  padding: 0.7rem 1.35rem;
+  border-radius: var(--radius);
+  font-family: var(--mono);
   font-weight: 500;
-  font-size: 0.9rem;
-  border: 1px solid transparent;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--border-strong);
   cursor: pointer;
-  transition: transform 0.15s, background 0.15s;
+  box-shadow: var(--shadow-hard);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease;
   text-decoration: none !important;
+  background-image: none;
 }
-.btn:hover { transform: translateY(-1px); }
-.btn-primary { background: var(--accent); color: #0b1220; }
-[data-theme='c'] .btn-primary { color: #fff; }
-.btn-primary:hover { filter: brightness(1.08); }
-.btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
-.btn-ghost:hover { background: var(--bg-elevated); }
+.btn:hover {
+  transform: translate(calc(var(--lift) - var(--lift-hover)), calc(var(--lift) - var(--lift-hover)));
+  box-shadow: var(--shadow-hard-hover);
+}
+.btn:active {
+  transform: translate(var(--lift), var(--lift));
+  box-shadow: 0 0 0 var(--ink);
+}
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--border-strong);
+}
+[data-theme='c'] .btn-primary { color: var(--on-accent); }
+.btn-ghost { background: var(--bg-elevated); color: var(--text); }
+.btn-ghost:hover { background: var(--bg-card); }
 
 /* Compact GitHub / course pills on Demos. */
 .demo-links {
@@ -174,18 +295,21 @@ li { margin-bottom: 0.4em; }
 .demo-links a {
   display: inline-flex;
   align-items: center;
-  padding: 0.18rem 0.7rem;
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
   background: var(--bg-elevated);
   color: var(--accent-2);
+  font-family: var(--mono);
+  font-size: 0.74rem;
   text-decoration: none;
-  line-height: 1.5;
-  transition: border-color 140ms ease, background 140ms ease;
+  line-height: 1.6;
+  background-image: none;
+  transition: color 140ms ease, background 140ms ease;
 }
 .demo-links a:hover {
-  border-color: var(--accent-2);
-  background: var(--accent-dim);
+  background: var(--accent-2);
+  color: var(--bg);
 }
 
 /* Private-repo notice, nested inside a GitHub pill */
@@ -204,9 +328,14 @@ li { margin-bottom: 0.4em; }
 /* Shared page intro rhythm. Every page uses the same
    .section-label / h1 / .page-lead block, so the spacing lives here to keep
    the tabs consistent rather than being tuned per page. */
-.page-header { padding: 1.25rem 0 1.5rem; }
-.page-header > .section-label { margin-bottom: 0.5rem; }
-.page-header > h1 { margin-bottom: 0rem; }
+.page-header {
+  padding: 2rem 0 1.75rem;
+  margin-bottom: 1.75rem;
+  /* A thick rule closes the masthead, the way a section head does in print. */
+  border-bottom: 3px solid var(--border-strong);
+}
+.page-header > .section-label { margin-bottom: 0.6rem; }
+.page-header > h1 { margin-bottom: 0.35rem; }
 .page-header > .page-lead { margin-bottom: 0; }
 
 .page-content,
@@ -216,8 +345,10 @@ li { margin-bottom: 0.4em; }
 }
 
 .page-lead {
-  max-width: 72ch;
-  font-size: 1.05rem;
+  max-width: 68ch;
+  font-size: 1.06rem;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 .learning-section { margin-top: 2.5rem; scroll-margin-top: calc(var(--nav-h) + 1rem); }
@@ -237,17 +368,19 @@ li { margin-bottom: 0.4em; }
   line-height: 0;
 }
 
+/* Square switch: two chips in a hard-edged track, with a boxed thumb that
+   slides between them. Same geometry language as the buttons. */
 .theme-switch-track {
-  --switch-slot: 16px;
-  --switch-gap: 0.35rem;
+  --switch-slot: 15px;
+  --switch-gap: 0.3rem;
   --switch-pad: 3px;
   position: relative;
   display: grid;
   grid-template-columns: repeat(2, var(--switch-slot));
   gap: var(--switch-gap);
   padding: var(--switch-pad);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
   background: var(--bg-elevated);
   line-height: 0;
 }
@@ -258,12 +391,12 @@ li { margin-bottom: 0.4em; }
   bottom: var(--switch-pad);
   left: var(--switch-pad);
   width: var(--switch-slot);
-  border-radius: 999px;
-  background: var(--accent-dim);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
-  transition: left 0.2s ease;
+  border-radius: var(--radius);
+  background: transparent;
+  box-shadow: 0 0 0 2px var(--accent);
+  transition: left 0.18s cubic-bezier(0.65, 0, 0.35, 1);
   pointer-events: none;
-  z-index: 0;
+  z-index: 2;
 }
 
 .theme-switch-on .theme-switch-thumb {
@@ -276,13 +409,14 @@ li { margin-bottom: 0.4em; }
   width: var(--switch-slot);
   height: var(--switch-slot);
   display: block;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
   box-sizing: border-box;
 }
 
-.swatch-a { background: linear-gradient(135deg, #5eead4, #252d42); }
-.swatch-c { background: linear-gradient(135deg, #0f766e, #f3f1ea); }
+/* Half-and-half chips: each swatch states its theme's paper and its ink. */
+.swatch-a { background: linear-gradient(135deg, #0b0b0d 50%, #ff5b1f 50%); }
+.swatch-c { background: linear-gradient(135deg, #f2efe6 50%, #d94209 50%); }
 
 .contact-grid { margin-top: 1rem; }
 .contact-card {
@@ -297,18 +431,19 @@ li { margin-bottom: 0.4em; }
   border-color: color-mix(in srgb, var(--accent) 40%, transparent);
   transform: translateY(-2px);
 }
-.contact-card-static:hover { transform: none; }
+.contact-card-static:hover { transform: none; box-shadow: var(--shadow-hard); }
 .contact-card h3 { margin: 0 0 0.2rem; font-size: 0.92rem; color: var(--text); }
 .contact-card p { margin: 0; font-size: 0.88rem; }
 .contact-icon {
   width: 40px;
   height: 40px;
-  border-radius: 11px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
   display: grid;
   place-items: center;
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-size: 1.15rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 1.05rem;
   flex-shrink: 0;
 }
 
@@ -321,12 +456,13 @@ li { margin-bottom: 0.4em; }
 .demo-icon {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
   display: grid;
   place-items: center;
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-size: 1.25rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 1.15rem;
   flex-shrink: 0;
   margin-top: 0.15rem;
 }

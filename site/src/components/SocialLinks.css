@@ -7,18 +7,21 @@
 .social-links a {
   display: grid;
   place-items: center;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
   background: var(--bg-elevated);
-  color: var(--text-muted);
+  color: var(--text);
   text-decoration: none !important;
-  transition: color 0.15s, border-color 0.15s, background 0.15s, transform 0.15s;
+  background-image: none;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
 .social-links a:hover {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  transform: translateY(-1px);
+  color: var(--on-accent);
+  background: var(--accent);
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 var(--ink);
 }
 
 .social-links-md a {

@@ -62,7 +62,7 @@
   display: inline-block;
   font-size: 0.82rem;
   padding: 0.35rem 0.75rem;
-  border-radius: 999px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
   color: var(--text-muted);
   text-decoration: none !important;

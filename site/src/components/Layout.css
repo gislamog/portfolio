@@ -5,7 +5,9 @@
   height: var(--nav-h);
   background: var(--header-bg, rgba(10, 11, 15, 0.85));
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(12px);
+  /* A heavy rule rather than a hairline: the masthead is a hard edge. */
+  border-bottom: 2px solid var(--border-strong);
 }
 
 .header-inner {
@@ -28,14 +30,32 @@
 .logo-mark {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #0a0b0f;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--accent);
+  color: var(--on-accent);
   display: grid;
   place-items: center;
-  font-size: 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.logo:hover .logo-mark {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+.logo-text {
+  font-family: var(--display);
+  letter-spacing: -0.03em;
   font-weight: 700;
 }
+
+.logo { background-image: none; }
 
 .logo-text { display: none; }
 @media (min-width: 640px) { .logo-text { display: inline; } }
@@ -50,24 +70,50 @@
 }
 .nav::-webkit-scrollbar { display: none; }
 
+/* Tabs are mono small-caps with a rule that grows from the left on hover and
+   sits solid when active — no pill, no fill. */
 .nav-link {
-  padding: 0.4rem 0.65rem;
-  border-radius: 8px;
-  font-size: 0.82rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
   text-decoration: none !important;
   white-space: nowrap;
-  transition: color 0.15s, background 0.15s;
+  background-image: none;
+  transition: color 0.15s;
 }
-.nav-link:hover { color: var(--text); background: var(--bg-elevated); }
-.nav-link.active { color: var(--accent); background: var(--accent-dim); }
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: 0.1rem;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.18s ease;
+}
+
+.nav-link:hover { color: var(--text); }
+.nav-link:hover::after { transform: scaleX(1); }
+.nav-link.active { color: var(--accent); }
+.nav-link.active::after { transform: scaleX(1); }
 
 .header-inner > .theme-switch {
   align-self: center;
 }
 
 .site-footer {
-  border-top: 1px solid var(--border);
+  border-top: 2px solid var(--border-strong);
   padding: 2rem 0;
   margin-top: 4rem;
 }
@@ -80,8 +126,21 @@
   gap: 1rem;
 }
 
-.footer-inner p { margin: 0; font-size: 0.85rem; }
-.footer-links { display: flex; gap: 1rem; font-size: 0.85rem; }
+.footer-inner p {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.footer-links {
+  display: flex;
+  gap: 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 
 /* Education and its MCS Portfolio sub-tab read as one connected unit. The
    parent keeps the exact shape and size of every other nav tab; only its
@@ -93,41 +152,43 @@
 }
 
 .nav-item:has(.nav-sublink) > .nav-link {
-  border-radius: 8px 0 0 8px;
+  border-radius: var(--radius);
+  /* The parent gives up its own underline; the group is bracketed instead. */
+  padding-right: 0.45rem;
 }
 
 .nav-sublink {
   display: flex;
   align-items: center;
   /* Vertical padding is trimmed rather than set, so the sub-tab is shorter
-     than its parent while sharing the same corner radius. */
-  padding: 0.1rem 0.5rem;
-  margin: 0.3rem 0;
-  /* Square by default; only the last sub-tab rounds the group's outer edge. */
-  border-radius: 0;
-  /* Faint divider so the sub-tabs still read as separate cells without the
-     hard line competing with the otherwise flat nav. */
-  border-left: 1px solid color-mix(in srgb, var(--border) 45%, transparent);
-  font-size: 0.62rem;
+     than its parent. */
+  padding: 0.12rem 0.45rem;
+  margin: 0.42rem 0;
+  border-radius: var(--radius);
+  /* A hard hairline cell divider — the sub-tabs read as boxed cells hanging
+     off the parent tab, like a table's second header row. */
+  border: 1px solid var(--border);
+  border-right: none;
+  font-family: var(--mono);
+  font-size: 0.58rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
   color: var(--text-muted);
-  /* A whisper of fill rather than the solid --bg-elevated the other nav tabs
-     only show on hover. Enough to group them under Education, not enough to
-     read as "these two tabs are highlighted". */
-  background: color-mix(in srgb, var(--bg-elevated) 35%, transparent);
+  background: transparent;
   text-decoration: none !important;
   white-space: nowrap;
+  background-image: none;
   transition: color 0.15s, background 0.15s;
 }
-/* Hover lands on the same solid --bg-elevated the top-level tabs use, so the
-   sub-tab visibly lifts out of its faint resting fill. */
 .nav-sublink:hover {
-  color: var(--text);
-  background: var(--bg-elevated);
+  color: var(--on-accent);
+  background: var(--accent);
 }
-.nav-sublink:last-child { border-radius: 0 8px 8px 0; }
+.nav-sublink:last-child { border-right: 1px solid var(--border); }
 
 .nav-sublink.active {
-  color: var(--accent);
-  background: var(--accent-dim);
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
 }

@@ -6,7 +6,7 @@
   place-items: center;
   font-weight: 700;
   font-family: var(--mono);
-  border-radius: 8px;
+  border-radius: var(--radius);
   background: var(--accent-dim);
   color: var(--accent);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
