@@ -43,7 +43,7 @@ export function ThemeToggle() {
       role="switch"
       aria-checked={isLight}
       aria-label="Toggle light theme"
-      title={isLight ? 'Paper light' : 'Cool slate'}
+      title={isLight ? 'Paper light' : 'Charcoal emerald'}
       onClick={() => setTheme(isLight ? 'a' : 'c')}
     >
       <span className="theme-switch-track">

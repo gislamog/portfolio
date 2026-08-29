@@ -16,6 +16,19 @@
   .hero-stats { margin-top: 1.5rem; }
 }
 
+.profile-photo {
+  width: 148px;
+  height: 148px;
+  border-radius: 28px;
+  object-fit: cover;
+  border: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  flex-shrink: 0;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.35),
+    0 0 0 4px color-mix(in srgb, var(--accent) 8%, transparent);
+  position: relative;
+}
+
 .hero-profile {
   display: flex;
   gap: 1.35rem;
@@ -23,14 +36,53 @@
   margin-bottom: 1.1rem;
 }
 
-.profile-photo {
-  width: 148px;
-  height: 148px;
-  border-radius: 28px;
-  object-fit: cover;
-  border: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+.hero-photo-wrap {
+  position: relative;
   flex-shrink: 0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+}
+
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 32px;
+  background: conic-gradient(
+    from 0deg,
+    var(--accent),
+    var(--accent-2),
+    var(--cert-accent),
+    var(--accent)
+  );
+  opacity: 0.55;
+  animation: hero-ring-spin 12s linear infinite;
+  z-index: 0;
+}
+
+.hero-photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 32px;
+  background: conic-gradient(
+    from 0deg,
+    var(--accent),
+    var(--accent-2),
+    var(--cert-accent),
+    var(--accent)
+  );
+  opacity: 0.25;
+  filter: blur(14px);
+  animation: hero-ring-spin 12s linear infinite;
+  z-index: -1;
+}
+
+.hero-photo-wrap .profile-photo {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes hero-ring-spin {
+  to { transform: rotate(360deg); }
 }
 
 /* The global h1 margin-bottom is 0.5em, which at the hero's clamped font size
@@ -102,6 +154,12 @@
   flex-direction: column;
   gap: 0.2rem;
   padding: 1rem 1.1rem;
+  border-color: color-mix(in srgb, var(--accent) 15%, var(--border));
+}
+
+.stat:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
 .stat strong {
@@ -135,8 +193,9 @@
 }
 
 .featured-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .featured-card .project-visual { border-radius: 0; height: 110px; }
@@ -198,6 +257,13 @@
   color: var(--accent);
   font-size: 1.25rem;
   margin-bottom: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo-wrap::before,
+  .hero-photo-wrap::after {
+    animation: none;
+  }
 }
 
 @media (max-width: 640px) {

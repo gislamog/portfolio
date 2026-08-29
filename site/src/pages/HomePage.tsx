@@ -61,10 +61,12 @@ export function HomePage() {
         <div className="container hero-inner">
           <motion.div className="hero-main" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="hero-profile">
-              <img src={profile.photoUrl} alt={profile.name} className="profile-photo" />
+              <div className="hero-photo-wrap">
+                <img src={profile.photoUrl} alt={profile.name} className="profile-photo" />
+              </div>
               <div className="hero-intro">
                 <p className="section-label">{profile.title}</p>
-                <h1>{profile.name}</h1>
+                <h1 className="text-gradient">{profile.name}</h1>
                 <div className="hero-asu">
                   <AsuLogo size="sm" />
                   <span>Arizona State University</span>

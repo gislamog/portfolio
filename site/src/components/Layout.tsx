@@ -2,6 +2,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { profile } from '../data/profile';
 import { ThemeToggle } from './ThemeProvider';
 import { SocialLinks } from './SocialLinks';
+import { SiteAmbientLayer } from './SiteAmbientLayer';
 import './Layout.css';
 import './SocialLinks.css';
 
@@ -44,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <SiteAmbientLayer />
       <header className="site-header">
         <div className="container header-inner">
           <Link to="/" className="logo">

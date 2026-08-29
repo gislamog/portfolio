@@ -1,0 +1,98 @@
+.site-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  overflow: hidden;
+  --ambient-x: 50%;
+  --ambient-y: 38%;
+}
+
+.site-ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.5;
+  will-change: transform;
+}
+
+.site-ambient-orb--emerald {
+  width: min(58vw, 560px);
+  height: min(58vw, 560px);
+  top: calc(var(--ambient-y) * 0.32 - 20%);
+  left: calc(var(--ambient-x) * 0.4 - 24%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 48%, transparent), transparent 68%);
+  animation: ambient-drift-a 20s ease-in-out infinite alternate;
+}
+
+.site-ambient-orb--violet {
+  width: min(50vw, 500px);
+  height: min(50vw, 500px);
+  top: calc(var(--ambient-y) * 0.5 - 12%);
+  left: calc(var(--ambient-x) * 0.55 - 6%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 40%, transparent), transparent 70%);
+  animation: ambient-drift-b 24s ease-in-out infinite alternate;
+}
+
+.site-ambient-orb--amber {
+  width: min(40vw, 400px);
+  height: min(40vw, 400px);
+  bottom: calc(10% + (100% - var(--ambient-y)) * 0.1);
+  right: calc(6% + (100% - var(--ambient-x)) * 0.14);
+  background: radial-gradient(circle, color-mix(in srgb, var(--cert-accent) 32%, transparent), transparent 72%);
+  animation: ambient-drift-c 28s ease-in-out infinite alternate;
+}
+
+.site-ambient-grid {
+  position: absolute;
+  inset: -25%;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 28%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 28%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(
+    ellipse 85% 75% at var(--ambient-x) var(--ambient-y),
+    black 0%,
+    transparent 74%
+  );
+  opacity: 0.28;
+}
+
+.site-ambient-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+[data-theme='c'] .site-ambient-orb {
+  opacity: 0.35;
+  filter: blur(90px);
+}
+
+[data-theme='c'] .site-ambient-grid {
+  opacity: 0.18;
+}
+
+@keyframes ambient-drift-a {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to { transform: translate3d(3%, 2%, 0) scale(1.07); }
+}
+
+@keyframes ambient-drift-b {
+  from { transform: translate3d(2%, 1%, 0) scale(1.02); }
+  to { transform: translate3d(-3%, -2%, 0) scale(0.97); }
+}
+
+@keyframes ambient-drift-c {
+  from { transform: translate3d(-1%, 2%, 0); }
+  to { transform: translate3d(2%, -2%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-ambient-orb,
+  .site-ambient-grid {
+    animation: none !important;
+  }
+}
