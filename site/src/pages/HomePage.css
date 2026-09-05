@@ -75,14 +75,14 @@
 
 .world-first {
   z-index: 4;
-  top: 14%;
-  font-size: clamp(3.4rem, 11vw, 10rem);
+  top: 16%;
+  font-size: clamp(2.7rem, 8.5vw, 7.6rem);
 }
 
 .world-last {
   z-index: 2;
-  top: 46%;
-  font-size: clamp(2.8rem, 9.5vw, 8.5rem);
+  top: 39%;
+  font-size: clamp(2.2rem, 7.2vw, 6.4rem);
   color: color-mix(in srgb, var(--ink) 80%, var(--sea));
 }
 
@@ -90,7 +90,7 @@
   position: absolute;
   z-index: 3;
   left: 50%;
-  bottom: 7%;
+  bottom: 3.5%;
   width: min(58vw, 640px);
   height: auto;
   margin: 0;
@@ -564,12 +564,12 @@ html[data-theme='c'] .world-kicker {
   color: #f4fbfc;
 }
 html[data-theme='c'] .world-first {
-  top: 18%;
+  top: 19%;
   text-shadow: 0 0 42px rgba(232, 244, 246, 0.28);
 }
 html[data-theme='c'] .world-last {
   z-index: 4;
-  top: 36%;
+  top: 31%;
   color: #f4fbfc;
   text-shadow: 0 0 36px rgba(224, 178, 90, 0.22);
 }
@@ -691,7 +691,7 @@ html[data-theme='c'] .world-ripple {
 }
 
 @media (max-width: 640px) {
-  .world-island { width: min(78vw, 420px); bottom: 5.5rem; }
+  .world-island { width: min(78vw, 420px); bottom: 4rem; }
   .world-title { top: 16%; }
   .intro-layout { justify-items: start; }
 }
