@@ -25,12 +25,21 @@
   flex-shrink: 0;
 }
 
+.site-header.is-home {
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+}
+
 .logo-mark {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  color: #0a0b0f;
+  background: var(--sea);
+  color: #fff;
   display: grid;
   place-items: center;
   font-size: 0.75rem;

@@ -28,8 +28,6 @@ export default function App() {
           <Route path="/education/big-data" element={<BigDataPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/demos" element={<DemosPage />} />
-          {/* Hidden until the reading list is recruiter-ready. */}
-          {/* <Route path="/learning" element={<LearningPage />} /> */}
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>

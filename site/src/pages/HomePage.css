@@ -1,49 +1,345 @@
-.hero {
-  padding: 2rem 0 3.5rem;
+.home-world { position: relative; }
+
+.world {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #c9dbe8;
 }
 
-.hero-inner {
+.world-sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.world-sky-dusk,
+.world-stars,
+.world-aurora,
+.world-glow,
+.world-fireflies { display: none; }
+
+.world-kicker,
+.world-first,
+.world-last,
+.world-menu {
+  animation: world-in 0.9s ease both;
+}
+
+.world-kicker { animation-delay: 0.15s; }
+.world-first { animation-delay: 0.28s; }
+.world-last { animation-delay: 0.34s; }
+.world-menu { animation-delay: 0.55s; }
+
+@keyframes world-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.world-kicker {
+  position: absolute;
+  z-index: 5;
+  top: calc(var(--nav-h) + 1.1rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* Children become siblings of the island so last-name can sit behind it. */
+.world-title { display: contents; }
+
+.world-first,
+.world-last {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--ink);
+  pointer-events: none;
+}
+
+.world-first {
+  z-index: 4;
+  top: 14%;
+  font-size: clamp(3.4rem, 11vw, 10rem);
+}
+
+.world-last {
+  z-index: 2;
+  top: 46%;
+  font-size: clamp(2.8rem, 9.5vw, 8.5rem);
+  color: color-mix(in srgb, var(--ink) 80%, var(--sea));
+}
+
+.world-island {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 7%;
+  width: min(58vw, 640px);
+  height: auto;
+  margin: 0;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 28px 40px rgba(22, 52, 63, 0.28));
+  animation: island-fade 0.9s ease both, island-bob 7s ease-in-out 1s infinite;
+  pointer-events: none;
+}
+
+@keyframes island-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes island-bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -14px; }
+}
+
+.world-fade {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  pointer-events: none;
+  background: linear-gradient(transparent, #d7e6ee);
+}
+
+.world-menu {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  bottom: 1.6rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.world-menu .btn-ghost {
+  background: color-mix(in srgb, var(--foam) 72%, transparent);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 16%, transparent);
+}
+
+.world-flock {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.world-ripple {
+  position: absolute;
+  z-index: 7;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border: 2px solid color-mix(in srgb, var(--sea) 70%, white);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: ripple 0.75s ease-out forwards;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(14);
+    opacity: 0;
+  }
+}
+
+.lands {
+  position: relative;
+  overflow: hidden;
+  margin-top: -3.5rem;
+  padding-bottom: 2rem;
+}
+
+.lands-sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  pointer-events: none;
+  z-index: 0;
+  animation: lands-pan 48s linear infinite alternate;
+}
+
+@keyframes lands-pan {
+  from { object-position: 42% 32%; }
+  to { object-position: 58% 38%; }
+}
+
+.lands-drift {
+  position: absolute;
+  inset: -10% 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 40% 18% at 12% 22%, rgba(255, 255, 255, 0.55), transparent 70%),
+    radial-gradient(ellipse 50% 22% at 88% 48%, rgba(246, 251, 252, 0.45), transparent 70%),
+    radial-gradient(ellipse 36% 16% at 40% 78%, rgba(255, 255, 255, 0.35), transparent 70%);
+  animation: cloud-drift 36s ease-in-out infinite alternate;
+}
+
+@keyframes cloud-drift {
+  from { transform: translateX(-3%); }
+  to { transform: translateX(4%); }
+}
+
+.lands-islets {
+  position: absolute;
+  z-index: 1;
+  top: 2.4rem;
+  width: min(340px, 26vw);
+  height: auto;
+  pointer-events: none;
+  opacity: 0.9;
+  animation: islets-drift 18s ease-in-out infinite alternate;
+}
+
+.lands-islets.is-left {
+  left: max(0.5rem, 2vw);
+}
+
+.lands-islets.is-right {
+  right: max(0.5rem, 2vw);
+  animation-delay: -9s;
+  transform: scaleX(-1);
+}
+
+@keyframes islets-drift {
+  from { translate: 0 0; }
+  to { translate: 0 -16px; }
+}
+
+.lands-motes {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.7) 1px, transparent 2px),
+    radial-gradient(circle at 72% 38%, rgba(255, 255, 255, 0.55) 1px, transparent 2px),
+    radial-gradient(circle at 40% 68%, rgba(255, 255, 255, 0.45) 1px, transparent 2px),
+    radial-gradient(circle at 88% 78%, rgba(255, 255, 255, 0.5) 1px, transparent 2px);
+  background-size: 220px 180px, 280px 210px, 190px 160px, 260px 200px;
+  animation: motes-drift 32s linear infinite;
+}
+
+@keyframes motes-drift {
+  from { background-position: 0 0, 0 0, 0 0, 0 0; }
+  to { background-position: 220px -180px, -140px 80px, 90px -120px, -80px 160px; }
+}
+
+.lands-vista {
+  position: relative;
+  min-height: min(58vw, 480px);
   display: grid;
-  gap: 1.5rem;
+  align-items: end;
+  overflow: hidden;
+  margin: 1rem 0 0;
+}
+
+.lands-vista-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 58%;
+  pointer-events: none;
+  animation: lands-pan 52s linear infinite alternate;
+}
+
+.lands-vista-copy {
+  position: relative;
+  z-index: 2;
+  width: min(var(--max), calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 4.5rem 0 2.2rem;
+}
+
+.lands-vista-copy h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: -0.04em;
+  text-shadow: 0 2px 24px rgba(246, 251, 252, 0.75);
+}
+
+.lands-vista-copy .section-label {
+  text-shadow: 0 1px 12px rgba(246, 251, 252, 0.7);
+}
+
+.lands > :not(.lands-sky):not(.lands-drift):not(.lands-islets):not(.lands-motes) {
+  position: relative;
+  z-index: 2;
+}
+
+.intro-band {
+  padding-top: 3.5rem;
+}
+
+.lands-plaque {
+  background: color-mix(in srgb, var(--foam) 82%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 28px;
+  padding: 1.6rem 1.5rem;
+  box-shadow: 0 18px 50px rgba(22, 52, 63, 0.1);
+}
+
+.intro-layout {
+  display: grid;
+  gap: 1.75rem;
   align-items: start;
 }
 
-@media (min-width: 900px) {
-  .hero-inner { grid-template-columns: 1.45fr 0.9fr; gap: 2rem; }
-  /* Drop the credential column so the first card clears the top of the hero
-     text instead of sitting flush with it. Only needed in the two-column
-     layout; stacked, .hero-inner's row gap already separates them. */
-  .hero-stats { margin-top: 1.5rem; }
-}
-
-.hero-profile {
-  display: flex;
-  gap: 1.35rem;
-  align-items: center;
-  margin-bottom: 1.1rem;
+@media (min-width: 960px) {
+  .intro-layout {
+    grid-template-columns: auto 1.4fr 0.9fr;
+  }
 }
 
 .profile-photo {
-  width: 148px;
-  height: 148px;
-  border-radius: 28px;
+  width: 132px;
+  height: 132px;
+  border-radius: 22px;
   object-fit: cover;
-  border: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  flex-shrink: 0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
+  border: 3px solid color-mix(in srgb, var(--sea) 45%, white);
+  box-shadow: 0 12px 32px rgba(22, 52, 63, 0.16);
 }
-
-/* The global h1 margin-bottom is 0.5em, which at the hero's clamped font size
-   (up to 3.2rem) leaves a ~51px gap under the name. Tighten it so the name
-   sits closer to the university line. */
-.hero-intro h1 { margin-top: 0.15rem; margin-bottom: 0.15em; }
 
 .hero-asu {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin: 0.25rem 0 0.75rem;
-  font-size: 0.85rem;
+  margin: 0 0 0.75rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
 }
 
@@ -51,18 +347,16 @@
   font-size: 1.08rem;
   max-width: 58ch;
   line-height: 1.65;
+  color: var(--text);
 }
 
-.hero-summary strong {
-  color: var(--text);
-  font-weight: 600;
-}
+.hero-summary strong { color: var(--ink); }
 
 .tech-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin: 1.1rem 0 0.25rem;
+  margin: 1.1rem 0 0;
 }
 
 .tech-chip {
@@ -81,33 +375,25 @@
 .tech-chip-icon {
   width: 1rem;
   height: 1rem;
-  color: var(--accent);
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.35rem;
+  color: var(--sea);
 }
 
 .hero-stats {
   display: grid;
   gap: 0.75rem;
-  grid-template-columns: 1fr;
 }
 
 .stat {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 1rem 1.1rem;
+  padding: 0.85rem 0.2rem 0.85rem 1rem;
+  border-left: 3px solid var(--sea);
 }
 
 .stat strong {
   font-size: 0.92rem;
   color: var(--text);
-  line-height: 1.3;
 }
 
 .stat span {
@@ -115,42 +401,108 @@
   color: var(--text-muted);
 }
 
-.featured-grid {
-  display: grid;
-  gap: 1.15rem;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  margin-top: 1.5rem;
+.lands-features-head {
+  margin-bottom: 1.25rem;
 }
 
-.featured-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
+.lands-feature {
+  display: grid;
+  min-height: min(52vw, 380px);
   text-decoration: none !important;
   color: inherit;
-  transition: border-color 0.15s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
 }
 
-.featured-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  transform: translateY(-3px);
+@media (min-width: 800px) {
+  .lands-feature {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+  .lands-feature.is-flip {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+  .lands-feature.is-flip .lands-feature-art { order: 2; }
 }
 
-.featured-card .project-visual { border-radius: 0; height: 110px; }
+.lands-feature-art {
+  min-height: 220px;
+}
 
-.featured-body { padding: 1.1rem 1.2rem 1.25rem; }
-.featured-body h3 { color: var(--text); margin: 0.45rem 0 0.35rem; font-size: 1.05rem; }
-.featured-body p { margin: 0; font-size: 0.86rem; }
+.lands-feature-art .project-visual {
+  height: 100%;
+  min-height: 220px;
+  border-radius: 0;
+}
 
-.skills-grid {
+.lands-feature-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.6rem 1.5rem;
+  background: color-mix(in srgb, var(--foam) 78%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.lands-feature-copy h3 {
+  margin: 0.4rem 0 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+}
+
+.lands-feature-copy p { margin: 0; }
+
+.lands-feature:hover .lands-feature-art .project-visual {
+  transform: scale(1.03);
+}
+
+.lands-feature-art .project-visual {
+  transition: transform 0.5s ease;
+}
+
+.lands-skill-river {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.5rem max(1rem, calc(50% - var(--max) / 2)) 1.25rem;
+  scrollbar-width: thin;
+}
+
+.lands-skill {
+  flex: 0 0 min(280px, 80vw);
+  background: color-mix(in srgb, var(--foam) 80%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 22px;
+  padding: 1.25rem 1.3rem;
+}
+
+.lands-skill h3 { color: var(--text); font-size: 0.95rem; margin: 0; }
+.lands-skill ul { font-size: 0.88rem; padding-left: 1rem; margin: 0; }
+
+.lands-explore {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   margin-top: 1.5rem;
 }
+
+.lands-explore-card {
+  text-decoration: none !important;
+  color: inherit;
+  background: color-mix(in srgb, var(--foam) 80%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+  border-radius: 22px;
+  padding: 1.25rem 1.3rem;
+  transition: transform 0.18s ease;
+}
+
+.lands-explore-card:hover { transform: translateY(-3px); }
+.lands-explore-card h3 { color: var(--text); margin-bottom: 0.35rem; }
+.lands-explore-card p { margin: 0; font-size: 0.9rem; }
+
+.lands-skill h3 { color: var(--text); font-size: 0.95rem; margin: 0; }
+.lands-skill ul { font-size: 0.88rem; padding-left: 1rem; margin: 0; }
 
 .skill-card-head {
   display: flex;
@@ -166,7 +518,7 @@
   display: grid;
   place-items: center;
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--sea);
   font-size: 1.1rem;
   flex-shrink: 0;
 }
@@ -179,12 +531,8 @@
 .explore-card {
   text-decoration: none !important;
   color: inherit;
-  transition: border-color 0.15s, transform 0.15s;
 }
-.explore-card:hover {
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  transform: translateY(-2px);
-}
+.explore-card:hover { transform: translateY(-2px); }
 .explore-card h3 { color: var(--text); margin-bottom: 0.35rem; }
 .explore-card p { margin: 0; font-size: 0.9rem; }
 
@@ -195,17 +543,177 @@
   display: grid;
   place-items: center;
   background: var(--accent-dim);
-  color: var(--accent);
+  color: var(--sea);
   font-size: 1.25rem;
   margin-bottom: 0.85rem;
 }
 
+html[data-theme='c'] .world {
+  background: #0c2230;
+}
+html[data-theme='c'] .world-sky-day { display: none; }
+html[data-theme='c'] .world-sky-dusk { display: block; }
+html[data-theme='c'] .world-island { display: none; }
+html[data-theme='c'] .world-stars,
+html[data-theme='c'] .world-aurora,
+html[data-theme='c'] .world-glow,
+html[data-theme='c'] .world-fireflies { display: block; }
+html[data-theme='c'] .world-first,
+html[data-theme='c'] .world-last,
+html[data-theme='c'] .world-kicker {
+  color: #f4fbfc;
+}
+html[data-theme='c'] .world-first {
+  top: 18%;
+  text-shadow: 0 0 42px rgba(232, 244, 246, 0.28);
+}
+html[data-theme='c'] .world-last {
+  z-index: 4;
+  top: 36%;
+  color: #f4fbfc;
+  text-shadow: 0 0 36px rgba(224, 178, 90, 0.22);
+}
+html[data-theme='c'] .world-fade {
+  background: linear-gradient(transparent, #0c2230);
+}
+html[data-theme='c'] .world-flock {
+  filter: invert(1) brightness(1.18) contrast(1.05);
+}
+html[data-theme='c'] .lands-sky,
+html[data-theme='c'] .lands-vista-img {
+  filter: brightness(0.4) saturate(0.7) hue-rotate(-10deg);
+}
+html[data-theme='c'] .lands-islets,
+html[data-theme='c'] .lands-motes { display: none; }
+html[data-theme='c'] .world-ripple {
+  border-color: color-mix(in srgb, var(--accent-2) 75%, white);
+}
+
+.world-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
+    radial-gradient(1px 1px at 28% 32%, rgba(255, 255, 255, 0.85), transparent),
+    radial-gradient(1.5px 1.5px at 48% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 67% 26%, rgba(255, 255, 255, 0.7), transparent),
+    radial-gradient(2px 2px at 82% 16%, #fff, transparent),
+    radial-gradient(1px 1px at 91% 38%, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(1px 1px at 8% 48%, rgba(255, 255, 255, 0.65), transparent),
+    radial-gradient(1.5px 1.5px at 38% 44%, #fff, transparent),
+    radial-gradient(1px 1px at 58% 52%, rgba(255, 255, 255, 0.75), transparent),
+    radial-gradient(1px 1px at 74% 46%, rgba(255, 255, 255, 0.6), transparent),
+    radial-gradient(1.5px 1.5px at 19% 62%, #fff, transparent),
+    radial-gradient(1px 1px at 86% 58%, rgba(255, 255, 255, 0.7), transparent);
+  animation: stars-twinkle 5.5s ease-in-out infinite alternate;
+}
+
+@keyframes stars-twinkle {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
+.world-aurora {
+  position: absolute;
+  z-index: 1;
+  left: 8%;
+  right: 8%;
+  top: 12%;
+  height: 46%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 48% 70% at 32% 58%, rgba(94, 200, 191, 0.26), transparent 72%),
+    radial-gradient(ellipse 38% 60% at 68% 38%, rgba(224, 178, 90, 0.16), transparent 70%),
+    radial-gradient(ellipse 30% 50% at 50% 30%, rgba(232, 244, 246, 0.1), transparent 70%);
+  filter: blur(22px);
+  animation: aurora-shift 16s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-shift {
+  from { transform: translateX(-3%) scale(1); opacity: 0.75; }
+  to { transform: translateX(4%) scale(1.06); opacity: 1; }
+}
+
+.world-glow {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 40%;
+  width: min(52vw, 520px);
+  height: min(52vw, 520px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(232, 244, 246, 0.2), transparent 64%);
+  animation: dusk-breathe 8s ease-in-out infinite;
+}
+
+@keyframes dusk-breathe {
+  0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+}
+
+.world-fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.world-firefly {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e0b25a;
+  box-shadow: 0 0 8px 3px rgba(224, 178, 90, 0.55);
+  animation: firefly 9s ease-in-out infinite;
+}
+
+.world-firefly:nth-child(1) { left: 12%; top: 28%; animation-duration: 8s; }
+.world-firefly:nth-child(2) { left: 22%; top: 58%; animation-duration: 11s; animation-delay: -2s; }
+.world-firefly:nth-child(3) { left: 38%; top: 22%; animation-duration: 10s; animation-delay: -4s; }
+.world-firefly:nth-child(4) { left: 48%; top: 64%; animation-duration: 12s; animation-delay: -1s; }
+.world-firefly:nth-child(5) { left: 63%; top: 30%; animation-duration: 9s; animation-delay: -6s; }
+.world-firefly:nth-child(6) { left: 74%; top: 52%; animation-duration: 13s; animation-delay: -3s; }
+.world-firefly:nth-child(7) { left: 86%; top: 24%; animation-duration: 8.5s; animation-delay: -5s; }
+.world-firefly:nth-child(8) { left: 18%; top: 78%; animation-duration: 14s; animation-delay: -7s; }
+.world-firefly:nth-child(9) { left: 56%; top: 18%; animation-duration: 10.5s; animation-delay: -8s; }
+.world-firefly:nth-child(10) { left: 81%; top: 70%; animation-duration: 11.5s; animation-delay: -2.5s; }
+.world-firefly:nth-child(11) { left: 33%; top: 46%; animation-duration: 9.5s; animation-delay: -1.5s; }
+.world-firefly:nth-child(12) { left: 91%; top: 44%; animation-duration: 12.5s; animation-delay: -4.5s; }
+
+@keyframes firefly {
+  0%, 100% { transform: translate(0, 0); opacity: 0.35; }
+  40% { transform: translate(18px, -22px); opacity: 1; }
+  70% { transform: translate(-12px, 10px); opacity: 0.55; }
+}
+
 @media (max-width: 640px) {
-  .hero-profile { flex-direction: column; align-items: center; text-align: center; }
-  .hero-asu { justify-content: center; }
-  .hero-intro .social-links { justify-content: center; }
-  .tech-row { justify-content: center; }
-  .hero-actions { justify-content: center; }
-  .hero-stats { grid-template-columns: 1fr; }
-  .profile-photo { width: 128px; height: 128px; border-radius: 24px; }
+  .world-island { width: min(78vw, 420px); bottom: 5.5rem; }
+  .world-title { top: 16%; }
+  .intro-layout { justify-items: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-kicker,
+  .world-first,
+  .world-last,
+  .world-menu,
+  .world-island,
+  .world-stars,
+  .world-aurora,
+  .world-glow,
+  .world-firefly,
+  .lands-sky,
+  .lands-drift,
+  .lands-islets,
+  .lands-motes,
+  .lands-vista-img {
+    animation: none;
+  }
+  .world-island { transform: translateX(-50%); }
+  .world-flock,
+  .world-ripple { display: none; }
 }

@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import type { IconType } from 'react-icons';
 import {
   SiJavascript,
@@ -26,6 +25,7 @@ import { BioSummary } from '../components/BioSummary';
 import { SocialLinks } from '../components/SocialLinks';
 import { AsuLogo } from '../components/AsuLogo';
 import { ProjectVisual, projectIcon } from '../components/ProjectVisual';
+import { WorldStage } from '../components/WorldStage';
 import './HomePage.css';
 
 const techIcons: Record<(typeof profile.tech)[number], IconType> = {
@@ -54,114 +54,155 @@ const explore = [
 
 export function HomePage() {
   const featured = projects.slice(0, 3);
+  const [firstName, ...restName] = profile.name.split(' ');
+  const lastName = restName.join(' ');
 
   return (
-    <>
-      <section className="hero">
-        <div className="container hero-inner">
-          <motion.div className="hero-main" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <div className="hero-profile">
-              <img src={profile.photoUrl} alt={profile.name} className="profile-photo" />
-              <div className="hero-intro">
-                <p className="section-label">{profile.title}</p>
-                <h1>{profile.name}</h1>
-                <div className="hero-asu">
-                  <AsuLogo size="sm" />
-                  <span>Arizona State University</span>
+    <div className="home-world">
+      <WorldStage>
+        <p className="world-kicker">{profile.title}</p>
+        <h1 className="world-title">
+          <span className="world-first">{firstName}</span>
+          <span className="world-last">{lastName}</span>
+        </h1>
+        <img
+          className="world-island"
+          src={`${import.meta.env.BASE_URL}images/world-island.webp`}
+          alt=""
+        />
+        <nav className="world-menu" aria-label="Start">
+          <Link to="/projects" className="btn btn-primary">View Projects</Link>
+          <Link to="/experience" className="btn btn-ghost">Work</Link>
+          <Link to="/demos" className="btn btn-ghost">Demos</Link>
+        </nav>
+      </WorldStage>
+
+      <div className="lands">
+        <img
+          className="lands-sky"
+          src={`${import.meta.env.BASE_URL}images/world-cloudsea.jpg`}
+          alt=""
+        />
+        <div className="lands-drift" aria-hidden />
+        <img
+          className="lands-islets is-left"
+          src={`${import.meta.env.BASE_URL}images/world-islets.webp`}
+          alt=""
+        />
+        <img
+          className="lands-islets is-right"
+          src={`${import.meta.env.BASE_URL}images/world-islets.webp`}
+          alt=""
+        />
+        <div className="lands-motes" aria-hidden />
+
+        <section className="section intro-band">
+          <div className="container intro-layout lands-plaque">
+            <img src={profile.photoUrl} alt={profile.name} className="profile-photo" />
+            <div>
+              <div className="hero-asu">
+                <AsuLogo size="sm" />
+                <span>Arizona State University</span>
+              </div>
+              <p className="hero-summary"><BioSummary /></p>
+              <SocialLinks />
+              <div className="tech-row" aria-label="Technical stack">
+                {profile.tech.map((name) => {
+                  const Icon = techIcons[name];
+                  return (
+                    <span key={name} className="tech-chip">
+                      <Icon className="tech-chip-icon" />
+                      {name}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="hero-stats">
+              {profile.credentials.map((cred) => (
+                <div key={cred.label} className="stat">
+                  <strong>{cred.label}</strong>
+                  <span>{cred.detail}</span>
                 </div>
-                <SocialLinks />
-              </div>
+              ))}
             </div>
-            <p className="hero-summary"><BioSummary /></p>
-            <div className="tech-row" aria-label="Technical stack">
-              {profile.tech.map((name) => {
-                const Icon = techIcons[name];
-                return (
-                  <span key={name} className="tech-chip">
-                    <Icon className="tech-chip-icon" />
-                    {name}
-                  </span>
-                );
-              })}
-            </div>
-            <div className="hero-actions">
-              <Link to="/projects" className="btn btn-primary">View Projects</Link>
-              <Link to="/experience" className="btn btn-ghost">Work Experience</Link>
-              <Link to="/demos" className="btn btn-ghost">Interactive Demos</Link>
-            </div>
-          </motion.div>
-          <motion.div className="hero-stats" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.15 }}>
-            {profile.credentials.map((cred) => (
-              <div key={cred.label} className="card stat">
-                <strong>{cred.label}</strong>
-                <span>{cred.detail}</span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          <p className="section-label">Selected work</p>
-          <h2>Featured projects</h2>
-          <div className="featured-grid">
-            {featured.map((p) => {
-              const Icon = projectIcon(p.id);
-              return (
-                <Link key={p.id} to={projectHref(p.id)} className="featured-card">
-                  <ProjectVisual project={p} Icon={Icon} />
-                  <div className="featured-body">
-                    <div>{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
-                    <h3>{p.title}</h3>
-                    <p>{p.description}</p>
-                  </div>
-                </Link>
-              );
-            })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section section-dim">
-        <div className="container">
-          <p className="section-label">Skills</p>
-          <h2>Technical focus</h2>
-          <div className="skills-grid">
+        <section className="lands-vista" aria-labelledby="featured-heading">
+          <img
+            className="lands-vista-img"
+            src={`${import.meta.env.BASE_URL}images/world-vista.jpg`}
+            alt=""
+          />
+          <div className="lands-vista-copy">
+            <p className="section-label">Selected work</p>
+            <h2 id="featured-heading">Featured projects</h2>
+          </div>
+        </section>
+
+        <section className="lands-features">
+          {featured.map((p, i) => {
+            const Icon = projectIcon(p.id);
+            return (
+              <Link
+                key={p.id}
+                to={projectHref(p.id)}
+                className={`lands-feature${i % 2 ? ' is-flip' : ''}`}
+              >
+                <div className="lands-feature-art">
+                  <ProjectVisual project={p} Icon={Icon} />
+                </div>
+                <div className="lands-feature-copy">
+                  <div>{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
+                  <h3>{p.title}</h3>
+                  <p>{p.description}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <p className="section-label">Skills</p>
+            <h2>Technical focus</h2>
+          </div>
+          <div className="lands-skill-river" aria-label="Technical focus">
             {profile.skills.map(([category, items]) => {
               const Icon = skillIcons[category];
               return (
-                <div key={category} className="card skill-card">
+                <article key={category} className="lands-skill">
                   <div className="skill-card-head">
                     {Icon && <span className="skill-icon"><Icon /></span>}
                     <h3>{category}</h3>
                   </div>
                   <ul>{items.map((s) => <li key={s}>{s}</li>)}</ul>
-                </div>
+                </article>
               );
             })}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="section">
-        <div className="container">
-          <p className="section-label">Explore</p>
-          <h2>On this site</h2>
-          <div className="grid-2 explore-grid">
-            {explore.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link key={item.to} to={item.to} className="card explore-card">
-                  <span className="explore-icon"><Icon /></span>
-                  <h3>{item.title}</h3>
-                  <p>{item.desc}</p>
-                </Link>
-              );
-            })}
+        <section className="section">
+          <div className="container">
+            <p className="section-label">Explore</p>
+            <h2>On this site</h2>
+            <div className="lands-explore">
+              {explore.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.to} to={item.to} className="lands-explore-card">
+                    <span className="explore-icon"><Icon /></span>
+                    <h3>{item.title}</h3>
+                    <p>{item.desc}</p>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </div>
+    </div>
   );
 }

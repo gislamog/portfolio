@@ -44,7 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <header className="site-header">
+      <header className={pathname === '/' ? 'site-header is-home' : 'site-header'}>
         <div className="container header-inner">
           <Link to="/" className="logo">
             <span className="logo-mark">GI</span>

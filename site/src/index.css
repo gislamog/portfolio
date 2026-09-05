@@ -1,53 +1,53 @@
-/* Style A: Soft slate */
+/* Constructed world — day */
 :root,
 [data-theme='a'] {
-  --bg: #1c2333;
-  --bg-elevated: #252d42;
-  --bg-card: #2a334a;
-  --bg-section: rgba(255, 255, 255, 0.03);
-  --border: rgba(255, 255, 255, 0.1);
-  --text: #eef1f8;
-  --text-muted: #a8b0c4;
-  --accent: #5eead4;
-  --accent-dim: rgba(94, 234, 212, 0.14);
-  --accent-2: #93a8f8;
-  /* Third accent, used for the Big Data Certificate pill so it reads apart
-     from both the teal --accent and the indigo --accent-2. */
-  --cert-accent: #f0b429;
-  --danger: #f87171;
-  --hero-glow-1: rgba(94, 234, 212, 0.12);
-  --hero-glow-2: rgba(147, 168, 248, 0.1);
-  --mesh-1: rgba(94, 234, 212, 0.06);
-  --mesh-2: rgba(147, 168, 248, 0.08);
-  --mesh-3: rgba(120, 140, 200, 0.05);
-  --radius: 14px;
-  --font: 'DM Sans', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --max: 1120px;
+  --bg: #e7f1f4;
+  --bg-elevated: #f6fbfc;
+  --bg-card: #ffffff;
+  --bg-section: rgba(22, 52, 63, 0.045);
+  --border: rgba(22, 52, 63, 0.12);
+  --text: #1c3d48;
+  --text-muted: #4d6b74;
+  --ink: #16343f;
+  --sea: #2f9b90;
+  --foam: #f6fbfc;
+  --accent: #2f9b90;
+  --accent-dim: rgba(47, 155, 144, 0.14);
+  --accent-2: #c48a2a;
+  --cert-accent: #c48a2a;
+  --danger: #c23b3b;
+  --hero-glow-1: transparent;
+  --hero-glow-2: transparent;
+  --mesh-1: transparent;
+  --mesh-2: transparent;
+  --mesh-3: transparent;
+  --radius: 16px;
+  --font: 'Figtree', 'DM Sans', system-ui, sans-serif;
+  --display: 'Syne', 'Figtree', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --max: 1180px;
   --nav-h: 64px;
-  --header-bg: rgba(28, 35, 51, 0.88);
+  --header-bg: rgba(231, 241, 244, 0.72);
 }
 
-/* Style C: Paper light */
+/* Dusk of the same world — not the old navy-teal */
 [data-theme='c'] {
-  --bg: #e7e3d9;
-  --bg-elevated: #f8f6f0;
-  --bg-card: #ffffff;
-  --bg-section: rgba(40, 55, 70, 0.04);
-  --border: rgba(29, 39, 51, 0.22);
-  --text: #1d2733;
-  --text-muted: #5b6775;
-  --accent: #0f766e;
-  --accent-dim: rgba(15, 118, 110, 0.12);
-  --accent-2: #1d4ed8;
-  --cert-accent: #a16207;
-  --danger: #dc2626;
-  --hero-glow-1: rgba(15, 118, 110, 0.08);
-  --hero-glow-2: rgba(29, 78, 216, 0.06);
-  --mesh-1: rgba(15, 118, 110, 0.07);
-  --mesh-2: rgba(29, 78, 216, 0.05);
-  --mesh-3: rgba(180, 140, 90, 0.06);
-  --header-bg: rgba(243, 241, 234, 0.92);
+  --bg: #17343f;
+  --bg-elevated: #1e4452;
+  --bg-card: #204a58;
+  --bg-section: rgba(255, 255, 255, 0.04);
+  --border: rgba(232, 244, 246, 0.12);
+  --text: #e8f4f6;
+  --text-muted: #9db8bf;
+  --ink: #e8f4f6;
+  --sea: #5ec8bf;
+  --foam: #1e4452;
+  --accent: #5ec8bf;
+  --accent-dim: rgba(94, 200, 191, 0.16);
+  --accent-2: #e0b25a;
+  --cert-accent: #e0b25a;
+  --danger: #f07171;
+  --header-bg: rgba(23, 52, 63, 0.78);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -81,6 +81,7 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 0.5em; font-weight: 600; }
+h1, h2 { font-family: var(--display); }
 h1 { font-size: clamp(2rem, 5vw, 3.2rem); letter-spacing: -0.03em; }
 h2 { font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; }
 h3 { font-size: 1.1rem; }
@@ -156,8 +157,7 @@ li { margin-bottom: 0.4em; }
   text-decoration: none !important;
 }
 .btn:hover { transform: translateY(-1px); }
-.btn-primary { background: var(--accent); color: #0b1220; }
-[data-theme='c'] .btn-primary { color: #fff; }
+.btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { filter: brightness(1.08); }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn-ghost:hover { background: var(--bg-elevated); }
@@ -281,8 +281,8 @@ li { margin-bottom: 0.4em; }
   box-sizing: border-box;
 }
 
-.swatch-a { background: linear-gradient(135deg, #5eead4, #252d42); }
-.swatch-c { background: linear-gradient(135deg, #0f766e, #f3f1ea); }
+.swatch-a { background: linear-gradient(135deg, #2f9b90, #e7f1f4); }
+.swatch-c { background: linear-gradient(135deg, #5ec8bf, #17343f); }
 
 .contact-grid { margin-top: 1rem; }
 .contact-card {

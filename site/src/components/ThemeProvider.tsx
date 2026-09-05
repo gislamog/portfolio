@@ -42,8 +42,8 @@ export function ThemeToggle() {
       className={`theme-switch${isLight ? ' theme-switch-on' : ''}`}
       role="switch"
       aria-checked={isLight}
-      aria-label="Toggle light theme"
-      title={isLight ? 'Paper light' : 'Cool slate'}
+      aria-label="Toggle dusk theme"
+      title={isLight ? 'Dusk' : 'Day'}
       onClick={() => setTheme(isLight ? 'a' : 'c')}
     >
       <span className="theme-switch-track">
