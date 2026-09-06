@@ -5,19 +5,22 @@ type Mode = 'roost' | 'follow' | 'flee';
 /** Cylian.org Reynolds boids — slider values requested for this hero. */
 const FLOCK_SIZE = 20;
 const PERCEPTION_RADIUS = 100;
-const SEPARATION_RADIUS = 48;
+const SEPARATION_RADIUS = 56;
 const MAX_SPEED = 1;
 const MAX_FORCE = 0.1;
-const SEPARATION_WEIGHT = 1.1;
+const SEPARATION_WEIGHT = 1.25;
 const ALIGNMENT_WEIGHT = 0.9;
-const COHESION_WEIGHT = 0.7;
+const COHESION_WEIGHT = 0.55;
 
 /** Product overlay: attract to pointer (cylian predator is flee-only). */
 const SEEK_WEIGHT = 1.35;
 const FLEE_SPEED = 5.4;
-const SPRITE_SIZE = 48;
-const SHEET_COLS = 12;
-const SHEET_FLAP_ROWS = 3;
+/** Drawn height of each silhouette (side-view SVGs are portrait). */
+const SPRITE_H = 34;
+/** Idle roost cloud — wide enough that 48px sprites don't stack. */
+const ROOST_RX = 220;
+const ROOST_RY = 90;
+const HOME_JITTER = 95;
 
 class Vector2D {
   x: number;
@@ -88,7 +91,8 @@ type Bird = {
   acceleration: Vector2D;
   phase: number;
   scale: number;
-  flapRow: number;
+  /** Personal offset from the shared roost center — keeps a cloud, not a ring. */
+  roostOff: Vector2D;
   flee: Vector2D;
 };
 
@@ -98,14 +102,19 @@ function pointInRect(x: number, y: number, r: DOMRect) {
 
 function makeBirds(w: number, h: number): Bird[] {
   return Array.from({ length: FLOCK_SIZE }, (_, i) => {
-    const ang = (i / FLOCK_SIZE) * Math.PI * 2;
+    // Scatter in a cloud (not evenly around an ellipse — that reads as a ring).
+    const ox = (Math.random() * 2 - 1) * ROOST_RX;
+    const oy = (Math.random() * 2 - 1) * ROOST_RY;
     return {
-      position: new Vector2D(w * 0.5 + Math.cos(ang) * 70, h * 0.3 + Math.sin(ang) * 32),
-      velocity: Vector2D.random(MAX_SPEED * 0.5),
+      position: new Vector2D(w * 0.5 + ox, h * 0.3 + oy),
+      velocity: Vector2D.random(MAX_SPEED * 0.55),
       acceleration: new Vector2D(),
-      phase: i * 0.73,
-      scale: 0.88 + (i % 4) * 0.06,
-      flapRow: i % SHEET_FLAP_ROWS,
+      phase: Math.random() * Math.PI * 2,
+      scale: 0.82 + (i % 5) * 0.05,
+      roostOff: new Vector2D(
+        (Math.random() * 2 - 1) * HOME_JITTER,
+        (Math.random() * 2 - 1) * (HOME_JITTER * 0.55),
+      ),
       flee: new Vector2D(),
     };
   });
@@ -195,6 +204,12 @@ function applyForce(bird: Bird, force: Vector2D) {
   bird.acceleration.add(force);
 }
 
+function loadBird(src: string) {
+  const img = new Image();
+  img.src = src;
+  return img;
+}
+
 export function WorldFlock() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const birdsRef = useRef<Bird[]>([]);
@@ -209,13 +224,15 @@ export function WorldFlock() {
     if (reduced) return;
 
     const canvas = canvasRef.current;
-    const world = canvas?.closest('.world');
+    const stage = canvas?.closest('.sky-stage');
+    const world = stage?.querySelector('.world') ?? canvas?.closest('.world');
     if (!canvas || !(world instanceof HTMLElement)) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const sheet = new Image();
-    sheet.src = `${import.meta.env.BASE_URL}images/bird-sheet.webp`;
+    const base = import.meta.env.BASE_URL;
+    const flapImg = loadBird(`${base}images/bird-flap.svg`);
+    const glideImg = loadBird(`${base}images/bird-glide.svg`);
 
     const size = () => {
       const r = world.getBoundingClientRect();
@@ -265,9 +282,7 @@ export function WorldFlock() {
     const syncFromClient = (cx: number, cy: number) => {
       lastClient.current = { x: cx, y: cy };
       const { r } = size();
-      const hit = document.elementFromPoint(cx, cy);
-      const overLands = hit instanceof Element && !!hit.closest('.lands');
-      const over = pointInRect(cx, cy, r) && !overLands;
+      const over = pointInRect(cx, cy, r);
       setInside(over, cx - r.left, cy - r.top);
     };
 
@@ -313,11 +328,16 @@ export function WorldFlock() {
         if (current === 'follow' && !spooked) {
           applyForce(b, seek(b, mouse.current, MAX_SPEED, MAX_FORCE).mult(SEEK_WEIGHT));
         } else if (current === 'roost') {
-          const home = new Vector2D(
-            ww * 0.52 + Math.cos(now / 1800 + b.phase) * 50,
-            hh * 0.34 + Math.sin(now / 1600 + b.phase) * 22,
+          // One drifting flock center + per-bird offset → loose cloud, not a ring.
+          const center = new Vector2D(
+            ww * 0.5 + Math.cos(now / 4800) * 36,
+            hh * 0.3 + Math.sin(now / 4100) * 18,
           );
-          applyForce(b, seek(b, home, MAX_SPEED, MAX_FORCE * 0.7));
+          const home = new Vector2D(
+            center.x + b.roostOff.x + Math.cos(now / 2600 + b.phase) * 18,
+            center.y + b.roostOff.y + Math.sin(now / 2300 + b.phase) * 12,
+          );
+          applyForce(b, seek(b, home, MAX_SPEED * 0.7, MAX_FORCE * 0.4));
         } else {
           applyForce(b, seek(b, b.flee, FLEE_SPEED, MAX_FORCE * 1.8).mult(2.1));
         }
@@ -343,21 +363,31 @@ export function WorldFlock() {
       ctx.imageSmoothingQuality = 'high';
       ctx.clearRect(0, 0, ww, hh);
 
-      const fw = sheet.naturalWidth / SHEET_COLS;
-      const fh = sheet.naturalHeight / 4;
-      const ready = sheet.complete && sheet.naturalWidth > 0;
+      const flapReady = flapImg.complete && flapImg.naturalWidth > 0;
+      const glideReady = glideImg.complete && glideImg.naturalWidth > 0;
+      if (!flapReady && !glideReady) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
 
       for (const b of birds) {
-        if (!ready) continue;
         const spd = b.velocity.mag();
-        const beat = Math.max(48, 92 - spd * 14);
-        const frame = Math.floor(now / beat + b.phase) % SHEET_COLS;
-        const ang = Math.atan2(b.velocity.y, b.velocity.x) + Math.PI / 2;
-        const size = SPRITE_SIZE * b.scale;
+        const beat = Math.max(90, 160 - spd * 40);
+        const flapping = Math.sin(now / beat + b.phase) > 0.15;
+        const img = flapping && flapReady ? flapImg : glideReady ? glideImg : flapImg;
+        if (!img.naturalWidth) continue;
+
+        const aspect = img.naturalWidth / img.naturalHeight;
+        const drawH = SPRITE_H * b.scale;
+        const drawW = drawH * aspect;
+        const bank = Math.max(-0.35, Math.min(0.35, Math.atan2(b.velocity.y, Math.abs(b.velocity.x) + 0.01) * 0.45));
+        const faceLeft = b.velocity.x < 0;
+
         ctx.save();
         ctx.translate(b.position.x, b.position.y);
-        ctx.rotate(ang);
-        ctx.drawImage(sheet, frame * fw, b.flapRow * fh, fw, fh, -size / 2, -size / 2, size, size);
+        ctx.rotate(bank);
+        ctx.scale(faceLeft ? -1 : 1, 1);
+        ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
         ctx.restore();
       }
 

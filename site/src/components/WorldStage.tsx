@@ -3,7 +3,7 @@ import { WorldFlock } from './WorldFlock';
 
 export function WorldStage({ children }: { children: ReactNode }) {
   return (
-    <section className="world" aria-label="Title scene">
+    <div className="sky-stage">
       <img
         className="world-sky world-sky-day"
         src={`${import.meta.env.BASE_URL}images/world-sky.jpg`}
@@ -14,17 +14,18 @@ export function WorldStage({ children }: { children: ReactNode }) {
         src={`${import.meta.env.BASE_URL}images/world-sky-dusk.jpg`}
         alt=""
       />
-      <div className="world-stars" aria-hidden />
-      <div className="world-aurora" aria-hidden />
-      <div className="world-glow" aria-hidden />
-      <div className="world-fireflies" aria-hidden>
-        {Array.from({ length: 12 }, (_, i) => (
-          <span key={i} className="world-firefly" />
-        ))}
+      <div className="sky-hero-fx" aria-hidden>
+        <div className="world-stars" />
+        <div className="world-aurora" />
+        <div className="world-glow" />
+        <div className="world-fireflies">
+          {Array.from({ length: 12 }, (_, i) => (
+            <span key={i} className="world-firefly" />
+          ))}
+        </div>
       </div>
       <WorldFlock />
       {children}
-      <div className="world-fade" aria-hidden />
-    </section>
+    </div>
   );
 }
