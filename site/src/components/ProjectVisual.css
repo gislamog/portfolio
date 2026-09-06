@@ -1,6 +1,9 @@
+/* Default card art box. Contexts that need it to fill a taller cell (the
+   homepage feature rows) override height/min-height rather than fighting a
+   fixed 120px. */
 .project-visual {
   position: relative;
-  height: 120px;
+  height: var(--project-visual-h, 120px);
   display: grid;
   place-items: center;
   overflow: hidden;
