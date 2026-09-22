@@ -699,8 +699,8 @@ export function RobotMLDemo() {
     moveGoal();
     setMode('test');
     const quality = thin
-      ? `Thin data (target ${MIN_SAMPLES}+ samples and ${MIN_COLLISIONS}+ collisions). Expect an unreliable model. Collect more, then test again to watch these numbers improve.`
-      : 'Data pool meets the target, so these numbers should be reasonably stable.';
+      ? `Thin data (target ${MIN_SAMPLES}+ samples and ${MIN_COLLISIONS}+ collisions for this hand-driven demo; the original coursework trained on ~11,000). Expect an unreliable model. Collect more, then test again to watch these numbers improve.`
+      : 'Data pool meets the target for this demo, so these numbers should be reasonably stable (the original coursework used a much larger ~11,000-sample dataset).';
     setTestResult(
       `All ${total} samples used: ${trainSize} to train, ${testSize} held back to score it ` +
       `(${Math.round((trainSize / total) * 100)}/${Math.round((testSize / total) * 100)} split, nothing discarded). ${hits} of the ${total} are collisions. ` +
@@ -855,7 +855,8 @@ export function RobotMLDemo() {
             {sampleCount} samples, {collisions} hits
           </span>
           <span className="csv-target">
-            (recommended: {MIN_SAMPLES} samples, {MIN_COLLISIONS} hits)
+            (recommended: {MIN_SAMPLES}+ samples, {MIN_COLLISIONS}+ hits, for a demo you can hand-drive in a few minutes;
+            the original coursework trained on ~11,000 samples)
           </span>
         </p>
         <div className="csv-table-wrap">
