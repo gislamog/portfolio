@@ -67,20 +67,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 'capstone',
-    title: 'Healthcare Regulatory Assessment Platform',
-    tags: ['React', 'Full-Stack', 'Capstone'],
-    tone: 'navy',
-    image: img('projects/healthcare.png'),
-    description:
-      'Primary frontend developer on a two-semester Nash Consulting capstone. React and Spring Boot platform that replaced Word-and-email workflows for healthcare regulatory assessments.',
-    highlights: [
-      'Set up the React and Spring Boot project, including routing and primary navigation',
-      'Implemented Auth0 (later AWS Cognito) with roles on the token so administrators could review the full engagement and employees were limited to their assigned work',
-      'Built employee scheduling with absence tracking, double-booking prevention, and an admin Agenda for assigning review tasks',
-    ],
-  },
-  {
     id: 'analytics-viz',
     title: 'Analytics Visualizations',
     tags: ['Product', 'Data Platform', 'EdTech'],
@@ -108,6 +94,20 @@ export const projects: Project[] = [
       'Symlink-mirror worktrees: a large PHP application tree stays shared; only the directories that change per branch are unique',
     ],
     githubUrl: REPO_SKILLS,
+  },
+  {
+    id: 'capstone',
+    title: 'Healthcare Regulatory Assessment Platform',
+    tags: ['React', 'Full-Stack', 'Capstone'],
+    tone: 'navy',
+    image: img('projects/healthcare.png'),
+    description:
+      'Primary frontend developer on a two-semester Nash Consulting capstone. React and Spring Boot platform that replaced Word-and-email workflows for healthcare regulatory assessments.',
+    highlights: [
+      'Set up the React and Spring Boot project, including routing and primary navigation',
+      'Implemented Auth0 (later AWS Cognito) with roles on the token so administrators could review the full engagement and employees were limited to their assigned work',
+      'Built employee scheduling with absence tracking, double-booking prevention, and an admin Agenda for assigning review tasks',
+    ],
   },
   {
     id: 'mcs-collision',
