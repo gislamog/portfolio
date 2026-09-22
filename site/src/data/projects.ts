@@ -52,6 +52,19 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: 'academic-quintiles',
+    title: 'Academic Quintile & Decile Ranking',
+    tags: ['Nuxt', 'Data Platform', 'EdTech'],
+    tone: 'teal',
+    description:
+      'Designed and shipped a centralized ranking system for the analytics platform: per-class academic quintiles (and a decile slot for future use) computed once and shared by every visualization, replacing inconsistent per-page ranking logic in the legacy app.',
+    highlights: [
+      'Extended the server-side sort to a full 9-variant matrix driven by org profile flags (rank, weighted/unweighted GPA, rigor), with explicit null handling so results are reproducible regardless of sort direction',
+      'Wrote a pure bucketing helper that dedupes to one ranked slot per student before assigning quintiles/deciles, fixing a legacy bug where students with more applications were mis-ranked',
+      'Centralized the computation in the Pinia store behind a single getQuintile lookup, so every visualization reads the same ranking instead of recomputing it independently',
+    ],
+  },
+  {
     id: 'capstone',
     title: 'Healthcare Regulatory Assessment Platform',
     tags: ['React', 'Full-Stack', 'Capstone'],

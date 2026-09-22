@@ -6,7 +6,7 @@ export function ExperiencePage() {
     <div className="page-header container">
       <p className="section-label">Career</p>
       <h1>Work Experience</h1>
-      <p className="page-lead">Software development on production web applications, analytics platforms, and internships.</p>
+      <p className="page-lead">Software development on production web applications and analytics platforms.</p>
 
       <div className="timeline" style={{ marginTop: '2.5rem' }}>
         {experience.map((job) => (

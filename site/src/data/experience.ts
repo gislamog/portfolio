@@ -1,11 +1,12 @@
 export const experience = [
   {
-    title: 'Support & QA Engineer / Software Developer',
+    title: 'Software Engineer',
     company: 'EdTech',
     period: 'March 2025 to Present',
     location: 'Remote',
     note: 'Promoted from contractor (March 2025) to full-time (October 2025).',
     highlights: [
+      'Designed and shipped centralized academic quintile/decile ranking for the analytics platform: a class-scoped bucketing pipeline (server-side sort matrix, dedupe-first grouping, and a single store-level computation) that replaced inconsistent per-page ranking logic and keeps every visualization in agreement on a student’s ranking.',
       'Shipped production features including counselor-facing workflow UI and reliability work that eliminated runtime crashes on incomplete student data. Contributed to the Nuxt platform migration across legacy and modern surfaces.',
       'Develop against a multi-service local platform (shared database/auth, hostname-based routing, and parallel branch previews), using AI-assisted workflows to move faster across legacy and Nuxt surfaces while reviewing outputs for correctness and edge cases.',
       'Contributed development on the Analytics Visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles multi-year historical data with live, role-based account state so reporting matches real operational conditions. Also led QA for the same project.',

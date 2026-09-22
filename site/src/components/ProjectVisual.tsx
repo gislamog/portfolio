@@ -9,6 +9,7 @@ import {
   FiGrid,
   FiHeart,
   FiKey,
+  FiLayers,
   FiShield,
   FiType,
 } from 'react-icons/fi';
@@ -16,6 +17,7 @@ import type { Project } from '../data/projects';
 import './ProjectVisual.css';
 
 const ICONS: Record<string, IconType> = {
+  'academic-quintiles': FiLayers,
   'analytics-viz': FiBarChart2,
   capstone: FiHeart,
   'git-worktrees': FiGitBranch,
