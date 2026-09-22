@@ -6,7 +6,7 @@ export const experience = [
     location: 'Remote',
     note: 'Promoted from contractor (March 2025) to full-time (October 2025).',
     highlights: [
-      'Shipped Selectivity by Quintiles, a new analytics visualization built from a design handoff with no legacy equivalent (three stacked-bar charts, 937 tests, ~23k lines); diagnosed a hover-flicker bug down to per-render cost through measurement rather than guesswork and fixed it with a dwell-intent hook.',
+      'Shipped Selectivity by Quintiles, a new analytics visualization built from a design handoff with no legacy equivalent (three stacked-bar charts, 78 Playwright E2E tests, ~23k lines); tracked a hover-flicker bug down to tooltip re-render cost and fixed it with a dwell-intent hook.',
       'Shipped production features including counselor-facing workflow UI and reliability work that eliminated runtime crashes on incomplete student data. Contributed to the Nuxt platform migration across legacy and modern surfaces.',
       'Develop against a multi-service local platform (shared database/auth, hostname-based routing, and parallel branch previews), using AI-assisted workflows to move faster across legacy and Nuxt surfaces while reviewing outputs for correctness and edge cases.',
       'Contributed development on the Analytics Visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles multi-year historical data with live, role-based account state so reporting matches real operational conditions. Also led QA for the same project.',
