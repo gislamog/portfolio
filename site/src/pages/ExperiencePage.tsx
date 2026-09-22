@@ -1,5 +1,5 @@
 import { FiBriefcase, FiMapPin } from 'react-icons/fi';
-import { experience } from '../data/experience';
+import { experience, formatDuration } from '../data/experience';
 
 export function ExperiencePage() {
   return (
@@ -20,7 +20,12 @@ export function ExperiencePage() {
                   <p className="job-meta"><FiMapPin aria-hidden /> {job.location}</p>
                 </div>
               </div>
-              <span className="period">{job.period}</span>
+              <div className="period-block">
+                <span className="period">{job.period}</span>
+                {formatDuration(job.period) && (
+                  <span className="duration">{formatDuration(job.period)}</span>
+                )}
+              </div>
             </div>
             {job.note && <p className="note">{job.note}</p>}
             <ul>{job.highlights.map((h) => <li key={h.slice(0, 40)}>{h}</li>)}</ul>

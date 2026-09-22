@@ -42,3 +42,38 @@ export const experience = [
 ];
 
 export type Experience = (typeof experience)[number];
+
+const MONTHS = [
+  'january', 'february', 'march', 'april', 'may', 'june',
+  'july', 'august', 'september', 'october', 'november', 'december',
+];
+
+function parsePeriodDate(raw: string): Date | null {
+  const s = raw.trim().toLowerCase();
+  if (s === 'present') return new Date();
+  const match = s.match(/^([a-z]+)\s+(\d{4})$/);
+  if (!match) return null;
+  const monthIndex = MONTHS.indexOf(match[1]);
+  if (monthIndex === -1) return null;
+  return new Date(Number(match[2]), monthIndex, 1);
+}
+
+/** Renders a job's `period` (e.g. "March 2025 to Present") as a duration like "1 yr 7 mos". */
+export function formatDuration(period: string): string | null {
+  const [startRaw, endRaw] = period.split(/\s+to\s+/i);
+  if (!startRaw || !endRaw) return null;
+  const start = parsePeriodDate(startRaw);
+  const end = parsePeriodDate(endRaw);
+  if (!start || !end) return null;
+
+  let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+  if (months < 1) return null;
+
+  const years = Math.floor(months / 12);
+  months = months % 12;
+
+  const parts: string[] = [];
+  if (years > 0) parts.push(`${years} yr${years > 1 ? 's' : ''}`);
+  if (months > 0) parts.push(`${months} mo${months > 1 ? 's' : ''}`);
+  return parts.length ? parts.join(' ') : '1 mo';
+}

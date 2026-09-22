@@ -177,10 +177,21 @@
   font-size: 0.82rem;
   color: var(--text-muted);
 }
+.period-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
 .period {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--accent);
+  white-space: nowrap;
+}
+.duration {
+  font-size: 0.75rem;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 .note { font-size: 0.9rem; font-style: italic; }
