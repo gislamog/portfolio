@@ -60,6 +60,7 @@ export const projects: Project[] = [
     description:
       'Built a new CK360 visualization from a design handoff, with no legacy implementation to reference. The page combines three stacked-bar charts and a 13-column detail table to show how applications, admissions, and enrollments are distributed across five college-selectivity bands for each WGPA quintile.',
     highlights: [
+      'Served as the technical lead, organizing and leading design meetings with the CEO, Product, and Support teams to shape the visualization, define requirements, and resolve design decisions',
       'Designed separate filtering behavior for the charts and table: selectivity filters dim chart segments to preserve the full distribution, while all active filters narrow the application-level table',
       'Built a custom DOM-based chart component to support stacked bars alongside per-quintile WGPA and course-rigor ranges—layout requirements that did not fit the existing Chart.js components',
       'Caught two errors in the design handoff before release, including swapped admit-rate ranges for two selectivity bands, by validating the mockup against the application’s source-of-truth category data',
