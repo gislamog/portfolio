@@ -26,19 +26,27 @@ export const experience = [
       'Supported early ML feature roadmap planning from datasets and requirements discussions.',
     ],
   },
-  // Recruiter-hidden until dates and course details are filled in.
-  // {
-  //   title: 'Teaching Assistant',
-  //   company: 'Arizona State University',
-  //   period: '[Start to End dates placeholder]',
-  //   location: 'Tempe, AZ / Remote',
-  //   highlights: [
-  //     '[Course name placeholder, e.g. SER 222 or CSE 205]',
-  //     'Supported students with programming assignments, debugging, and course concepts.',
-  //     'Held office hours and reviewed lab submissions.',
-  //     '[Add specific course details when ready]',
-  //   ],
-  // },
+  {
+    title: 'Teaching Assistant',
+    company: 'Arizona State University',
+    period: 'October 2022 to December 2022',
+    location: 'Remote',
+    highlights: [
+      'Supported student learning by holding review sessions and providing personalized guidance.',
+      'Collaborated closely with faculty to manage and create course content.',
+    ],
+  },
+  {
+    title: 'Independent Business Owner',
+    company: 'Retail & E-Commerce',
+    period: '2018 to 2021',
+    location: 'Torrance, CA',
+    highlights: [
+      'Led all aspects of business operations, including employee management, hiring, scheduling, and payroll.',
+      'Developed strong leadership and problem-solving skills by managing store operations, customer service, and stock management independently.',
+      'Oversaw online sales, account management, and customer relations, ensuring timely order fulfillment and resolving issues.',
+    ],
+  },
 ];
 
 export type Experience = (typeof experience)[number];
@@ -51,6 +59,10 @@ const MONTHS = [
 function parsePeriodDate(raw: string): Date | null {
   const s = raw.trim().toLowerCase();
   if (s === 'present') return new Date();
+
+  const yearOnly = s.match(/^(\d{4})$/);
+  if (yearOnly) return new Date(Number(yearOnly[1]), 0, 1);
+
   const match = s.match(/^([a-z]+)\s+(\d{4})$/);
   if (!match) return null;
   const monthIndex = MONTHS.indexOf(match[1]);
@@ -66,7 +78,12 @@ export function formatDuration(period: string): string | null {
   const end = parsePeriodDate(endRaw);
   if (!start || !end) return null;
 
-  let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+  // Year-only ranges (e.g. "2018 to 2021") don't carry month precision,
+  // so don't add the "inclusive month" offset used for month-level periods.
+  const isYearOnly = /^\d{4}$/.test(startRaw.trim()) && /^\d{4}$/.test(endRaw.trim());
+  const inclusiveOffset = isYearOnly ? 0 : 1;
+
+  let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + inclusiveOffset;
   if (months < 1) return null;
 
   const years = Math.floor(months / 12);
