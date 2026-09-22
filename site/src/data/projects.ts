@@ -53,16 +53,17 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: 'academic-quintiles',
-    title: 'Academic Quintile & Decile Ranking',
-    tags: ['Nuxt', 'Data Platform', 'EdTech'],
+    title: 'Selectivity by Quintiles',
+    tags: ['Nuxt', 'Data Visualization', 'EdTech'],
     tone: 'teal',
     image: img('projects/academic-quintiles.png'),
     description:
-      'Designed and shipped a centralized ranking system for the analytics platform: per-class academic quintiles (and a decile slot for future use) computed once and shared by every visualization, replacing inconsistent per-page ranking logic in the legacy app.',
+      'Built from a design handoff with no legacy equivalent: three stacked-bar charts showing how a cohort’s applications spread across five selectivity bands, broken out by WGPA quintile, over a 13-column detail table. Answers a question admissions offices get asked directly: do lower-quintile students still land at selective colleges.',
     highlights: [
-      'Extended the server-side sort to a full 9-variant matrix driven by org profile flags (rank, weighted/unweighted GPA, rigor), with explicit null handling so results are reproducible regardless of sort direction',
-      'Wrote a pure bucketing helper that dedupes to one ranked slot per student before assigning quintiles/deciles, fixing a legacy bug where students with more applications were mis-ranked',
-      'Centralized the computation in the Pinia store behind a single getQuintile lookup, so every visualization reads the same ranking instead of recomputing it independently',
+      'Designed two deliberately different row scopes: the charts stay class-scoped so a selectivity filter dims bands instead of collapsing every stacked track to 100%, while the detail table narrows on every active filter',
+      'Diagnosed a hover-flicker bug by measuring, not guessing: traced ~19fps sweeps to 87 tooltip components re-rendering on every dim-state change (55ms/hover), ruled out three plausible causes by measurement, and fixed it with a 400ms dwell-intent hook instead of the debounce that was originally requested',
+      'Caught two design errors before they shipped by treating the source-of-truth labels as authoritative over the mockup, including swapped admit-rate ranges on two selectivity bands',
+      'Shipped 137 files and ~23k lines across 41 commits with 937 tests; a whole-branch review pass (beyond per-task review) caught 14 defects invisible at task boundaries, including three of four expand buttons bound to nothing',
     ],
   },
   {
