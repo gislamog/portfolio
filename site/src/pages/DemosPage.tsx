@@ -152,7 +152,14 @@ export function DemosPage() {
                 <p className="demo-links">
                   {courseCode && <Link to={courseHref(courseCode)}>{courseCode}</Link>}
                   {repoUrl && (
-                    <a href={repoUrl} target="_blank" rel="noreferrer">GitHub</a>
+                    <a
+                      href={repoUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      title="This repository is private. Contact me and I will share access."
+                    >
+                      GitHub (Private)
+                    </a>
                   )}
                 </p>
               )}
