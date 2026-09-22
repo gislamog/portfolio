@@ -58,12 +58,13 @@ export const projects: Project[] = [
     tone: 'teal',
     image: img('projects/academic-quintiles.png'),
     description:
-      'Built from a design handoff with no legacy equivalent: three stacked-bar charts showing how a cohort’s applications spread across five selectivity bands, broken out by WGPA quintile, over a 13-column detail table. Answers a question admissions offices get asked directly: do lower-quintile students still land at selective colleges.',
+      'Built a new CK360 visualization from a design handoff, with no legacy implementation to reference. The page combines three stacked-bar charts and a 13-column detail table to show how applications, admissions, and enrollments are distributed across five college-selectivity bands for each WGPA quintile.',
     highlights: [
-      'Designed two deliberately different row scopes: the charts stay class-scoped so a selectivity filter dims bands instead of collapsing every stacked track to 100%, while the detail table narrows on every active filter',
-      'Tracked down a hover-flicker bug to 87 tooltip components re-rendering on every dim-state change (~19fps, 55ms per hover), ruled out three other suspects with profiling, and fixed it with a 400ms dwell-intent hook instead of the debounce that was originally requested',
-      'Caught two design errors before they shipped by treating the source-of-truth labels as authoritative over the mockup, including swapped admit-rate ranges on two selectivity bands',
-      'Wrote 78 end-to-end Playwright tests covering the charts, filters, and detail table; a whole-branch review pass beyond per-task review caught 14 defects invisible at task boundaries, including three of four expand buttons bound to nothing',
+      'Designed separate filtering behavior for the charts and table: selectivity filters dim chart segments to preserve the full distribution, while all active filters narrow the application-level table',
+      'Built a custom DOM-based chart component to support stacked bars alongside per-quintile WGPA and course-rigor ranges—layout requirements that did not fit the existing Chart.js components',
+      'Caught two errors in the design handoff before release, including swapped admit-rate ranges for two selectivity bands, by validating the mockup against the application’s source-of-truth category data',
+      'Wrote 78 Playwright end-to-end tests covering chart calculations, shared filters, expansion controls, and the detail table; a final whole-feature review uncovered 14 integration defects missed during task-level reviews',
+      'Verified the visualization in-browser against a production-scale cohort containing 14,875 applications',
     ],
   },
   {
