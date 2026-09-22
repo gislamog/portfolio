@@ -56,6 +56,7 @@ export const projects: Project[] = [
     title: 'Academic Quintile & Decile Ranking',
     tags: ['Nuxt', 'Data Platform', 'EdTech'],
     tone: 'teal',
+    image: img('projects/academic-quintiles.png'),
     description:
       'Designed and shipped a centralized ranking system for the analytics platform: per-class academic quintiles (and a decile slot for future use) computed once and shared by every visualization, replacing inconsistent per-page ranking logic in the legacy app.',
     highlights: [
