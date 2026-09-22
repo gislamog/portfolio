@@ -16,6 +16,16 @@ import '../demos/Demos.css';
 import { useEffect } from 'react';
 
 /**
+ * Private repos 404 for anyone without access, so the GitHub button routes
+ * to the contact form instead, with the request message pre-filled.
+ */
+function requestAccessHref(title: string, repoUrl: string) {
+  const repoName = repoUrl.replace(/\/$/, '').split('/').pop();
+  const message = `Hi, I'd like to request access to the "${title}" GitHub repo (${repoName}).`;
+  return `/contact?message=${encodeURIComponent(message)}`;
+}
+
+/**
  * Demos not yet released render as a heading with a "Coming soon" note and no
  * body. Their component imports above are commented out rather than deleted,
  * so releasing one is: uncomment its import, drop `comingSoon`, restore
@@ -152,14 +162,12 @@ export function DemosPage() {
                 <p className="demo-links">
                   {courseCode && <Link to={courseHref(courseCode)}>{courseCode}</Link>}
                   {repoUrl && (
-                    <a
-                      href={repoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="This repository is private. Contact me and I will share access."
+                    <Link
+                      to={requestAccessHref(title, repoUrl)}
+                      title="This repository is private. Request access via the contact form."
                     >
                       GitHub (Private)
-                    </a>
+                    </Link>
                   )}
                 </p>
               )}

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { courseHref, projectGithubHref, projects } from '../data/projects';
+import { courseHref, requestAccessHref, projects } from '../data/projects';
 import { ProjectVisual, projectIcon } from '../components/ProjectVisual';
 
 /**
@@ -48,7 +48,7 @@ export function ProjectsPage() {
       <div className="projects-grid" style={{ marginTop: '2rem' }}>
         {projects.map((p) => {
           const Icon = projectIcon(p.id);
-          const githubHref = projectGithubHref(p);
+          const accessHref = requestAccessHref(p);
           return (
             <article key={p.id} id={p.id} className="card project-card">
               <ProjectVisual project={p} Icon={Icon} />
@@ -62,16 +62,14 @@ export function ProjectsPage() {
                   {p.courseCode && (
                     <Link to={courseHref(p.courseCode)} className="btn btn-ghost">{p.courseCode}</Link>
                   )}
-                  {githubHref && (
-                    <a
-                      href={githubHref}
+                  {accessHref && (
+                    <Link
+                      to={accessHref}
                       className="btn btn-ghost"
-                      target="_blank"
-                      rel="noreferrer"
-                      title="This repository is private. Contact me and I will share access."
+                      title="This repository is private. Request access via the contact form."
                     >
                       GitHub (Private)
-                    </a>
+                    </Link>
                   )}
                 </div>
               </div>

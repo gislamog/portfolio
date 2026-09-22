@@ -14,9 +14,13 @@ const endpoint = FORMSPREE_ID ? `https://formspree.io/f/${FORMSPREE_ID}` : undef
 
 type Status = 'idle' | 'sending' | 'sent' | 'error';
 
-export function ContactForm() {
+export function ContactForm({ initialMessage }: { initialMessage?: string }) {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string>('');
+  const [message, setMessage] = useState(initialMessage ?? '');
+  // Pulses once on mount when the message arrives pre-filled (e.g. a private-repo
+  // access request), so the visitor notices the field already has text in it.
+  const [prefilled, setPrefilled] = useState(!!initialMessage);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,6 +49,7 @@ export function ContactForm() {
         throw new Error(body?.errors?.[0]?.message ?? 'Message could not be sent.');
       }
       form.reset();
+      setMessage('');
       setStatus('sent');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Message could not be sent.');
@@ -94,7 +99,16 @@ export function ContactForm() {
         <span className="field-label">
           Message <span className="field-required" aria-hidden="true">*</span>
         </span>
-        <textarea name="message" required rows={5} placeholder="What would you like to talk about?" />
+        <textarea
+          name="message"
+          required
+          rows={5}
+          placeholder="What would you like to talk about?"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onAnimationEnd={() => setPrefilled(false)}
+          className={prefilled ? 'field-prefilled' : undefined}
+        />
       </label>
 
       {/* Honeypot: bots fill hidden fields, humans never see this one. */}

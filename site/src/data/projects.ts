@@ -24,6 +24,17 @@ export function projectGithubHref(project: Project): string | undefined {
   return project.githubUrl;
 }
 
+/**
+ * Private repos 404 for anyone without access, so the GitHub button routes
+ * to the contact form instead, with the request message pre-filled.
+ */
+export function requestAccessHref(project: Project): string | undefined {
+  if (!project.githubUrl) return undefined;
+  const repoName = project.githubUrl.replace(/\/$/, '').split('/').pop();
+  const message = `Hi, I'd like to request access to the "${project.title}" GitHub repo (${repoName}).`;
+  return `/contact?message=${encodeURIComponent(message)}`;
+}
+
 export const REPO_COLLISION_PREDICTOR = 'https://github.com/gislamog/cse571-collision-prediction';
 export const REPO_SKILLS = 'https://github.com/gislamog/skills';
 

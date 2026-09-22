@@ -1,3 +1,4 @@
+import { useSearchParams } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGithub } from 'react-icons/fi';
 import { SiHandshake } from 'react-icons/si';
 import { profile } from '../data/profile';
@@ -13,13 +14,16 @@ const contacts = [
 ];
 
 export function ContactPage() {
+  const [searchParams] = useSearchParams();
+  const initialMessage = searchParams.get('message') ?? undefined;
+
   return (
     <div className="page-header page-content container">
       <p className="section-label">Get in touch</p>
       <h1>Contact</h1>
       <p className="page-lead">Open to Software Engineer roles. Reach out via email or the links below.</p>
 
-      <ContactForm />
+      <ContactForm initialMessage={initialMessage} />
 
       <div className="grid-2 contact-grid">
         {contacts.map((item) => {

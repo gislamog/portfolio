@@ -45,6 +45,17 @@
 }
 .contact-form textarea { resize: vertical; min-height: 120px; }
 
+/* Draws attention to a message pre-filled from elsewhere (e.g. a private-repo
+   access request), so the visitor notices the field already has text. */
+.field-prefilled { animation: field-pulse 1.1s ease-out 2; }
+@keyframes field-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-dim); border-color: var(--border); }
+  50% { box-shadow: 0 0 0 4px var(--accent-dim); border-color: var(--accent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .field-prefilled { animation: none; }
+}
+
 .contact-form input::placeholder,
 .contact-form textarea::placeholder { color: var(--text-muted); }
 
