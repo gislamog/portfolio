@@ -1,7 +1,5 @@
 const img = (path: string) => `${import.meta.env.BASE_URL}images/${path}`;
 
-export const MCS_GITHUB = 'https://github.com/gislamog/mcs-projects';
-
 export function courseHref(code: string) {
   return `/education#course-${code.toLowerCase().replace(/\s+/g, '-')}`;
 }
@@ -22,16 +20,10 @@ export function demoIdForCourse(code: string) {
   return projects.find((p) => p.courseCode === code && p.demoId)?.demoId;
 }
 
-export function githubFolder(folder: string) {
-  return `${MCS_GITHUB}/tree/main/${folder}`;
-}
-
 export function projectGithubHref(project: Project): string | undefined {
-  if (project.githubUrl) return project.githubUrl;
-  if (project.githubFolder) return githubFolder(project.githubFolder);
+  return project.githubUrl;
 }
 
-// Standalone repos that live outside mcs-projects
 export const REPO_COLLISION_PREDICTOR = 'https://github.com/gislamog/cse571-collision-prediction';
 export const REPO_SKILLS = 'https://github.com/gislamog/skills';
 
@@ -45,8 +37,6 @@ export interface Project {
   image?: string;
   demoId?: string;
   courseCode?: string;
-  githubFolder?: string;
-  /** Full URL for a standalone repo (used instead of githubFolder). */
   githubUrl?: string;
 }
 
@@ -127,7 +117,7 @@ export const projects: Project[] = [
     ],
     demoId: 'robot-ml',
     courseCode: 'CSE 571',
-    githubFolder: 'collision-predictor',
+    githubUrl: 'https://github.com/gislamog/collision-predictor',
   },
   {
     id: 'mcs-kmeans',
@@ -145,7 +135,7 @@ export const projects: Project[] = [
     ],
     demoId: 'kmeans',
     courseCode: 'CSE 575',
-    githubFolder: 'kmeans-strategy',
+    githubUrl: 'https://github.com/gislamog/kmeans-strategy',
   },
   {
     id: 'mcs-crypto',
@@ -161,7 +151,7 @@ export const projects: Project[] = [
     ],
     demoId: 'crypto',
     courseCode: 'CSE 539',
-    githubFolder: 'applied-cryptography',
+    githubUrl: 'https://github.com/gislamog/applied-cryptography',
   },
   {
     id: 'density-classification',
@@ -201,7 +191,6 @@ export const projects: Project[] = [
     ],
     demoId: 'mnist',
     courseCode: 'CSE 575',
-    githubFolder: 'kmeans-strategy',
   },
   {
     id: 'mcs-matching',
@@ -216,22 +205,22 @@ export const projects: Project[] = [
     ],
     demoId: 'stable-matching',
     courseCode: 'CSE 551',
-    githubFolder: 'stable-matching',
+    githubUrl: 'https://github.com/gislamog/stable-matching',
   },
   {
     id: 'mcs-lexer',
     title: 'Mini Language Lexer',
-    tags: ['Compilers', 'CSE 340'],
+    tags: ['Python', 'Compilers', 'CSE 340'],
     tone: 'teal',
     description:
-      'Original TypeScript lexer for a tiny language: keywords, identifiers, integers, reals, and operators. Inspired by CSE 340 without publishing course starter files.',
+      'Original Python tokenizer for a tiny language: keywords, identifiers, integers, reals, and operators. Inspired by CSE 340 without publishing course starter files.',
     highlights: [
       'Live tokenization as you type',
       'Line numbers and error tokens',
     ],
     demoId: 'lexer',
     courseCode: 'CSE 340',
-    githubFolder: 'mini-lexer',
+    githubUrl: 'https://github.com/gislamog/mini-lexer',
   },
   {
     id: 'mcs-sdn',
@@ -245,7 +234,7 @@ export const projects: Project[] = [
       'Where SDN controllers install allow/deny flows',
     ],
     courseCode: 'CSE 548',
-    githubFolder: 'sdn-firewall-notes',
+    githubUrl: 'https://github.com/gislamog/sdn-firewall-notes',
   },
   {
     id: 'ants-sphere',

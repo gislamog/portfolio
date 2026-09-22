@@ -11,7 +11,7 @@ import { RobotMLDemo } from '../demos/RobotMLDemo';
 // import { StableMatchingDemo } from '../demos/StableMatchingDemo';
 // import { LexerDemo } from '../demos/LexerDemo';
 // import { GlucoseDemo } from '../demos/GlucoseDemo';
-import { courseHref, githubFolder, REPO_COLLISION_PREDICTOR } from '../data/projects';
+import { courseHref, REPO_COLLISION_PREDICTOR } from '../data/projects';
 import '../demos/Demos.css';
 import { useEffect } from 'react';
 
@@ -30,7 +30,6 @@ const demos = [
     icon: FiCpu,
     courseCode: 'CSE 571',
     repoUrl: REPO_COLLISION_PREDICTOR,
-    repoPrivate: true,
   },
   {
     id: 'kmeans',
@@ -40,7 +39,7 @@ const demos = [
     comingSoon: true,
     icon: FiGrid,
     courseCode: 'CSE 575',
-    githubFolder: 'kmeans-strategy',
+    repoUrl: 'https://github.com/gislamog/kmeans-strategy',
   },
   {
     id: 'crypto',
@@ -50,7 +49,7 @@ const demos = [
     comingSoon: true,
     icon: FiKey,
     courseCode: 'CSE 539',
-    githubFolder: 'applied-cryptography',
+    repoUrl: 'https://github.com/gislamog/applied-cryptography',
   },
   {
     id: 'adult-income',
@@ -60,7 +59,7 @@ const demos = [
     comingSoon: true,
     icon: FiBarChart2,
     courseCode: 'CSE 578',
-    githubFolder: 'adult-income-viz',
+    repoUrl: 'https://github.com/gislamog/adult-income-viz',
   },
   {
     id: 'mnist',
@@ -70,7 +69,6 @@ const demos = [
     comingSoon: true,
     icon: FiEdit3,
     courseCode: 'CSE 575',
-    githubFolder: 'kmeans-strategy',
   },
   {
     id: 'stable-matching',
@@ -80,7 +78,7 @@ const demos = [
     comingSoon: true,
     icon: FiGitMerge,
     courseCode: 'CSE 551',
-    githubFolder: 'stable-matching',
+    repoUrl: 'https://github.com/gislamog/stable-matching',
   },
   {
     id: 'lexer',
@@ -90,7 +88,7 @@ const demos = [
     comingSoon: true,
     icon: FiType,
     courseCode: 'CSE 340',
-    githubFolder: 'mini-lexer',
+    repoUrl: 'https://github.com/gislamog/mini-lexer',
   },
   {
     id: 'glucose',
@@ -100,7 +98,7 @@ const demos = [
     comingSoon: true,
     icon: FiActivity,
     courseCode: 'CSE 572',
-    githubFolder: 'glucose-timeseries',
+    repoUrl: 'https://github.com/gislamog/glucose-timeseries',
   },
   {
     id: 'sierpinski',
@@ -142,7 +140,7 @@ export function DemosPage() {
         ))}
       </nav>
 
-      {demos.map(({ id, title, description, component: Demo, icon: Icon, courseCode, githubFolder: folder, repoUrl, repoPrivate, comingSoon }) => (
+      {demos.map(({ id, title, description, component: Demo, icon: Icon, courseCode, repoUrl, comingSoon }) => (
         <section key={id} id={id} className={`demo-section${comingSoon ? ' demo-coming-soon' : ''}`}>
           <div className="demo-heading">
             <span className="demo-icon"><Icon /></span>
@@ -150,20 +148,11 @@ export function DemosPage() {
               <h2>{title}</h2>
               {comingSoon && <p className="demo-soon-note">Coming soon</p>}
               <p className="demo-desc">{description}</p>
-              {(courseCode || folder || repoUrl) && (
+              {(courseCode || repoUrl) && (
                 <p className="demo-links">
                   {courseCode && <Link to={courseHref(courseCode)}>{courseCode}</Link>}
-                  {folder && <a href={githubFolder(folder)} target="_blank" rel="noreferrer">GitHub</a>}
                   {repoUrl && (
-                    <a
-                      href={repoUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      title={repoPrivate ? 'This repository is private. Contact me and I will share access.' : undefined}
-                    >
-                      GitHub
-                      {repoPrivate && <span className="repo-private">Private, please request</span>}
-                    </a>
+                    <a href={repoUrl} target="_blank" rel="noreferrer">GitHub</a>
                   )}
                 </p>
               )}
