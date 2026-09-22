@@ -62,7 +62,7 @@ export const projects: Project[] = [
     highlights: [
       'Served as the technical lead, organizing and leading design meetings with the CEO, Product, and Support teams to shape the visualization, define requirements, and resolve design decisions',
       'Designed separate filtering behavior for the charts and table: selectivity filters dim chart segments to preserve the full distribution, while all active filters narrow the application-level table',
-      'Built a custom DOM-based chart component to support stacked bars alongside per-quintile WGPA and course-rigor ranges—layout requirements that did not fit the existing Chart.js components',
+      'Built a custom DOM-based chart component to support stacked bars alongside per-quintile WGPA and course-rigor ranges - layout requirements that did not fit the existing Chart.js components',
       'Caught two errors in the design handoff before release, including swapped admit-rate ranges for two selectivity bands, by validating the mockup against the application’s source-of-truth category data',
       'Wrote 78 Playwright end-to-end tests covering chart calculations, shared filters, expansion controls, and the detail table; a final whole-feature review uncovered 14 integration defects missed during task-level reviews',
       'Verified the visualization in-browser against a production-scale cohort containing 14,875 applications',

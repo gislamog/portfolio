@@ -341,14 +341,14 @@ function Paper({ paper }: { paper: ReportPaper }) {
         <p className="report-affiliation report-email">{portfolioMeta.email}</p>
         <p className="report-course">
           <Link to={courseHref(paper.courseCode)}>
-            {paper.courseCode} — {paper.course}
+            {paper.courseCode} - {paper.course}
           </Link>
         </p>
       </header>
 
       {paper.abstract && (
         <p id={`${paper.id}-abstract`} className="report-abstract">
-          <em>Abstract</em>—{paper.abstract}
+          <em>Abstract</em> - {paper.abstract}
         </p>
       )}
 

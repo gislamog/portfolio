@@ -183,7 +183,7 @@ export function AntsOnSphereDemo() {
         <button type="button" className="seed-button" aria-label="Seed another walker">SEED</button>
       </div>
       <p className="demo-note">
-        Move the mouse to turn the sphere. White points take random walks on the surface—once random is visible, real paths (ants, roots, a rhumb line) can be compared against it. Hold SEED to add a walker and give one walker an extra step.
+        Move the mouse to turn the sphere. White points take random walks on the surface - once random is visible, real paths (ants, roots, a rhumb line) can be compared against it. Hold SEED to add a walker and give one walker an extra step.
       </p>
     </div>
   );
