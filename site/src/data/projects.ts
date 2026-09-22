@@ -106,9 +106,11 @@ export const projects: Project[] = [
     description:
       'Primary frontend developer on a two-semester Nash Consulting capstone. React and Spring Boot platform that replaced Word-and-email workflows for healthcare regulatory assessments.',
     highlights: [
+      'Led the project setup and frontend development as the senior-year capstone lead',
       'Set up the React and Spring Boot project, including routing and primary navigation',
       'Implemented Auth0 (later AWS Cognito) with roles on the token so administrators could review the full engagement and employees were limited to their assigned work',
       'Built employee scheduling with absence tracking, double-booking prevention, and an admin Agenda for assigning review tasks',
+      'Performed security testing on the API and auth flows alongside frontend development',
     ],
   },
   {
@@ -136,8 +138,9 @@ export const projects: Project[] = [
     description:
       'Comparative analysis of K-Means vs. K-Means++ initialization using the Elbow Method. MCS Portfolio Project #1.',
     highlights: [
+      'Clustered a 300-point dataset with both K-Means and K-Means++, using the Elbow method to pick the optimal cluster count',
       'Evaluated convergence behavior and local minima risks',
-      'Compared random initialization against a max-average-distance K-Means++ variant',
+      'Compared random initialization against a max-average-distance K-Means++ variant, which converged faster and produced tighter clusters',
       'Browser demo adds canonical D^2-sampling K-Means++ and runs both seedings side by side',
     ],
     demoId: 'kmeans',
@@ -161,34 +164,29 @@ export const projects: Project[] = [
     githubFolder: 'applied-cryptography',
   },
   {
-    id: 'mcs-income',
-    title: 'Income-Driven Marketing Viz',
-    tags: ['Python', 'Visualization', 'CSE 578'],
-    tone: 'teal',
+    id: 'density-classification',
+    title: 'Density Estimation and Classification',
+    tags: ['Python', 'Machine Learning', 'Classification'],
+    tone: 'gold',
     description:
-      'Interactive explorer of education, occupation, and hours versus high-income share, rewritten from the CSE 578 Adult-income analysis.',
+      'Extracted features from handwritten digit images and trained a Naïve Bayes classifier to distinguish between them, evaluating accuracy against held-out test images.',
     highlights: [
-      'Filterable synthetic Census-style sample (public Adult schema, no private files)',
-      'Stacked education bars for >50K share',
+      'Built a feature-extraction pipeline over handwritten digit images',
+      'Trained and evaluated a Naïve Bayes classifier for digit classification',
+      'Measured classification accuracy against a held-out test set',
     ],
-    demoId: 'adult-income',
-    courseCode: 'CSE 578',
-    githubFolder: 'adult-income-viz',
   },
   {
-    id: 'mcs-glucose',
-    title: 'CGM Time-Series Features',
-    tags: ['Python', 'Data Mining', 'CSE 572'],
+    id: 'property-management',
+    title: 'Property Management Application',
+    tags: ['VBA', 'Excel', 'Automation'],
     tone: 'navy',
     description:
-      'Meal vs overnight glucose patterns from the Artificial Pancreas project, demonstrated on synthetic CGM so patient files stay private.',
+      'A VBA-driven Excel application for property management, with role-based access to protect sensitive data and automated tracking and reporting.',
     highlights: [
-      '5-minute sampling, meal spikes, time-in-range',
-      'Original course CSVs are not published',
+      'Built role-based access controls in Excel/VBA to keep property data secure by user role',
+      'Automated property tracking and reporting to replace manual spreadsheet upkeep',
     ],
-    demoId: 'glucose',
-    courseCode: 'CSE 572',
-    githubFolder: 'glucose-timeseries',
   },
   {
     id: 'mcs-mnist',
