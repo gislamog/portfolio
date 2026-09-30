@@ -21,6 +21,57 @@
   object-position: top center;
 }
 
+.project-visual-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.project-visual-slide.is-active { opacity: 1; }
+
+/* Slideshows size to their screenshots instead of the fixed banner height.
+   Every slide shares one grid cell, so the tallest screenshot sets the height
+   and the card doesn't jump as slides change. */
+.project-visual.project-visual--fit,
+.featured-card .project-visual.project-visual--fit {
+  height: auto;
+  place-items: start stretch;
+}
+
+.project-visual--fit .project-visual-slide {
+  position: static;
+  grid-area: 1 / 1;
+  height: auto;
+}
+
+.project-visual-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(15, 20, 32, 0.45); /* keeps the dots visible on white screenshots */
+}
+
+.project-visual-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+  transition: background 0.3s ease;
+}
+
+.project-visual-dots span.is-active { background: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .project-visual-slide { transition: none; }
+}
+
 .tone-teal { background: linear-gradient(145deg, rgba(94, 234, 212, 0.22), rgba(37, 45, 66, 0.9)); }
 .tone-navy { background: linear-gradient(145deg, rgba(90, 120, 200, 0.28), rgba(20, 28, 48, 0.95)); }
 .tone-violet { background: linear-gradient(145deg, rgba(167, 139, 250, 0.28), rgba(37, 32, 58, 0.95)); }

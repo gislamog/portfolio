@@ -1,16 +1,16 @@
 export const experience = [
   {
-    title: 'Software Engineer',
+    title: 'Software Developer & QA Engineer',
     company: 'EdTech',
     period: 'March 2025 to Present',
     location: 'Remote',
     note: 'Promoted from contractor (March 2025) to full-time (October 2025).',
     highlights: [
-      'Shipped Selectivity by Quintiles, a new analytics visualization built from a design handoff with no legacy equivalent (three stacked-bar charts, 78 Playwright E2E tests, ~23k lines); tracked a hover-flicker bug down to tooltip re-render cost and fixed it with a dwell-intent hook.',
-      'Shipped production features including counselor-facing workflow UI and reliability work that eliminated runtime crashes on incomplete student data. Contributed to the Nuxt platform migration across legacy and modern surfaces.',
-      'Develop against a multi-service local platform (shared database/auth, hostname-based routing, and parallel branch previews), using AI-assisted workflows to move faster across legacy and Nuxt surfaces while reviewing outputs for correctness and edge cases.',
-      'Contributed development on the Analytics Visualization refactor. Helped define requirements and validated calculation logic for a platform that reconciles multi-year historical data with live, role-based account state so reporting matches real operational conditions. Also led QA for the same project.',
-      'Owned production triage for live-data defects using customer reports, code review, and PostHog session replay; authored and maintained 1,100+ Playwright regression tests covering authentication, billing, imports, role management, and analytics dashboards. Fully automated every flow in the new Plan Sharing feature, which exposed multiple bugs and was run on every development update to minimize QA bottlenecks.',
+      'Built and released Selectivity by Quintiles, a new analytics visualization based on a design handoff. Linked institutional data to student application, admission, and enrollment outcomes, handled missing data, and added 78 Playwright E2E tests.',
+      'Developed counselor-facing features and fixed crashes caused by incomplete student data. Contributed to the migration from the legacy application to Nuxt.',
+      'Develop and debug across legacy and Nuxt applications in a local environment with shared authentication and databases, hostname-based routing, and separate branch previews.',
+      'Contributed to the Analytics Visualization refactor and led QA. Helped define requirements and verified calculations using historical data, current account settings, and user permissions.',
+      'Investigated production bugs using customer reports, code review, and PostHog session replay. Authored and maintained 1,100+ Playwright regression tests covering authentication, billing, imports, role management, and analytics. Automated all Plan Sharing flows, catching multiple bugs and running the tests after each development update to reduce manual QA.',
     ],
   },
   {

@@ -7,7 +7,6 @@ export const profile = {
   github: 'https://github.com/gislamog',
   linkedin: 'https://www.linkedin.com/in/gulsum-islamoglu8',
   handshake: 'https://asu.joinhandshake.com/profiles/gulsum-islamoglu',
-  photoUrl: `${import.meta.env.BASE_URL}images/profile.png`,
   asuLogoUrl: `${import.meta.env.BASE_URL}images/asu-logo.png`,
   credentials: [
     {

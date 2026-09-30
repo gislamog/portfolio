@@ -46,6 +46,9 @@ export interface Project {
   description: string;
   highlights: string[];
   image?: string;
+  /** Screenshots shown as an auto-advancing slideshow; takes precedence over `image`. */
+  images?: string[];
+  liveUrl?: string;
   demoId?: string;
   courseCode?: string;
   githubUrl?: string;
@@ -57,7 +60,11 @@ export const projects: Project[] = [
     title: 'Selectivity by Quintiles',
     tags: ['Nuxt', 'Data Visualization', 'EdTech'],
     tone: 'teal',
-    image: img('projects/academic-quintiles.png'),
+    images: [
+      img('projects/academic-quintiles/overview.png'),
+      img('projects/academic-quintiles/filtered.png'),
+      img('projects/academic-quintiles/details.png'),
+    ],
     description:
       'Built a new CK360 visualization from a design handoff, with no legacy implementation to reference. The page combines three stacked-bar charts and a 13-column detail table to show how applications, admissions, and enrollments are distributed across five college-selectivity bands for each WGPA quintile.',
     highlights: [
@@ -81,6 +88,27 @@ export const projects: Project[] = [
       'Contributed development alongside QA ownership for requirements and validation',
       'Helped define how historical and live account state should be joined for accurate reporting',
       'Validated calculation logic with Product Engineering against operational edge cases',
+    ],
+  },
+  {
+    id: 'piano-pogo',
+    title: 'Piano Pogo',
+    tags: ['JavaScript', 'Game', 'Music Education'],
+    tone: 'coral',
+    images: [
+      img('projects/piano-pogo/home.jpg'),
+      img('projects/piano-pogo/learn.jpg'),
+      img('projects/piano-pogo/games.jpg'),
+      img('projects/piano-pogo/songs.jpg'),
+    ],
+    liveUrl: 'https://pianopogo.com/',
+    description:
+      'A piano-learning game for kids, hosted by Pogo the seal. Players follow a lesson roadmap, learn to read notes on the staff and find them on the keyboard, and practice through mini games.',
+    highlights: [
+      'Lesson roadmap grouped into sections, with locked lessons that unlock in order and a star rating for each completed lesson',
+      'Step-by-step lessons that pair a note on the staff with its key on an on-screen piano and a hand-position guide',
+      'Six mini games, including Seal Chase, Balloon Pop, Lily Hopper, and Spell Caster, with best-score tracking',
+      'Coins, a daily challenge, and a weekly practice streak to keep players coming back',
     ],
   },
   {
@@ -119,7 +147,11 @@ export const projects: Project[] = [
     title: 'Neural Network Collision Prediction',
     tags: ['PyTorch', 'Machine Learning', 'CSE 571'],
     tone: 'violet',
-    image: img('projects/neural-network-collision.png'),
+    images: [
+      img('projects/collision-predictor/sensors.png'),
+      img('projects/collision-predictor/prediction.png'),
+      img('projects/collision-predictor/steer.png'),
+    ],
     description:
       'Supervised model predicting robot collisions from multi-angle sensors and steering. Selected as MCS Portfolio Project #2.',
     highlights: [
@@ -235,11 +267,11 @@ export const projects: Project[] = [
   },
   {
     id: 'mcs-sdn',
-    title: 'SDN Stateless Firewall Notes',
+    title: 'SDN Stateless Firewall Exercises',
     tags: ['Network Security', 'CSE 548'],
     tone: 'navy',
     description:
-      'High-level notes on packet filters, SDN flow rules, and anomaly detection from Advanced Computer Network Security. Architecture only, no attack scripts.',
+      'High-level exercises on packet filters, SDN flow rules, and anomaly detection from Advanced Computer Network Security. Architecture only, no attack scripts.',
     highlights: [
       'Stateless vs stateful filtering',
       'Where SDN controllers install allow/deny flows',

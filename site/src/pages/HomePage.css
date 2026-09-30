@@ -23,16 +23,6 @@
   margin-bottom: 1.1rem;
 }
 
-.profile-photo {
-  width: 148px;
-  height: 148px;
-  border-radius: 28px;
-  object-fit: cover;
-  border: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
-  flex-shrink: 0;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-}
-
 /* The global h1 margin-bottom is 0.5em, which at the hero's clamped font size
    (up to 3.2rem) leaves a ~51px gap under the name. Tighten it so the name
    sits closer to the university line. */
@@ -207,5 +197,4 @@
   .tech-row { justify-content: center; }
   .hero-actions { justify-content: center; }
   .hero-stats { grid-template-columns: 1fr; }
-  .profile-photo { width: 128px; height: 128px; border-radius: 24px; }
 }
