@@ -4,7 +4,7 @@ import { TbTriangle } from 'react-icons/tb';
 import { SierpinskiDemo } from '../demos/SierpinskiDemo';
 import { RobotMLDemo } from '../demos/RobotMLDemo';
 // import { AntsOnSphereDemo } from '../demos/AntsOnSphereDemo';
-// import { KMeansDemo } from '../demos/KMeansDemo';
+import { KMeansDemo } from '../demos/KMeansDemo';
 // import { CryptoDemo } from '../demos/CryptoDemo';
 // import { AdultIncomeDemo } from '../demos/AdultIncomeDemo';
 // import { MnistDemo } from '../demos/MnistDemo';
@@ -44,9 +44,8 @@ const demos = [
   {
     id: 'kmeans',
     title: 'K-Means vs K-Means++',
-    description: 'Two panes, identical data, one Play button. Watch initialization first: random init scatters centroids arbitrarily and often drops several into one dense blob, while K-Means++ pushes them out to the perimeter. Each iteration then plays as two beats - assign (points recolor to their nearest centroid) and update (centroids glide to their cluster means) - with faint trails showing every path a centroid took. Three seeding strategies: random; the course max-average-distance K-Means++ variant, which picks each new centroid as the point maximizing average distance to all centroids chosen so far; and canonical K-Means++ (Arthur & Vassilvitskii), which samples the next centroid with probability proportional to squared distance to the nearest chosen centroid. Live SSE-by-iteration curve plus the elbow chart for K = 2…8. Same comparison as MCS Portfolio Project #1.',
-    // component: KMeansDemo,
-    comingSoon: true,
+    description: 'Pick K from 2 to 10 and both algorithms run on the 300-point course dataset. K-Means starts from K random data points. K-Means++ picks its first centroid at random, then scans every point for its average distance to the centroids so far and places the next one on the farthest. Each iteration assigns points to their nearest centroid, then moves the centroids to their cluster means, until no centroid moves more than 10⁻⁴. Each converged run adds its loss to the chart; rerunning a K greys out the earlier point.',
+    component: KMeansDemo,
     icon: FiGrid,
     courseCode: 'CSE 575',
     repoUrl: 'https://github.com/gislamog/kmeans-strategy',

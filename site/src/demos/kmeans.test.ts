@@ -7,8 +7,11 @@ import {
   initCentroids,
   kmeansPlusPlusCanonical,
   kmeansPlusPlusMaxAvg,
+  lloydTrace,
+  maxAvgSeedTrace,
   mulberry32,
   randomInit,
+  randomSeedIndices,
   recordFrames,
   runKMeans,
   sseCurve,
@@ -120,6 +123,30 @@ describe('kmeans', () => {
     (['random', 'maxavg', 'canonical'] as const).forEach((mode) => {
       expect(initCentroids(mode, points, 5, mulberry32(2))).toHaveLength(5);
     });
+  });
+
+  it('seed trace makes the same picks as the max-avg initializer', () => {
+    const points = generateBlobs(5, 4, 12);
+    const trace = maxAvgSeedTrace(points, 5, mulberry32(9));
+    const centers = kmeansPlusPlusMaxAvg(points, 5, mulberry32(9));
+    expect(trace.map((s) => points[s.index])).toEqual(centers);
+    expect(trace[0].avgDist).toBeNull();
+    trace.slice(1).forEach((s) => expect(s.avgDist).toHaveLength(points.length));
+  });
+
+  it('random seed indices are distinct', () => {
+    const idx = randomSeedIndices(20, 10, mulberry32(3));
+    expect(new Set(idx).size).toBe(10);
+  });
+
+  it('lloyd trace stops once the largest centroid shift is within tolerance', () => {
+    const points = generateBlobs(21, 4, 20);
+    const steps = lloydTrace(points, randomInit(points, 4, mulberry32(8)));
+    expect(steps[steps.length - 1].shift).toBeLessThanOrEqual(1e-4);
+    steps.slice(0, -1).forEach((s) => expect(s.shift).toBeGreaterThan(1e-4));
+    for (let i = 1; i < steps.length; i++) {
+      expect(steps[i].from).toEqual(steps[i - 1].to);
+    }
   });
 
   it('returns an elbow series for each k', () => {

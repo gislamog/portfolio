@@ -254,6 +254,71 @@ export function centroidTrails(frames: Frame[]): Point[][] {
   return trails;
 }
 
+/**
+ * One pick of the course max-average-distance seeding. `avgDist` holds every point's
+ * average distance to the centroids chosen before this pick (null for the random
+ * first pick), so the demo can animate the scan that led to `index`.
+ */
+export type SeedStep = { index: number; avgDist: number[] | null };
+
+/** Same picks as kmeansPlusPlusMaxAvg, with the per-point distances kept for animation. */
+export function maxAvgSeedTrace(points: Point[], k: number, rand: () => number): SeedStep[] {
+  const first = Math.floor(rand() * points.length);
+  const steps: SeedStep[] = [{ index: first, avgDist: null }];
+  const chosen = new Set<number>([first]);
+  while (steps.length < k && chosen.size < points.length) {
+    const centers = steps.map((s) => points[s.index]);
+    const avgDist = points.map(
+      (p) => centers.reduce((s, c) => s + Math.sqrt(euclid2(p, c)), 0) / centers.length,
+    );
+    let bestI = -1;
+    for (let i = 0; i < points.length; i++) {
+      if (!chosen.has(i) && (bestI < 0 || avgDist[i] > avgDist[bestI])) bestI = i;
+    }
+    chosen.add(bestI);
+    steps.push({ index: bestI, avgDist });
+  }
+  return steps;
+}
+
+/** Distinct random data-point indices: the course's random initialization (strategy 1). */
+export function randomSeedIndices(n: number, k: number, rand: () => number): number[] {
+  const used: number[] = [];
+  while (used.length < Math.min(k, n)) {
+    const i = Math.floor(rand() * n);
+    if (!used.includes(i)) used.push(i);
+  }
+  return used;
+}
+
+/**
+ * One Lloyd iteration: assign every point to its nearest centroid, then move each
+ * centroid to its cluster mean. `shift` is the largest per-coordinate move, the same
+ * quantity np.allclose(old, new, atol=1e-4) tests in the course code.
+ */
+export type LloydStep = {
+  iteration: number;
+  labels: number[];
+  from: Point[];
+  to: Point[];
+  shift: number;
+  sse: number;
+};
+
+export function lloydTrace(points: Point[], initCenters: Point[], tol = 1e-4, maxIter = 100): LloydStep[] {
+  const steps: LloydStep[] = [];
+  let centers = initCenters.map((c) => ({ ...c }));
+  for (let iteration = 1; iteration <= maxIter; iteration++) {
+    const labels = assignLabels(points, centers);
+    const next = updateMeans(points, labels, centers.length, centers);
+    const shift = Math.max(...next.map((c, i) => Math.max(Math.abs(c.x - centers[i].x), Math.abs(c.y - centers[i].y))));
+    steps.push({ iteration, labels, from: centers, to: next, shift, sse: sseLoss(points, labels, next) });
+    centers = next;
+    if (shift <= tol) break;
+  }
+  return steps;
+}
+
 export function elbowCurve(
   points: Point[],
   initForK: (k: number) => Point[],
