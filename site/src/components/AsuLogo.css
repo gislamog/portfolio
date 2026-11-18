@@ -22,3 +22,12 @@
 }
 
 .degree-header-text { flex: 1; min-width: 0; }
+
+/* Phones: the logo beside the text leaves too little width for a long degree
+   title (e.g. "Bachelor of Science, Software Engineering"), so it wraps to
+   noticeably more lines than a shorter title like the Master's and the two
+   degree cards end up uneven heights. Stack instead, so every title gets the
+   full card width to wrap into regardless of its length. */
+@media (max-width: 480px) {
+  .degree-header-row { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+}

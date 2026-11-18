@@ -3,6 +3,7 @@ import { FiMail, FiPhone, FiMapPin, FiLinkedin, FiGithub } from 'react-icons/fi'
 import { SiHandshake } from 'react-icons/si';
 import { profile } from '../data/profile';
 import { ContactForm } from '../components/ContactForm';
+import './ContactPage.css';
 
 const contacts = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, icon: FiMail },
@@ -18,35 +19,39 @@ export function ContactPage() {
   const initialMessage = searchParams.get('message') ?? undefined;
 
   return (
-    <div className="page-header page-content container">
-      <p className="section-label">Get in touch</p>
-      <h1>Contact</h1>
-      <p className="page-lead">Open to Software Engineer roles. Reach out via email or the links below.</p>
+    <div id="contact-page" className="nb-sheet contact-sheet" data-sheet="dots">
+      <div className="page-header page-content container">
+        <p className="section-label">Get in touch</p>
+        <h1>Contact</h1>
+        <p className="page-lead">Open to Software Engineer roles. Reach out via email or the links below.</p>
 
-      <ContactForm initialMessage={initialMessage} />
+        <div className="contact-columns">
+          <ContactForm initialMessage={initialMessage} />
 
-      <div className="grid-2 contact-grid">
-        {contacts.map((item) => {
-          const Icon = item.icon;
-          const inner = (
-            <>
-              <span className="contact-icon"><Icon /></span>
-              <div>
-                <h3>{item.label}</h3>
-                <p>{item.value}</p>
-              </div>
-            </>
-          );
-          return item.href ? (
-            <a key={item.label} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="card contact-card">
-              {inner}
-            </a>
-          ) : (
-            <div key={item.label} className="card contact-card contact-card-static">
-              {inner}
-            </div>
-          );
-        })}
+          <div className="grid-2 contact-grid">
+            {contacts.map((item) => {
+              const Icon = item.icon;
+              const inner = (
+                <>
+                  <span className="contact-icon"><Icon /></span>
+                  <div>
+                    <h3>{item.label}</h3>
+                    <p>{item.value}</p>
+                  </div>
+                </>
+              );
+              return item.href ? (
+                <a key={item.label} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" className="card contact-card">
+                  {inner}
+                </a>
+              ) : (
+                <div key={item.label} className="card contact-card contact-card-static">
+                  {inner}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

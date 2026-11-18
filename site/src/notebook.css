@@ -1,0 +1,169 @@
+/*
+ * Notebook surface shared by every page. Values copied verbatim from the
+ * Learning board (public/learning/index.html): its paper grain, its "Articles"
+ * sheet (staggered dot grid on a green-teal tint), and its left-panel paper.
+ * If the board's palette changes, update these to match.
+ */
+
+:root,
+[data-theme='a'] {
+  --nb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --nb-dot: rgba(220, 232, 210, 0.12);
+  --nb-sheet: #171e1c;
+  --nb-panel: #24271f;
+  --nb-panel-2: #2c3026;
+  --nb-line: #363b30;
+  --nb-vignette: rgba(0, 0, 0, 0.32);
+  --nb-card-shadow: 0 8px 22px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='c'] {
+  --nb-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .13 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* Half the board's 0.18: the board's sparse cards tolerate a strong grid,
+     but behind body text it competed with the letters. */
+  --nb-dot: rgba(38, 58, 40, 0.09);
+  --nb-sheet: var(--bg);
+  --nb-panel: #fbfcf8;
+  --nb-panel-2: #eef1e8;
+  --nb-line: #d6dbcd;
+  --nb-vignette: rgba(60, 70, 50, 0.1);
+  --nb-card-shadow: 0 8px 20px rgba(30, 55, 80, 0.1);
+}
+
+/* Page: grain over the staggered dot grid over the sheet tint. */
+body {
+  background:
+    var(--nb-grain),
+    radial-gradient(var(--nb-dot) 1.6px, transparent 2.1px),
+    radial-gradient(var(--nb-dot) 1.6px, transparent 2.1px),
+    var(--nb-sheet);
+  background-size: 180px 180px, 36px 36px, 36px 36px, auto;
+  background-position: 0 0, 0 0, 18px 18px, 0 0;
+}
+
+/* The board has no colored glow behind its sheets. */
+body::before { display: none; }
+
+/* Left panel: grain over the panel paper. */
+.side-rail {
+  background: var(--nb-grain), var(--nb-panel);
+  border-right-color: var(--nb-line);
+}
+.side-rail-link:hover,
+.side-rail-link.on { background: var(--nb-panel-2); }
+
+/*
+ * Notebook sheets: one full-viewport section per top-level block, each in a
+ * different paper pattern and tint, cycling dots → ruled → hatched → graph.
+ * Any page can wrap its top-level sections in .nb-sheet[data-sheet], inside
+ * a wrapping .nb-page, to read as a sequence of board pages rather than one
+ * flat scroll.
+ */
+.nb-page {
+  --nb-tex: rgba(220, 232, 210, 0.07);
+  --nb-tex-2: rgba(220, 232, 210, 0.12);
+  /* Each tint is a soft two-stop gradient (light top-left to a touch darker
+     bottom-right) instead of one flat color, so a sheet reads as lit paper
+     rather than a solid fill. */
+  --nb-t-dots: linear-gradient(135deg, #1b2220 0%, #141916 100%);
+  --nb-t-ruled: linear-gradient(135deg, #251e1b 0%, #1b1613 100%);
+  --nb-t-hatched: linear-gradient(135deg, #221e27 0%, #18151c 100%);
+  --nb-t-graph: linear-gradient(135deg, #24231a 0%, #1a1911 100%);
+}
+[data-theme='c'] .nb-page {
+  --nb-tex: rgba(38, 58, 40, 0.07);
+  --nb-tex-2: rgba(38, 58, 40, 0.1);
+  --nb-t-dots: linear-gradient(135deg, #e7f0e8 0%, #d9e6da 100%);
+  --nb-t-ruled: linear-gradient(135deg, #f5ece8 0%, #e9ddd6 100%);
+  --nb-t-hatched: linear-gradient(135deg, #ede9f3 0%, #ddd6e7 100%);
+  --nb-t-graph: linear-gradient(135deg, #f4f1dd 0%, #e8e3c7 100%);
+}
+
+/* Snap sheet to sheet, like the board (proximity, so long sheets still
+   scroll freely). */
+.app-viewport:has(.nb-page) { scroll-snap-type: y proximity; }
+@media (prefers-reduced-motion: reduce) {
+  .app-viewport:has(.nb-page) { scroll-snap-type: none; }
+}
+
+.nb-sheet {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* One sheet fills the page viewport (the shell's scroll area). */
+  min-height: 100cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Center content in the sheet vertically, like .hero already did on its
+     own; a sheet taller than its content (the common case) otherwise left
+     everything pinned to the top with empty space below. A sheet whose
+     content exceeds 100cqh still grows from the top as a flex column would. */
+  justify-content: center;
+  padding: clamp(26px, 6vh, 60px) clamp(20px, 4vw, 56px);
+  scroll-snap-align: start;
+  scroll-margin-top: 0;
+  border-bottom: 1px solid var(--nb-line);
+  background: var(--nb-grain), var(--nb-sheet-tex, none), var(--nb-sheet-tint);
+  background-size: 180px 180px, var(--nb-sheet-size, auto);
+  /* Inset vignette: darkens the sheet's own edges so it reads as a lit piece
+     of paper with depth, not a flat tiled fill. */
+  box-shadow: inset 0 0 160px var(--nb-vignette);
+}
+/* Direct content blocks (.page-header, .container, etc.) are flex children of
+   the centered column above; without a width they'd shrink to content size
+   instead of filling the sheet like a normal block would. */
+.nb-sheet > * { width: 100%; }
+
+.nb-sheet[data-sheet='dots'] {
+  --nb-sheet-tint: var(--nb-t-dots);
+  --nb-sheet-tex: radial-gradient(var(--nb-tex-2) 1.2px, transparent 1.7px);
+  --nb-sheet-size: 22px 22px;
+}
+.nb-sheet[data-sheet='ruled'] {
+  --nb-sheet-tint: var(--nb-t-ruled);
+  --nb-sheet-tex: repeating-linear-gradient(to bottom, transparent 0 31px, var(--nb-tex) 31px 32px);
+}
+.nb-sheet[data-sheet='hatched'] {
+  --nb-sheet-tint: var(--nb-t-hatched);
+  --nb-sheet-tex: repeating-linear-gradient(45deg, transparent 0 13px, var(--nb-tex) 13px 14px);
+}
+.nb-sheet[data-sheet='graph'] {
+  --nb-sheet-tint: var(--nb-t-graph);
+  background:
+    var(--nb-grain),
+    linear-gradient(var(--nb-tex-2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--nb-tex-2) 1px, transparent 1px),
+    linear-gradient(var(--nb-tex) 1px, transparent 1px),
+    linear-gradient(90deg, var(--nb-tex) 1px, transparent 1px),
+    var(--nb-sheet-tint);
+  background-size: 180px 180px, 120px 120px, 120px 120px, 24px 24px, 24px 24px, auto;
+}
+
+/* Shared hash-scroll-and-flash target highlight (useHashScrollFlash). */
+.hash-flash {
+  animation: hash-flash-pulse 0.85s ease-out 3;
+  border-radius: 4px;
+}
+@keyframes hash-flash-pulse {
+  0%, 100% { background: transparent; box-shadow: 0 0 0 0 transparent; }
+  35% { background: var(--accent-dim); box-shadow: 0 0 0 4px var(--accent-dim); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hash-flash {
+    animation: none;
+    background: var(--accent-dim);
+    box-shadow: 0 0 0 4px var(--accent-dim);
+  }
+}
+
+@media (max-width: 820px) {
+  /* Still a min-height, not a height, so content taller than one viewport
+     (e.g. a long highlight list) still grows the sheet rather than clipping.
+     Keeping it at a full viewport (not shrinking it, as an earlier version of
+     this rule did) matters for a short sheet at the end of a page — with
+     nothing below it to scroll into, a shorter minimum left scrollIntoView
+     unable to reach its top at all. */
+  .nb-sheet { min-height: 100cqh; padding: 26px 16px 40px; }
+  .app-viewport:has(.nb-page) { scroll-snap-type: none; }
+}

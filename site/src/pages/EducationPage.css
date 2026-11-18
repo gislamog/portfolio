@@ -1,9 +1,20 @@
-/* The page intro spacing now comes from the shared .page-header rules; only
-   the gap down to the first degree card is page-specific. */
-.education-page .education-toc { margin: 1rem 0 1.25rem; }
-.education-page .degree-block:first-of-type { margin-top: 1.25rem; }
+/* Mirrors the side rail's related-pill row (MCS Portfolio / Big Data
+   Certificate). The rail already shows these on desktop; this copy exists
+   only for mobile, where the rail is hidden, so it stays out of the way
+   above that breakpoint instead of duplicating the same two links. */
+.education-related {
+  display: none;
+}
+@media (max-width: 820px) {
+  .education-related {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1.1rem;
+  }
+}
 
-.degree-block { margin-top: 3rem; }
 .degree-header h2 { margin-bottom: 0.25rem; }
 .degree-header > p { margin-bottom: 1rem; }
 

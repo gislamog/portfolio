@@ -102,7 +102,7 @@ export function ContactForm({ initialMessage }: { initialMessage?: string }) {
         <textarea
           name="message"
           required
-          rows={5}
+          rows={3}
           placeholder="What would you like to talk about?"
           value={message}
           onChange={(e) => setMessage(e.target.value)}

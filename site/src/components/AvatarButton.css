@@ -1,0 +1,45 @@
+.avatar-button {
+  flex: none;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: zoom-in;
+  line-height: 0;
+  transition: transform 0.15s;
+}
+.avatar-button:hover { transform: scale(1.06); }
+.avatar-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .avatar-button { transition: none; } }
+
+/* Full-screen overlay; the whole surface closes it. */
+.avatar-overlay {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: clamp(16px, 5vmin, 56px);
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+.avatar-overlay[open] {
+  display: grid;
+  place-items: center;
+}
+.avatar-overlay::backdrop {
+  background: rgba(8, 12, 10, 0.82);
+  backdrop-filter: blur(4px);
+}
+.avatar-overlay img {
+  display: block;
+  /* A modest preview, not a full-screen takeover. */
+  width: min(440px, 100%, 55vmin * 1.14);
+  height: auto;
+  max-height: 100%;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.avatar-overlay:focus { outline: none; }

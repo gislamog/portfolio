@@ -659,10 +659,12 @@ export const neuralNetworkPaper: ReportPaper = {
 
 export const portfolioPapers: ReportPaper[] = [kMeansPaper, neuralNetworkPaper];
 
-/** Anchor on the report page for the paper written for a given course, if any. */
-export function paperHrefForCourse(courseCode: string): string | undefined {
-  const paper = portfolioPapers.find((p) => p.courseCode === courseCode);
-  return paper && `/education/mcs-portfolio#${paper.id}`;
+/**
+ * Whether a portfolio paper was written for the given course, i.e. whether
+ * its course card should offer the "MCS Portfolio" button.
+ */
+export function hasPaperForCourse(courseCode: string): boolean {
+  return portfolioPapers.some((p) => p.courseCode === courseCode);
 }
 
 /**

@@ -199,10 +199,6 @@
   max-width: 55ch;
 }
 
-.demo-section {
-  scroll-margin-top: calc(var(--nav-h) + 1rem);
-  margin-bottom: 3rem;
-}
 .demo-section h2 { font-size: 1.25rem; margin-bottom: 0.35rem; }
 .demo-desc {
   font-size: 0.95rem;
@@ -214,7 +210,6 @@
 /* Demos that are built but not yet released: heading and description only,
    with no interactive body beneath. Muted so they read as placeholders
    rather than competing with the live demos above them. */
-.demo-coming-soon { margin-bottom: 2rem; }
 .demo-soon-note {
   display: inline-block;
   margin: 0 0 0.4rem;

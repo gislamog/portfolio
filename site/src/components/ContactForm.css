@@ -1,7 +1,6 @@
 .contact-form {
   display: grid;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 0.85rem;
 }
 .contact-form h3 {
   margin: 0;
@@ -43,7 +42,7 @@
   font-size: 0.92rem;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
-.contact-form textarea { resize: vertical; min-height: 120px; }
+.contact-form textarea { resize: vertical; min-height: 88px; }
 
 /* Draws attention to a message pre-filled from elsewhere (e.g. a private-repo
    access request), so the visitor notices the field already has text. */
