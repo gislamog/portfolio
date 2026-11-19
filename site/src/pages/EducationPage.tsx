@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useCallback, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { bachelorsDegree, mastersDegree } from '../data/education';
 import { demoHref, demoIdForCourse } from '../data/projects';
-import { paperHrefForCourse } from '../data/mcsPortfolio';
+import { hasPaperForCourse } from '../data/mcsPortfolio';
 import { isCertificateCourse } from '../data/bigDataCertificate';
 import { AsuLogo } from '../components/AsuLogo';
+import { ArticleReader } from '../components/ArticleReader';
+import { LearningMcsPortfolioArticle } from '../components/LearningMcsPortfolioArticle';
 import '../components/AsuLogo.css';
 import '../components/ExpandableEmbed.css';
 
-function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
+function CourseCard({ course, onOpenPortfolio }: { course: (typeof mastersDegree.courses)[0]; onOpenPortfolio: () => void }) {
   const demoId = demoIdForCourse(course.code);
-  const paperHref = paperHrefForCourse(course.code);
+  const hasPaper = hasPaperForCourse(course.code);
   const certificateCourse = isCertificateCourse(course.code);
 
   return (
@@ -30,17 +32,17 @@ function CourseCard({ course }: { course: (typeof mastersDegree.courses)[0] }) {
           <li key={b.slice(0, 30)}>{b}</li>
         ))}
       </ul>
-      {(demoId || paperHref || certificateCourse) && (
+      {(demoId || hasPaper || certificateCourse) && (
         <p className="course-actions">
           {demoId && (
             <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
           )}
-          {paperHref && (
-            <Link to={paperHref} className="btn btn-portfolio">MCS Portfolio</Link>
+          {hasPaper && (
+            <button type="button" onClick={onOpenPortfolio} className="btn btn-portfolio">MCS Portfolio</button>
           )}
           {certificateCourse && (
             <Link
-              to="/education/big-data"
+              to="/learning#big-data-cert"
               className="btn btn-certificate"
               /* Shortened from "Big Data Certificate" so CSE 575's three
                  pills stay on one row in the narrowest grid column. */
@@ -74,13 +76,21 @@ function DegreeHeader({ degree }: { degree: typeof mastersDegree }) {
   );
 }
 
-function DegreeCourses({ degree, heading }: { degree: typeof mastersDegree; heading: string }) {
+function DegreeCourses({
+  degree,
+  heading,
+  onOpenPortfolio,
+}: {
+  degree: typeof mastersDegree;
+  heading: string;
+  onOpenPortfolio: () => void;
+}) {
   return (
     <>
       <h3 className="courses-heading">{heading}</h3>
       <div className="courses-grid">
         {degree.courses.map((c) => (
-          <CourseCard key={c.code} course={c} />
+          <CourseCard key={c.code} course={c} onOpenPortfolio={onOpenPortfolio} />
         ))}
       </div>
     </>
@@ -101,19 +111,20 @@ function useCourseHashTarget() {
     const el = document.querySelector(hash);
     if (!(el instanceof HTMLElement)) return;
 
+    const jump = (behavior: ScrollBehavior) => el.scrollIntoView({ behavior, block: 'start' });
+
     // Wait a frame so layout has settled before measuring the scroll target.
     const raf = requestAnimationFrame(() => {
-      el.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-        block: 'start',
-      });
+      jump(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
       // Restart the animation even if the same hash is clicked twice.
       el.classList.remove('course-card-flash');
       void el.offsetWidth;
       el.classList.add('course-card-flash');
     });
+    // Each degree is a full-viewport sheet, so a webfont swap after that jump
+    // (fonts load with display: swap) reflows every sheet's height and throws
+    // off the scroll above; correct it once fonts have settled.
+    document.fonts?.ready.then(() => jump('auto'));
 
     const clear = window.setTimeout(() => el.classList.remove('course-card-flash'), 3000);
     return () => {
@@ -124,29 +135,58 @@ function useCourseHashTarget() {
   }, [hash]);
 }
 
+const SHEETS = ['dots', 'ruled', 'hatched', 'graph'] as const;
+
 export function EducationPage() {
   useCourseHashTarget();
+  const { hash } = useLocation();
+  const navigate = useNavigate();
+  const portfolioOpen = hash === '#mcs-portfolio';
+
+  const openPortfolio = useCallback(() => {
+    navigate({ hash: '#mcs-portfolio' });
+  }, [navigate]);
+
+  const closePortfolio = useCallback(() => {
+    navigate({ hash: '' }, { replace: false });
+  }, [navigate]);
 
   return (
-    <div className="page-header page-content container education-page">
-      <p className="section-label">Academics</p>
-      <h1>Education</h1>
-      <p className="page-lead">Graduate and undergraduate degrees from Arizona State University.</p>
-
-      <nav className="education-toc" aria-label="Education sections">
-        <a href="#masters">Master&apos;s Degree</a>
-        <a href="#bachelors">Bachelor&apos;s Degree</a>
-      </nav>
-
-      <section id="masters" className="degree-block">
-        <DegreeHeader degree={mastersDegree} />
-        <DegreeCourses degree={mastersDegree} heading="Graduate Courses" />
+    <div className="nb-page education-page">
+      <section id="masters" className="nb-sheet" data-sheet={SHEETS[0]}>
+        <div className="page-header page-content container">
+          <p className="section-label">Academics</p>
+          <h1>Education</h1>
+          <p className="page-lead">Graduate and undergraduate degrees from Arizona State University.</p>
+          {/* Mirrors the side rail's "related" pills so these stay reachable
+              on mobile, where the rail is hidden. */}
+          <div className="education-related">
+            <button type="button" onClick={openPortfolio} className="side-rail-pill">
+              <span className="side-rail-pill-label">MCS Portfolio</span>
+            </button>
+            <Link to="/learning#big-data-cert" className="side-rail-pill">
+              <span className="side-rail-pill-label">Big Data Certificate</span>
+            </Link>
+          </div>
+        </div>
+        <div className="page-content container degree-block">
+          <DegreeHeader degree={mastersDegree} />
+          <DegreeCourses degree={mastersDegree} heading="Graduate Courses" onOpenPortfolio={openPortfolio} />
+        </div>
       </section>
 
-      <section id="bachelors" className="degree-block">
-        <DegreeHeader degree={bachelorsDegree} />
-        <DegreeCourses degree={bachelorsDegree} heading="Relevant Coursework" />
+      <section id="bachelors" className="nb-sheet" data-sheet={SHEETS[1]}>
+        <div className="page-content container degree-block">
+          <DegreeHeader degree={bachelorsDegree} />
+          <DegreeCourses degree={bachelorsDegree} heading="Relevant Coursework" onOpenPortfolio={openPortfolio} />
+        </div>
       </section>
+
+      {portfolioOpen && (
+        <ArticleReader label="MCS Portfolio" onClose={closePortfolio}>
+          <LearningMcsPortfolioArticle />
+        </ArticleReader>
+      )}
     </div>
   );
 }

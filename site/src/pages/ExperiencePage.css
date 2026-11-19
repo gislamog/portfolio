@@ -1,0 +1,183 @@
+/*
+ * Work Experience: a single vertical timeline instead of the sheet-per-job
+ * layout other pages use. A fixed spine runs down the left with a node per
+ * job; every card sits to its right in one column.
+ */
+
+.exp-page { padding-bottom: clamp(40px, 8vh, 80px); }
+
+.timeline {
+  position: relative;
+  list-style: none;
+  margin: 0 auto;
+  padding: 8px clamp(20px, 4vw, 56px) 0;
+  max-width: 1080px;
+}
+
+/* The spine: a vertical line running the height of the list, centered on
+   the nodes. */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(clamp(20px, 4vw, 56px) + 17px);
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--border) 20px, var(--border) calc(100% - 20px), transparent);
+}
+
+.tl-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  column-gap: 18px;
+  padding-bottom: clamp(20px, 3.5vh, 36px);
+}
+.tl-item:last-child { padding-bottom: 0; }
+
+.tl-node {
+  position: relative;
+  grid-column: 1;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 15px;
+  box-shadow: 0 0 0 4px var(--bg), inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
+  z-index: 1;
+}
+
+.tl-now {
+  display: inline-block;
+  margin-top: 6px;
+  grid-column: 1;
+  justify-self: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 1px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.tl-card {
+  grid-column: 2;
+  padding: 1.1rem 1.25rem;
+  display: flex;
+  align-items: stretch;
+  gap: 1.25rem;
+}
+
+.tl-card-main { flex: 1; min-width: 0; }
+
+.tl-head { margin-bottom: 0.6rem; }
+.tl-head h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+}
+.tl-sub {
+  margin: 1px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.tl-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.tl-meter {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.tl-loc {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.tl-highlights { margin: 0; font-size: 0.86rem; }
+.tl-highlights li { margin-bottom: 0.45em; }
+.tl-highlights li:last-child { margin-bottom: 0; }
+.tl-highlights li::marker { color: var(--accent); }
+
+/* Tech-stack icon strip: a vertical rail of brand-icon chips on the card's
+   right edge, separated from the body by a divider. */
+.tl-stack {
+  flex-shrink: 0;
+  list-style: none;
+  margin: 0;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 10px;
+  width: 44px;
+}
+.tl-stack-chip {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 16px;
+}
+.tl-stack-chip .asu-logo-sm,
+.tl-stack-chip .asu-fallback-sm { height: 20px; width: 20px; }
+
+/* Connector from the node to the card. */
+.tl-card::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  left: -18px;
+  width: 18px;
+  height: 2px;
+  background: var(--border);
+}
+
+/* Below this width the side rail leaves too little room for the card body,
+   so the icons move below the content as a horizontal row instead. */
+@media (max-width: 680px) {
+  .tl-card { flex-direction: column; }
+  .tl-stack {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: auto;
+    padding-left: 0;
+    padding-top: 0.9rem;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 560px) {
+  .timeline { padding-inline: 16px; }
+  .timeline::before { left: 34px; }
+  .tl-item { grid-template-columns: 32px 1fr; column-gap: 14px; }
+  .tl-node { width: 32px; height: 32px; font-size: 13px; }
+  .tl-card { padding: 0.9rem 1rem; }
+  .tl-card::before { left: -14px; width: 14px; }
+  .tl-head h2 { font-size: 1.02rem; }
+  .tl-sub { font-size: 12px; }
+  .tl-highlights { font-size: 0.82rem; }
+  .tl-stack-chip { width: 28px; height: 28px; font-size: 14px; }
+}

@@ -6,7 +6,7 @@ export function BlogPage() {
     <div className="page-header container">
       <p className="section-label">Writing</p>
       <h1>Blog</h1>
-      <p>Notes on projects, coursework, and things I am learning along the way.</p>
+      <p className="page-lead">Notes on projects, coursework, and things I am learning along the way.</p>
 
       <div className="blog-list" style={{ marginTop: '2rem' }}>
         {blogPosts.map((post) => (

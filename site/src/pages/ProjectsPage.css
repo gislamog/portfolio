@@ -50,8 +50,8 @@
 .projects-showcase {
   display: grid;
   gap: 1.5rem;
-  margin-top: 2rem;
 }
+.page-header + .projects-showcase { margin-top: 2rem; }
 
 .project-card--media {
   display: grid;

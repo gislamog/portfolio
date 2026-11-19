@@ -31,7 +31,7 @@ function requestAccessHref(title: string, repoUrl: string) {
  * so releasing one is: uncomment its import, drop `comingSoon`, restore
  * `component`.
  */
-const demos = [
+export const demos = [
   {
     id: 'robot-ml',
     title: 'Robot Collision Predictor',
@@ -126,57 +126,69 @@ const demos = [
   },
 ];
 
+const SHEETS = ['dots', 'ruled', 'hatched', 'graph'] as const;
+
 export function DemosPage() {
   useEffect(() => {
-    const scroll = () => {
+    const scroll = (behavior: ScrollBehavior) => {
       const id = window.location.hash.slice(1);
-      if (id) document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.getElementById(id)?.scrollIntoView({ behavior, block: 'start' });
     };
-    scroll();
-    window.addEventListener('hashchange', scroll);
-    return () => window.removeEventListener('hashchange', scroll);
+    // Each section is a full-viewport sheet, so a webfont swap after the
+    // initial jump (fonts load with display: swap) reflows every section's
+    // height and throws off an already-completed scrollIntoView. Jump once
+    // immediately, then correct once fonts have settled.
+    scroll('auto');
+    document.fonts?.ready.then(() => scroll('auto'));
+    const onHashChange = () => scroll('smooth');
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
   return (
-    <div className="page-header page-content container demos-page">
-      <p className="section-label">Interactive</p>
-      <h1>Demos</h1>
-      <p className="page-lead">Coursework rebuilt for the browser. Course pages and GitHub stay one click away.</p>
-
-      <nav className="page-toc" aria-label="Demos on this page">
-        {demos.map(({ id, title }) => (
-          <a key={id} href={`#${id}`}>{title}</a>
-        ))}
-      </nav>
-
-      {demos.map(({ id, title, description, component: Demo, icon: Icon, courseCode, repoUrl, comingSoon }) => (
-        <section key={id} id={id} className={`demo-section${comingSoon ? ' demo-coming-soon' : ''}`}>
-          <div className="demo-heading">
-            <span className="demo-icon"><Icon /></span>
-            <div>
-              <h2>{title}</h2>
-              {comingSoon && <p className="demo-soon-note">Coming soon</p>}
-              <p className="demo-desc">{description}</p>
-              {(courseCode || repoUrl) && (
-                <p className="demo-links">
-                  {courseCode && <Link to={courseHref(courseCode)}>{courseCode}</Link>}
-                  {repoUrl && (
-                    <Link
-                      to={requestAccessHref(title, repoUrl)}
-                      title="This repository is private. Request access via the contact form."
-                    >
-                      GitHub (Private)
-                    </Link>
-                  )}
-                </p>
-              )}
-            </div>
-          </div>
-          {Demo && (
-            <div className="demo-body">
-              <Demo />
+    <div className="nb-page demos-page">
+      {demos.map(({ id, title, description, component: Demo, icon: Icon, courseCode, repoUrl, comingSoon }, i) => (
+        <section
+          key={id}
+          id={id}
+          className={`nb-sheet${comingSoon ? ' demo-coming-soon' : ''}`}
+          data-sheet={SHEETS[i % SHEETS.length]}
+        >
+          {i === 0 && (
+            <div className="page-header container">
+              <p className="section-label">Interactive</p>
+              <h1>Demos</h1>
+              <p className="page-lead">Coursework rebuilt for the browser. Course pages and GitHub stay one click away.</p>
             </div>
           )}
+          <div className="page-content container demo-section">
+            <div className="demo-heading">
+              <span className="demo-icon"><Icon /></span>
+              <div>
+                <h2>{title}</h2>
+                {comingSoon && <p className="demo-soon-note">Coming soon</p>}
+                <p className="demo-desc">{description}</p>
+                {(courseCode || repoUrl) && (
+                  <p className="demo-links">
+                    {courseCode && <Link to={courseHref(courseCode)}>{courseCode}</Link>}
+                    {repoUrl && (
+                      <Link
+                        to={requestAccessHref(title, repoUrl)}
+                        title="This repository is private. Request access via the contact form."
+                      >
+                        GitHub (Private)
+                      </Link>
+                    )}
+                  </p>
+                )}
+              </div>
+            </div>
+            {Demo && (
+              <div className="demo-body">
+                <Demo />
+              </div>
+            )}
+          </div>
         </section>
       ))}
     </div>

@@ -20,7 +20,7 @@ export function SierpinskiDemo() {
   const countRef = useRef(0);
   const [started, setStarted] = useState(false);
   const [running, setRunning] = useState(false);
-  const [walkthrough, setWalkthrough] = useState(false);
+  const [walkthrough, setWalkthrough] = useState(true);
   const [count, setCount] = useState(0);
   const [limit, setLimit] = useState(3000);
   const [pointSize, setPointSize] = useState(1.6);

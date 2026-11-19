@@ -1,0 +1,178 @@
+/* Status colors, ported from the retired static board. */
+.learning-page {
+  --s-todo: #8f9886;
+  --s-doing: #c97a1c;
+  --s-almost: #7a56b8;
+  --s-done: #23874f;
+}
+[data-theme='c'] .learning-page {
+  --s-todo: #8f9886;
+  --s-doing: #c97a1c;
+  --s-almost: #7a56b8;
+  --s-done: #23874f;
+}
+
+.learning-section-title {
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+.learning-section-intro {
+  text-align: center;
+  max-width: 72ch;
+  margin: 0 auto 1.75rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+/* ---- Status columns ---- */
+
+.learning-cols {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.learning-col {
+  flex: 1 1 260px;
+  max-width: 420px;
+  min-width: 0;
+}
+.col-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.col-title {
+  color: var(--c);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.col-count {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.learning-col-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.7rem;
+}
+
+/* ---- Cards ---- */
+
+.learning-item {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* Every status column is its own grid, so row-sizing alone only matches
+     cards within the same column; a fixed height is what makes every card
+     the same size across every column and section on the page. Tall enough
+     for a card with the max tag-wrap in .top plus the full 3-line .desc
+     clamp; shorter cards just carry the leftover space. */
+  height: 190px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.learning-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(16, 20, 28, 0.06), 0 12px 26px rgba(16, 20, 28, 0.1);
+}
+.learning-item .stripe {
+  width: 100%;
+  height: 4px;
+  background: var(--stripe, var(--s-todo));
+  flex: none;
+}
+.learning-item .cbody {
+  padding: 0.75rem 0.85rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+.learning-item .chead {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.learning-item .ic {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 9px;
+  background: var(--bg-elevated);
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+}
+.learning-item .ic svg { width: 19px; height: 19px; }
+.learning-item .ic-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.learning-item .htext { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.learning-item .top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.2rem 0.45rem; margin: 0; }
+.learning-item .name { font-weight: 600; font-size: 0.85rem; line-height: 1.25; color: var(--text); }
+.learning-item-link {
+  all: unset;
+  cursor: pointer;
+  display: inline;
+}
+.learning-item-link:hover .name { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.learning-item-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+a.learning-item-link:hover .name { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+.learning-item .tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.learning-item .tag.free { color: var(--s-done); border-color: currentColor; }
+.learning-item .tag.star { color: var(--accent); border-color: currentColor; }
+.learning-item .tag.owned { color: var(--s-done); border-color: currentColor; }
+.learning-item .tag.cost { color: var(--text); }
+
+.learning-item .desc {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.learning-item .ties {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 820px) {
+  .learning-cols { gap: 1rem; }
+  .learning-col { flex-basis: 100%; max-width: none; }
+}

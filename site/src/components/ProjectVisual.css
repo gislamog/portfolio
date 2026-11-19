@@ -21,16 +21,29 @@
   object-position: top center;
 }
 
-.project-visual-slide {
+/* Invisible button wrapper so a screenshot opens the lightbox on tap/click
+   without taking on default button chrome. Owns the cross-fade positioning
+   and opacity that used to live on the <img> itself, since the <img> no
+   longer needs a class of its own beyond sizing/fit. */
+.project-visual-slide-btn {
+  all: unset;
+  display: block;
   position: absolute;
   inset: 0;
+  cursor: zoom-in;
   opacity: 0;
+  /* A hidden slide sits in the same spot as the active one (so slides can
+     cross-fade); without this it would silently swallow clicks meant for
+     whichever slide is actually showing. */
+  pointer-events: none;
   transition: opacity 0.8s ease;
 }
+.project-visual-slide-btn.is-active { opacity: 1; pointer-events: auto; }
+.project-visual-slide-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.project-visual-slide-btn .project-visual-img { width: 100%; height: 100%; }
 
-.project-visual-slide.is-active { opacity: 1; }
-
-/* Slideshows size to their screenshots instead of the fixed banner height.
+/* Screenshots (single or slideshow) size to the image instead of the fixed
+   banner height, so they show in full rather than cropped to a strip.
    Every slide shares one grid cell, so the tallest screenshot sets the height
    and the card doesn't jump as slides change. */
 .project-visual.project-visual--fit,
@@ -39,11 +52,18 @@
   place-items: start stretch;
 }
 
-.project-visual--fit .project-visual-slide {
+.project-visual--fit .project-visual-img { height: auto; }
+
+/* In this layout the button becomes a static grid item sized by its own
+   (auto-height) image, rather than an absolutely-positioned overlay
+   stretched to `inset: 0`. */
+.project-visual--fit .project-visual-slide-btn {
   position: static;
   grid-area: 1 / 1;
+  width: 100%;
   height: auto;
 }
+.project-visual--fit .project-visual-slide-btn .project-visual-img { height: auto; }
 
 .project-visual-dots {
   position: absolute;
@@ -69,7 +89,7 @@
 .project-visual-dots span.is-active { background: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
-  .project-visual-slide { transition: none; }
+  .project-visual-slide-btn { transition: none; }
 }
 
 .tone-teal { background: linear-gradient(145deg, rgba(94, 234, 212, 0.22), rgba(37, 45, 66, 0.9)); }
@@ -77,3 +97,46 @@
 .tone-violet { background: linear-gradient(145deg, rgba(167, 139, 250, 0.28), rgba(37, 32, 58, 0.95)); }
 .tone-gold { background: linear-gradient(145deg, rgba(251, 191, 36, 0.22), rgba(50, 40, 28, 0.95)); }
 .tone-coral { background: linear-gradient(145deg, rgba(255, 159, 107, 0.28), rgba(50, 32, 36, 0.95)); }
+
+/* Full-screen screenshot preview. Fixed and above the header (z-index 100)
+   and the Learning board (1000) so it reliably sits on top everywhere it can
+   be opened from. The image scrolls if it's taller than the viewport instead
+   of being squeezed, since the point is to read it at full size. */
+.project-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+  padding: 48px 16px;
+  background: rgba(8, 10, 14, 0.88);
+  cursor: zoom-out;
+}
+.project-lightbox-img {
+  max-width: min(100%, 1100px);
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  cursor: default;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.project-lightbox-close {
+  all: unset;
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.project-lightbox-close:hover { background: rgba(255, 255, 255, 0.22); }
+.project-lightbox-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }

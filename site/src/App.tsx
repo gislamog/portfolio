@@ -3,13 +3,11 @@ import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
 import { ExperiencePage } from './pages/ExperiencePage';
 import { EducationPage } from './pages/EducationPage';
-import { McsPortfolioPage } from './pages/McsPortfolioPage';
-import { BigDataPage } from './pages/BigDataPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { DemosPage } from './pages/DemosPage';
+import { LearningPage } from './pages/LearningPage';
 import { ContactPage } from './pages/ContactPage';
 import { CloudflareAnalytics } from './components/CloudflareAnalytics';
-import { ScrollToTop } from './components/ScrollToTop';
 import './pages/EducationPage.css';
 import './pages/ProjectsPage.css';
 import './components/ProjectVisual.css';
@@ -18,18 +16,14 @@ export default function App() {
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
       <CloudflareAnalytics />
-      <ScrollToTop />
       <Layout>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/education" element={<EducationPage />} />
-          <Route path="/education/mcs-portfolio" element={<McsPortfolioPage />} />
-          <Route path="/education/big-data" element={<BigDataPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/demos" element={<DemosPage />} />
-          {/* Hidden until the reading list is recruiter-ready. */}
-          {/* <Route path="/learning" element={<LearningPage />} /> */}
+          <Route path="/learning" element={<LearningPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </Layout>

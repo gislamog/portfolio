@@ -1,50 +1,28 @@
-/* Big Data certificate page. Mirrors the report page's intro layout (summary
-   left, detail card right) so the two Education sub-pages feel like a set. */
-.cert-page {
-  max-width: var(--max);
-}
-
-.cert-intro-row {
-  display: grid;
-  grid-template-columns: 1fr minmax(300px, 400px);
-  gap: 2rem;
-  /* Both columns start at the top, so the courses panel sits level with the
-     section label rather than being pushed below the heading block. */
-  align-items: start;
-  margin-bottom: 2rem;
-}
-
-/* The heading lives inside .cert-intro rather than directly under
-   .page-header, so the shared `>`-scoped intro spacing cannot reach it.
-   Restate it here so this page's heading matches every other tab. */
-.cert-intro > .section-label { margin-bottom: 0.5rem; }
-.cert-intro > h1 { margin-bottom: 0; }
-.cert-intro > .page-lead { margin-bottom: 0; }
-
-/* Same row treatment as .report-actions on the MCS portfolio page. */
-.cert-actions {
+.cert-article .cert-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  margin: 1.25rem 0 0 !important;
+  margin: 0 0 2rem !important;
+  justify-content: center;
 }
-.cert-awarded {
+.cert-article .cert-awarded {
   font-family: var(--mono);
   font-size: 0.8rem;
   color: var(--accent);
 }
 
-/* ---- Course list ---- */
-
-.cert-courses { padding: 1.25rem 1.35rem; }
+.cert-courses { padding: 1.25rem 1.35rem; margin: 0 0 1.5rem; }
 .cert-courses-title {
-  /* Carries the full gap down to the pills now that the requirement blurb
-     that used to sit between them is gone. */
   margin: 0 0 0.85rem;
   font-size: 0.95rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+.cert-courses-date {
+  margin: 0.85rem 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
 }
 
 .cert-course-list {
@@ -56,8 +34,6 @@
   gap: 0.45rem;
 }
 
-/* Pills matching the Education page's section nav; completed courses link to
-   their card there, the untaken one is inert. */
 .cert-course-pill {
   display: inline-block;
   font-size: 0.82rem;
@@ -76,14 +52,11 @@ a.cert-course-pill:hover {
 }
 a.cert-course-pill:hover strong { color: var(--accent); }
 
-/* Not taken: present for completeness, but visibly inactive. */
 .cert-course-list .not-taken .cert-course-pill {
   opacity: 0.5;
   border-style: dashed;
 }
 .cert-course-list .not-taken strong { color: var(--text-muted); font-weight: 500; }
-
-/* ---- Certificate body ---- */
 
 .cert-body { padding: 2rem; }
 
@@ -121,12 +94,7 @@ a.cert-course-pill:hover strong { color: var(--accent); }
 }
 .cert-awarded-by { font-size: 0.88rem; }
 
-@media (max-width: 900px) {
-  .cert-intro-row { grid-template-columns: 1fr; }
-}
-
 @media (max-width: 640px) {
   .cert-body { padding: 1.25rem; }
-  /* Justification leaves distracting rivers in narrow columns. */
   .cert-citation { text-align: left; }
 }

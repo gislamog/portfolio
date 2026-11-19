@@ -12,14 +12,17 @@ export const profile = {
     {
       label: 'M.S. Computer Science',
       detail: 'Arizona State University · July 2026 · GPA 3.37',
+      url: 'https://degrees.asu.edu/masters-phd/major/ASU00/ESCOMSCMCS',
     },
     {
       label: 'B.S. Software Engineering',
       detail: 'Arizona State University · June 2024 · Cum Laude · GPA 3.50',
+      url: 'https://degrees.asu.edu/bachelors/major/ASU00/TSSERBS/software-engineering',
     },
     {
-      label: 'Graduate Certificate, Big Data',
+      label: 'Graduate Certificate,\nBig Data',
       detail: 'Arizona State University · Awarded 2026',
+      url: 'https://degrees.asu.edu/masters-phd/major/ASU00/ESBDTAGRCT/big-data-graduate-certificate',
     },
   ],
   tech: [
@@ -32,9 +35,25 @@ export const profile = {
     'PyTorch',
   ] as const,
   skills: [
-    ['Languages & Frameworks', ['JavaScript', 'Python', 'React', 'Nuxt / Vue', 'Joomla', 'Playwright']],
-    ['AI & Development', ['AI-assisted implementation', 'Full-stack debugging', 'Multi-service local platforms']],
-    ['Data & ML', ['PyTorch', 'Statistical machine learning', 'Data visualization', 'Analytics validation']],
-    ['Security & CS', ['Applied cryptography', 'Software security', 'Algorithms', 'Databases']],
+    {
+      category: 'Languages & Frameworks',
+      blurb: 'The languages and frameworks I build with day to day, across frontend, backend, and CMS work.',
+      items: ['JavaScript', 'Python', 'React', 'Nuxt / Vue', 'Joomla', 'Playwright'],
+    },
+    {
+      category: 'AI & Development',
+      blurb: 'Shipping real features faster by pairing AI-assisted workflows with careful full-stack debugging.',
+      items: ['AI-assisted implementation', 'Full-stack debugging', 'Multi-service local platforms'],
+    },
+    {
+      category: 'Data & ML',
+      blurb: 'From model training to turning raw numbers into visuals people actually trust.',
+      items: ['PyTorch', 'Statistical machine learning', 'Data visualization', 'Analytics validation'],
+    },
+    {
+      category: 'Security & CS',
+      blurb: 'Core computer science fundamentals underpinning secure, well-structured software.',
+      items: ['Applied cryptography', 'Software security', 'Algorithms', 'Databases'],
+    },
   ] as const,
 };
