@@ -14,18 +14,22 @@ void main() {
 export function startCityNavGlow(canvas: HTMLCanvasElement) {
   const nav = canvas.closest<HTMLElement>('.city-nav');
   const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
-  const image = nav?.parentElement?.querySelector<HTMLImageElement>('.city-street img');
-  if (!nav || !active || !image) return;
+  const street = nav?.parentElement?.querySelector('.city-street');
+  const image = street?.querySelector<HTMLImageElement>('img');
+  const lightsOff = street?.querySelector<HTMLImageElement>('.city-lights-off');
+  if (!nav || !active || !street || !image || !lightsOff) return;
 
   const renderer = new Renderer({
     canvas, alpha: true, depth: false, premultipliedAlpha: true, autoClear: false,
   });
   const { gl } = renderer;
-  const texture = new Texture(gl, {
+  const options = {
     flipY: false,
     generateMipmaps: renderer.isWebgl2,
     minFilter: renderer.isWebgl2 ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
-  });
+  };
+  const texture = new Texture(gl, options);
+  const darkTexture = new Texture(gl, options);
   const uniforms = {
     city: { value: texture },
     size: { value: new Vec2() },
@@ -46,7 +50,7 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
   let lost = false;
 
   function tabGeometry(link: HTMLElement, bounds: DOMRect) {
-    const rect = link.getBoundingClientRect();
+    const rect = (link.querySelector('.city-nav-label') ?? link).getBoundingClientRect();
     return [
       (rect.left + rect.right) / 2 - bounds.left,
       Math.min(nav!.clientHeight - 3, rect.bottom - bounds.top + 7),
@@ -70,7 +74,10 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     if (lost || !image!.complete || !image!.naturalWidth) return;
     const bounds = canvas.getBoundingClientRect();
     const { width, height, left, top } = bounds;
-    const city = image!.getBoundingClientRect();
+    const dark = darkTexture.image && street!.hasAttribute('data-lights-off');
+    const source = dark ? lightsOff! : image!;
+    const city = source.getBoundingClientRect();
+    uniforms.city.value = dark ? darkTexture : texture;
     if (!width || !height || !city.width || !city.height) return;
     const dpr = Math.min(window.devicePixelRatio, 2);
     if (renderer.width !== width || renderer.height !== height || renderer.dpr !== dpr) {
@@ -80,9 +87,9 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
       canvas.style.removeProperty('height');
     }
 
-    const scale = Math.max(city.width / image!.naturalWidth, city.height / image!.naturalHeight);
-    const imageWidth = image!.naturalWidth * scale;
-    const imageHeight = image!.naturalHeight * scale;
+    const scale = Math.max(city.width / source.naturalWidth, city.height / source.naturalHeight);
+    const imageWidth = source.naturalWidth * scale;
+    const imageHeight = source.naturalHeight * scale;
     const imageLeft = city.left + (city.width - imageWidth) / 2;
     const imageTop = city.top + (city.height - imageHeight) / 2;
     uniforms.size.value.set(width, height);
@@ -113,6 +120,14 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     update();
   }
 
+  function loadDarkImage() {
+    if (lost || !lightsOff!.complete || !lightsOff!.naturalWidth) return;
+    darkTexture.image = lightsOff!;
+    darkTexture.needsUpdate = true;
+    darkTexture.update();
+    update();
+  }
+
   function contextLost() {
     lost = true;
     canvas.removeAttribute('data-ready');
@@ -126,15 +141,21 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
   resize.observe(image);
   const interactions = ['pointerover', 'pointerout', 'focusin', 'focusout'] as const;
   for (const type of interactions) nav.addEventListener(type, update);
+  const lights = new MutationObserver(update);
+  lights.observe(street, { attributeFilter: ['data-lights-off'] });
   image.addEventListener('load', loadImage);
+  lightsOff.addEventListener('load', loadDarkImage);
   canvas.addEventListener('webglcontextlost', contextLost);
   if (image.complete && image.naturalWidth) loadImage();
+  loadDarkImage();
 
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
+    lights.disconnect();
     for (const type of interactions) nav.removeEventListener(type, update);
     image.removeEventListener('load', loadImage);
+    lightsOff.removeEventListener('load', loadDarkImage);
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
     nav.style.removeProperty('--city-nav-light');
@@ -144,5 +165,6 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     gl.deleteShader(program.vertexShader);
     gl.deleteShader(program.fragmentShader);
     gl.deleteTexture(texture.texture);
+    gl.deleteTexture(darkTexture.texture);
   };
 }

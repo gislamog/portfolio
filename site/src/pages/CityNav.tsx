@@ -21,7 +21,7 @@ export function CityNav() {
       <canvas ref={glow} className="city-nav-glow" aria-hidden="true" />
       {links.map((link) => (
         <NavLink key={link.to} to={link.to} end>
-          {link.label}
+          <span className="city-nav-label">{link.label}</span>
         </NavLink>
       ))}
     </nav>

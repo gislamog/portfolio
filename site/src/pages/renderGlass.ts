@@ -29,7 +29,9 @@ function setupFlowmap(renderer: Renderer) {
   return new Flowmap(gl, { size: 192, falloff: 0.19, alpha: 0.90, dissipation: 0.947 });
 }
 
-export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, fog: HTMLDivElement) {
+export function startGlass(
+  canvas: HTMLCanvasElement, image: HTMLImageElement, lightsOff: HTMLImageElement, fog: HTMLDivElement,
+) {
   const renderer = new Renderer({
     canvas,
     alpha: true,
@@ -44,6 +46,8 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
 
   const flowmap = setupFlowmap(renderer);
   const clearCity = new Texture(gl, { flipY: false, generateMipmaps: false });
+  const darkCity = new Texture(gl, { flipY: false, generateMipmaps: false });
+  const street = image.closest('.city-street');
   const emptyFlow = flowmap ? undefined : new Texture(gl, { generateMipmaps: false });
   const uniforms = {
     clearCity: { value: clearCity },
@@ -210,6 +214,12 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
       flowmap.update();
       moved = false;
     }
+    const dark = darkCity.image && street?.hasAttribute('data-lights-off');
+    uniforms.clearCity.value = dark ? darkCity : clearCity;
+    // Match the centered object-fit crop for the current exposure.
+    const sourceAspect = dark ? lightsOff.naturalWidth / lightsOff.naturalHeight : textureAspect;
+    const ratio = width / height / sourceAspect;
+    uniforms.cover.value.set(Math.min(1, ratio), Math.min(1, 1 / ratio));
     uniforms.clock.value = elapsed;
     uniforms.gaze.value.set(gazeX, gazeY);
     drawPortal(ease);
@@ -231,9 +241,6 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     canvas.style.removeProperty('height');
     uniforms.size.value.set(width, height);
     if (flowmap) flowmap.aspect = width / height;
-    // Match the fallback image's centered object-fit: cover crop.
-    const ratio = width / height / textureAspect;
-    uniforms.cover.value.set(Math.min(1, ratio), Math.min(1, 1 / ratio));
     frame = requestAnimationFrame(render);
   }
 
@@ -243,6 +250,13 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     clearCity.image = image;
     clearCity.needsUpdate = true;
     update();
+  }
+
+  function loadDarkImage() {
+    if (!lightsOff.complete || !lightsOff.naturalWidth || lost) return;
+    darkCity.image = lightsOff;
+    darkCity.needsUpdate = true;
+    darkCity.update();
   }
 
   function contextLost() {
@@ -260,6 +274,7 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
   });
   intersection.observe(canvas);
   image.addEventListener('load', loadImage);
+  lightsOff.addEventListener('load', loadDarkImage);
   document.addEventListener('visibilitychange', visibilityChanged);
   scene?.addEventListener('pointermove', followPointer, { passive: true });
   scene?.addEventListener('pointerleave', losePointer);
@@ -270,12 +285,14 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
   finePointer.addEventListener('change', resetGaze);
   canvas.addEventListener('webglcontextlost', contextLost);
   loadImage();
+  loadDarkImage();
 
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
     intersection.disconnect();
     image.removeEventListener('load', loadImage);
+    lightsOff.removeEventListener('load', loadDarkImage);
     document.removeEventListener('visibilitychange', visibilityChanged);
     scene?.removeEventListener('pointermove', followPointer);
     scene?.removeEventListener('pointerleave', losePointer);
@@ -289,6 +306,7 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     fog.style.removeProperty('mask-image');
     releaseMesh(glass);
     gl.deleteTexture(clearCity.texture);
+    gl.deleteTexture(darkCity.texture);
     if (emptyFlow) gl.deleteTexture(emptyFlow.texture);
     if (flowmap) {
       releaseMesh(flowmap.mesh);

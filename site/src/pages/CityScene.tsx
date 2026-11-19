@@ -4,18 +4,22 @@ import { rainDefaults } from './rainSettings';
 import { startGlass } from './renderGlass';
 
 const city = `${import.meta.env.BASE_URL}images/city/city-front-on`;
+const darkCity = `${import.meta.env.BASE_URL}images/city/city-front-off`;
 
 export function CityScene() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const fog = useRef<HTMLDivElement>(null);
   const glass = useRef<HTMLCanvasElement>(null);
   const image = useRef<HTMLImageElement>(null);
+  const lightsOff = useRef<HTMLImageElement>(null);
+  const street = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const surface = glass.current;
     const background = image.current;
     const mist = fog.current;
-    if (!surface || !background || !mist) return;
+    const dark = lightsOff.current;
+    if (!surface || !background || !mist || !dark) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let stop: (() => void) | undefined;
 
@@ -24,7 +28,7 @@ export function CityScene() {
       stop = undefined;
       if (motion.matches) return;
       try {
-        stop = startGlass(surface!, background!, mist!);
+        stop = startGlass(surface!, background!, dark!, mist!);
       } catch (error) {
         console.warn('Rain on glass unavailable', error);
       }
@@ -42,10 +46,16 @@ export function CityScene() {
 
   useEffect(() => {
     const surface = canvas.current;
-    if (!surface) return;
+    const cityStreet = street.current;
+    const dark = lightsOff.current;
+    if (!surface || !cityStreet || !dark) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let generation = 0;
     let stop: (() => void) | undefined;
+
+    const setLightsOff = (off: boolean) => {
+      cityStreet.toggleAttribute('data-lights-off', off && dark.complete && dark.naturalWidth > 0);
+    };
 
     function update() {
       const current = ++generation;
@@ -55,7 +65,7 @@ export function CityScene() {
       const active = () => current === generation;
       void import('./renderRain').then(async ({ startRain }) => {
         if (!active()) return;
-        const cleanup = await startRain(surface!, active, settings.current);
+        const cleanup = await startRain(surface!, active, settings.current, setLightsOff);
         if (active()) stop = cleanup;
         else cleanup?.();
       }).catch((error: unknown) => {
@@ -76,11 +86,16 @@ export function CityScene() {
     <>
       <div className="city-scene">
         <div className="city-view">
-          <div className="city-street">
+          <div ref={street} className="city-street">
             <picture>
               <source media="(max-width: 700px)" srcSet={`${city}-mobile.webp`} />
               <img ref={image} id="fallback" src={`${city}.webp`}
                 alt="Illuminated ramen shops lining a rain-slicked Japanese street at night" />
+            </picture>
+            <picture aria-hidden="true">
+              <source media="(max-width: 700px)" srcSet={`${darkCity}-mobile.webp`} />
+              <img ref={lightsOff} src={`${darkCity}.webp`} className="city-lights-off"
+                alt="" decoding="async" />
             </picture>
             <canvas ref={canvas} className="city-rain" aria-hidden="true" />
           </div>

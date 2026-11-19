@@ -35,8 +35,7 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 0.7rem clamp(1rem, 5vw, 4.35rem);
-  padding: 1.6rem clamp(1rem, 4vw, 3rem) 1.45rem;
+  padding-inline: clamp(1rem, 4vw, 3rem);
 }
 
 .city-nav::before {
@@ -78,6 +77,11 @@
 .city-nav a {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 1.6rem clamp(0.5rem, 2.5vw, 2.175rem) 1.45rem;
   color: #f3edf0;
   line-height: 1.35;
 }
@@ -98,7 +102,16 @@
     0 0 15px rgb(var(--city-nav-link-light) / 24%);
 }
 
-.city-nav a:is(:hover, :focus-visible, [aria-current='page'])::after {
+.portfolio-home .city-nav a:focus-visible {
+  outline-offset: -5px;
+  border-radius: 0.35rem;
+}
+
+.city-nav-label {
+  position: relative;
+}
+
+.city-nav a:is(:hover, :focus-visible, [aria-current='page']) .city-nav-label::after {
   content: '';
   position: absolute;
   inset: auto 0 -8px;
@@ -109,17 +122,19 @@
 }
 
 .city-nav:has(.city-nav-glow[data-ready])::after,
-.city-nav:has(.city-nav-glow[data-ready]) a::after {
+.city-nav:has(.city-nav-glow[data-ready]) .city-nav-label::after {
   visibility: hidden;
 }
 
 @media (max-width: 700px) {
   .city-nav {
-    gap: 0.9rem clamp(0.9rem, 4vw, 1.6rem);
-    padding-block: 0.9rem 1rem;
+    padding-block: 0.25rem 0.35rem;
   }
 
-  .city-nav a { font-size: 0.875rem; }
+  .city-nav a {
+    padding: 0.6rem clamp(0.45rem, 2vw, 0.8rem);
+    font-size: 0.875rem;
+  }
 }
 
 .portfolio-home > main {
@@ -211,6 +226,14 @@
 
 .city-street {
   z-index: 0;
+}
+
+.city-lights-off {
+  opacity: 0;
+}
+
+.city-street[data-lights-off] .city-lights-off {
+  opacity: 1;
 }
 
 .city-fog {

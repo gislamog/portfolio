@@ -17,7 +17,12 @@ function layerFor(index: number) {
   return layers[layerOrder[index % layerOrder.length]];
 }
 
-export async function startRain(canvas: HTMLCanvasElement, active: () => boolean, settings: RainSettings) {
+export async function startRain(
+  canvas: HTMLCanvasElement,
+  active: () => boolean,
+  settings: RainSettings,
+  setLightsOff: (off: boolean) => void,
+) {
   const mask = new Image();
   mask.src = MASK_URL;
   await mask.decode();
@@ -114,8 +119,17 @@ export async function startRain(canvas: HTMLCanvasElement, active: () => boolean
   let coverX = 1;
   let coverY = 1;
   let nextSplash = RAIN_COUNT;
-  let flashDelay = settings.lightning > 0 ? 60 / settings.lightning : 0;
+  let flashRate = settings.lightning;
+  let flashDelay = flashRate > 0 ? 60 / flashRate : 0;
   let flash = 0;
+  let sinceFlash = Infinity;
+  let lightsOff = false;
+
+  function updateCityLights(off: boolean) {
+    if (lightsOff === off) return;
+    lightsOff = off;
+    setLightsOff(off);
+  }
 
   function resetDrop(index: number, initial = false) {
     const offset = index * 2;
@@ -191,16 +205,27 @@ export async function startRain(canvas: HTMLCanvasElement, active: () => boolean
       gpu.bindBuffer(gpu.ARRAY_BUFFER, buffer);
       gpu.bufferSubData(gpu.ARRAY_BUFFER, 0, values);
     }
-    if (settings.lightning > 0) {
-      flashDelay -= step / 60;
+    if (settings.lightning !== flashRate) {
+      flashRate = settings.lightning;
+      flashDelay = flashRate > 0 ? 60 / flashRate : 0;
+    }
+    if (flashRate > 0) {
+      const seconds = step / 60;
+      flashDelay -= seconds;
       if (flashDelay <= 0) {
         flash = 0.8;
-        flashDelay = 60 / settings.lightning * (0.75 + Math.random() * 0.5);
+        sinceFlash = 0;
+        flashDelay = 60 / flashRate * (0.75 + Math.random() * 0.5);
       }
       flash = Math.max(0, flash - step * 0.055);
+      sinceFlash += seconds;
+      // Two power dips begin after the lightning flash has faded.
+      updateCityLights((sinceFlash >= 0.28 && sinceFlash < 0.48)
+        || (sinceFlash >= 0.74 && sinceFlash < 0.96));
     } else {
       flash = 0;
-      flashDelay = 0;
+      sinceFlash = Infinity;
+      updateCityLights(false);
     }
     color(rainColor, settings.rainColor);
     color(splashColor, settings.splashColor);
@@ -240,6 +265,7 @@ export async function startRain(canvas: HTMLCanvasElement, active: () => boolean
 
   function contextLost() {
     lost = true;
+    updateCityLights(false);
     update();
   }
 
@@ -258,6 +284,7 @@ export async function startRain(canvas: HTMLCanvasElement, active: () => boolean
     resize.disconnect();
     intersection.disconnect();
     document.removeEventListener('visibilitychange', update);
+    updateCityLights(false);
     canvas.removeEventListener('webglcontextlost', contextLost);
     gpu.clear(gpu.COLOR_BUFFER_BIT);
     for (const { buffer } of buffers) gpu.deleteBuffer(buffer);
