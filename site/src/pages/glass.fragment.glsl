@@ -5,8 +5,7 @@ precision mediump float;
 #endif
 
 uniform sampler2D clearCity;
-uniform sampler2D rippleField;
-uniform vec2 rippleTexel;
+uniform sampler2D flowField;
 uniform vec2 size;
 uniform vec2 cover;
 uniform float clock;
@@ -95,25 +94,12 @@ Drop runningWater(vec2 pixel) {
     return strongest(head, Drop(vec2(clamp(channel, -1.0, 1.0) * 0.48, 0.06), coverage));
 }
 
-float rippleHeight(vec2 uv) {
-    return dot(texture2D(rippleField, uv).rg, vec2(255.0, 1.0)) / 128.0 - 1.0;
-}
-
-vec2 rippleDisplacement() {
-    if (rippleTexel.x <= 0.0) return vec2(0.0);
-    vec2 uv = vec2(viewUV.x, 1.0 - viewUV.y);
-    vec2 dx = vec2(rippleTexel.x, 0.0);
-    vec2 dy = vec2(0.0, rippleTexel.y);
-    return clamp(vec2(
-        rippleHeight(uv + dx) - rippleHeight(uv - dx),
-        rippleHeight(uv - dy) - rippleHeight(uv + dy)
-    ) * 34.0, -12.0, 12.0);
-}
-
 void main() {
     // The texture on the glass drifts, while the street keeps its original coordinates.
     vec2 pane = viewUV * size;
-    vec2 ripple = rippleDisplacement();
+    // OGL stores pointer velocity in RG and the wake's coverage in B.
+    vec3 flow = texture2D(flowField, vec2(viewUV.x, 1.0 - viewUV.y)).rgb;
+    vec2 ripple = flow.xy * vec2(56.0, -56.0);
     vec2 pixel = pane + gaze * vec2(5.0, 3.5) + ripple * 0.74;
     vec2 cityUV = (viewUV - 0.5) * cover + 0.5;
     float wet = wetness(pixel);
@@ -136,7 +122,7 @@ void main() {
     }
 
     float haze = 0.018 + wet * 0.074;
-    float rippleOpacity = smoothstep(0.55, 5.2, length(ripple)) * 0.43;
+    float rippleOpacity = smoothstep(0.035, 0.75, flow.b) * 0.68;
     vec3 bentCity = texture2D(clearCity, cityUV - ripple / size * cover).rgb;
     float mist = haze * (1.0 - rippleOpacity);
     float alpha = water.coverage + (mist + rippleOpacity) * (1.0 - water.coverage);

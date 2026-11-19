@@ -1,6 +1,5 @@
+import { Flowmap, Mesh, Program, Renderer, Texture, Triangle, Vec2 } from 'ogl';
 import fragmentShader from './glass.fragment.glsl?raw';
-import rippleShader from './cursorRipples.fragment.glsl?raw';
-import { createCursorRipples } from './cursorRipples';
 
 const vertexShader = `
 attribute vec2 position;
@@ -12,83 +11,58 @@ void main() {
 }
 `;
 
-function compile(gl: WebGLRenderingContext, type: number, source: string) {
-  const shader = gl.createShader(type);
-  if (!shader) throw new Error('Could not allocate glass shader');
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
-  const message = gl.getShaderInfoLog(shader);
-  gl.deleteShader(shader);
-  throw new Error(message ?? 'Glass shader compilation failed');
+function releaseMesh(mesh: Mesh) {
+  const { gl, program, geometry } = mesh;
+  geometry.remove();
+  program.remove();
+  gl.deleteShader(program.vertexShader);
+  gl.deleteShader(program.fragmentShader);
 }
 
-function link(gl: WebGLRenderingContext, source: string) {
-  const program = gl.createProgram();
-  if (!program) throw new Error('Could not allocate glass program');
-  try {
-    for (const [type, shaderSource] of [[gl.VERTEX_SHADER, vertexShader], [gl.FRAGMENT_SHADER, source]] as const) {
-      const shader = compile(gl, type, shaderSource);
-      gl.attachShader(program, shader);
-      gl.deleteShader(shader);
-    }
-    gl.bindAttribLocation(program, 0, 'position');
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      throw new Error(gl.getProgramInfoLog(program) ?? 'Glass shader linking failed');
-    }
-    return program;
-  } catch (error) {
-    gl.deleteProgram(program);
-    throw error;
-  }
+// Use OGL's original Flowmap from the Codrops Mouse Flowmap Deformation demo.
+function setupFlowmap(renderer: Renderer) {
+  const { gl } = renderer;
+  const supported = renderer.isWebgl2
+    ? gl.getExtension('EXT_color_buffer_float')
+    : gl.getExtension('OES_texture_half_float') && gl.getExtension('EXT_color_buffer_half_float');
+  if (!supported || !gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)?.precision) return;
+  return new Flowmap(gl, { size: 192, falloff: 0.19, alpha: 0.90, dissipation: 0.947 });
 }
 
 export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, fog: HTMLDivElement) {
-  const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: true, antialias: false });
-  if (!gl) return;
-  const gpu = gl;
-  const program = link(gpu, fragmentShader);
-  const triangle = gpu.createBuffer();
-  const clear = gpu.createTexture();
-  let rippleProgram: WebGLProgram | undefined;
-  let ripples: ReturnType<typeof createCursorRipples>;
-  const dispose = () => {
-    ripples?.dispose();
-    if (rippleProgram) gpu.deleteProgram(rippleProgram);
-    gpu.deleteProgram(program);
-    gpu.deleteBuffer(triangle);
-    gpu.deleteTexture(clear);
+  const renderer = new Renderer({
+    canvas,
+    alpha: true,
+    depth: false,
+    antialias: false,
+    premultipliedAlpha: true,
+    autoClear: false,
+  });
+  const { gl } = renderer;
+  canvas.style.removeProperty('width');
+  canvas.style.removeProperty('height');
+
+  const flowmap = setupFlowmap(renderer);
+  const clearCity = new Texture(gl, { flipY: false, generateMipmaps: false });
+  const emptyFlow = flowmap ? undefined : new Texture(gl, { generateMipmaps: false });
+  const uniforms = {
+    clearCity: { value: clearCity },
+    flowField: flowmap?.uniform ?? { value: emptyFlow },
+    size: { value: new Vec2() },
+    cover: { value: new Vec2() },
+    clock: { value: 0 },
+    gaze: { value: new Vec2() },
+    opening: { value: [0, 0, 0, 0] },
   };
-  if (!triangle || !clear) {
-    dispose();
-    return;
-  }
-
-  gpu.bindBuffer(gpu.ARRAY_BUFFER, triangle);
-  gpu.bufferData(gpu.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gpu.STATIC_DRAW);
-  gpu.enableVertexAttribArray(0);
-  gpu.vertexAttribPointer(0, 2, gpu.FLOAT, false, 0, 0);
-  gpu.disable(gpu.DITHER);
-  if (gpu.getShaderPrecisionFormat(gpu.FRAGMENT_SHADER, gpu.HIGH_FLOAT)?.precision) {
-    try {
-      rippleProgram = link(gpu, rippleShader);
-      ripples = createCursorRipples(gpu, rippleProgram);
-    } catch (error) {
-      console.warn('Cursor ripples unavailable', error);
-    }
-  }
-  gpu.useProgram(program);
-
-  const uniform = (name: string) => gpu.getUniformLocation(program, name);
-  const size = uniform('size');
-  const cover = uniform('cover');
-  const clock = uniform('clock');
-  const gaze = uniform('gaze');
-  const opening = uniform('opening');
-  const rippleTexel = uniform('rippleTexel');
-  gpu.uniform1i(uniform('clearCity'), 0);
-  gpu.uniform1i(uniform('rippleField'), ripples ? 1 : 0);
+  const program = new Program(gl, {
+    vertex: vertexShader,
+    fragment: fragmentShader,
+    uniforms,
+    cullFace: false,
+    depthTest: false,
+    depthWrite: false,
+  });
+  const glass = new Mesh(gl, { geometry: new Triangle(gl), program });
 
   let frame = 0;
   let previous = 0;
@@ -104,6 +78,10 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
   let gazeY = 0;
   let width = 0;
   let height = 0;
+  const cursor = new Vec2(-1, -1);
+  const velocity = new Vec2();
+  let pointerTime = -Infinity;
+  let moved = false;
 
   let portalX = 0;
   let portalY = 0;
@@ -125,6 +103,10 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     if (target instanceof Element && target.closest('a, button, input, select, textarea, label, summary, [role="button"], [contenteditable], .rain-controls')) return;
     const point = panePoint(event);
     if (!point) return;
+    // A drag that starts on the backdrop moves the portal without selecting page text.
+    if (event.pointerType === 'mouse' && target instanceof Element && !target.closest('p, h1, li')) {
+      event.preventDefault();
+    }
     heldPointer = event.pointerId;
     portalX = point.x;
     portalY = point.y;
@@ -150,7 +132,11 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     const x = portalX * width;
     const y = portalY * height;
     const feather = Math.min(13, portalRadius * 0.45);
-    gpu.uniform4f(opening, x, y, portalRadius, feather);
+    const opening = uniforms.opening.value;
+    opening[0] = x;
+    opening[1] = y;
+    opening[2] = portalRadius;
+    opening[3] = feather;
 
     // Match the shader's opening so both the glass and the street blur clear together.
     const mask = portalRadius
@@ -165,7 +151,8 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
   function resetGaze() {
     targetX = 0;
     targetY = 0;
-    ripples?.endStroke();
+    pointerTime = -Infinity;
+    moved = false;
   }
 
   function followPointer(event: PointerEvent) {
@@ -178,7 +165,18 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
       portalY = point.y;
     }
     if (!followsGlass) return;
-    ripples?.move(point);
+    if (flowmap) {
+      const delay = event.timeStamp - pointerTime;
+      if (delay < 85) {
+        const dt = Math.max(8, delay);
+        velocity.set((point.x - cursor.x) * width / dt, (point.y - cursor.y) * height / dt);
+        const speed = velocity.len();
+        if (speed > 1) velocity.scale(1 / speed);
+        moved = true;
+      }
+      cursor.set(point.x, point.y);
+      pointerTime = event.timeStamp;
+    }
     targetX = point.x * 2 - 1;
     targetY = point.y * 2 - 1;
   }
@@ -193,16 +191,6 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     update();
   }
 
-  function uploadImage() {
-    gpu.activeTexture(gpu.TEXTURE0);
-    gpu.bindTexture(gpu.TEXTURE_2D, clear);
-    gpu.texParameteri(gpu.TEXTURE_2D, gpu.TEXTURE_MIN_FILTER, gpu.LINEAR);
-    gpu.texParameteri(gpu.TEXTURE_2D, gpu.TEXTURE_MAG_FILTER, gpu.LINEAR);
-    gpu.texParameteri(gpu.TEXTURE_2D, gpu.TEXTURE_WRAP_S, gpu.CLAMP_TO_EDGE);
-    gpu.texParameteri(gpu.TEXTURE_2D, gpu.TEXTURE_WRAP_T, gpu.CLAMP_TO_EDGE);
-    gpu.texImage2D(gpu.TEXTURE_2D, 0, gpu.RGB, gpu.RGB, gpu.UNSIGNED_BYTE, image);
-  }
-
   function render(now: number) {
     const step = previous ? Math.min((now - previous) / 1000, 0.05) : 0;
     elapsed += step;
@@ -210,14 +198,22 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     gazeX += (targetX - gazeX) * ease;
     gazeY += (targetY - gazeY) * ease;
     previous = now;
-    ripples?.advance(step, width, height);
-    gpu.useProgram(program);
-    gpu.viewport(0, 0, canvas.width, canvas.height);
-    ripples?.bind(rippleTexel);
-    gpu.uniform1f(clock, elapsed);
-    gpu.uniform2f(gaze, gazeX, gazeY);
+    if (flowmap) {
+      // When the pointer pauses, keep decaying the existing wake without adding a new stamp.
+      if (moved) {
+        flowmap.mouse.set(cursor.x, 1 - cursor.y);
+        flowmap.velocity.lerp(velocity, 0.65);
+      } else {
+        flowmap.mouse.set(-1, -1);
+        flowmap.velocity.scale(0.6);
+      }
+      flowmap.update();
+      moved = false;
+    }
+    uniforms.clock.value = elapsed;
+    uniforms.gaze.value.set(gazeX, gazeY);
     drawPortal(ease);
-    gpu.drawArrays(gpu.TRIANGLES, 0, 3);
+    renderer.render({ scene: glass, frustumCull: false });
     if (!canvas.hasAttribute('data-ready')) canvas.setAttribute('data-ready', '');
     frame = requestAnimationFrame(render);
   }
@@ -228,22 +224,24 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     width = canvas.clientWidth;
     height = canvas.clientHeight;
     if (!textureAspect || !width || !height || !visible || lost || document.hidden) return;
-    const dpr = Math.min(devicePixelRatio, 1.5);
-    canvas.width = Math.round(width * dpr);
-    canvas.height = Math.round(height * dpr);
-    ripples?.resize(width, height);
-    gpu.useProgram(program);
-    gpu.uniform2f(size, width, height);
+    renderer.dpr = Math.min(devicePixelRatio, 1.5);
+    renderer.setSize(width, height);
+    // CSS owns the layout size so preview resizing stays responsive.
+    canvas.style.removeProperty('width');
+    canvas.style.removeProperty('height');
+    uniforms.size.value.set(width, height);
+    if (flowmap) flowmap.aspect = width / height;
     // Match the fallback image's centered object-fit: cover crop.
     const ratio = width / height / textureAspect;
-    gpu.uniform2f(cover, Math.min(1, ratio), Math.min(1, 1 / ratio));
+    uniforms.cover.value.set(Math.min(1, ratio), Math.min(1, 1 / ratio));
     frame = requestAnimationFrame(render);
   }
 
   function loadImage() {
     if (!image.complete || !image.naturalWidth || lost) return;
     textureAspect = image.naturalWidth / image.naturalHeight;
-    uploadImage();
+    clearCity.image = image;
+    clearCity.needsUpdate = true;
     update();
   }
 
@@ -289,6 +287,15 @@ export function startGlass(canvas: HTMLCanvasElement, image: HTMLImageElement, f
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
     fog.style.removeProperty('mask-image');
-    dispose();
+    releaseMesh(glass);
+    gl.deleteTexture(clearCity.texture);
+    if (emptyFlow) gl.deleteTexture(emptyFlow.texture);
+    if (flowmap) {
+      releaseMesh(flowmap.mesh);
+      for (const target of [flowmap.mask.read, flowmap.mask.write]) {
+        gl.deleteFramebuffer(target.buffer);
+        gl.deleteTexture(target.texture.texture);
+      }
+    }
   };
 }
