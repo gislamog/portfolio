@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
+import { PortfolioHome } from './pages/PortfolioHome';
 import { ExperiencePage } from './pages/ExperiencePage';
 import { EducationPage } from './pages/EducationPage';
 import { ProjectsPage } from './pages/ProjectsPage';
@@ -18,7 +19,8 @@ export default function App() {
       <CloudflareAnalytics />
       <Layout>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<PortfolioHome />} />
+          <Route path="/about" element={<HomePage />} />
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/education" element={<EducationPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
