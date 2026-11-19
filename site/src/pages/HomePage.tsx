@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MeshGradient } from '@paper-design/shaders-react';
 import type { IconType } from 'react-icons';
 import {
   SiJavascript,
@@ -95,49 +94,6 @@ const explore = [
 const SHEETS = ['dots', 'ruled', 'hatched', 'graph'] as const;
 
 /**
- * Tracks the pointer's normalized position (0-1) over `ref`'s element so the
- * hero MeshGradient's origin can follow the cursor. rAF-throttled so the
- * shader only re-renders once per frame even on high-frequency pointermove.
- * Resets to center on leave and stays centered under reduced-motion.
- */
-function usePointerOrigin<T extends HTMLElement>() {
-  const ref = useRef<T>(null);
-  const [origin, setOrigin] = useState({ x: 0.5, y: 0.5 });
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    let raf = 0;
-    const handleMove = (e: PointerEvent) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const rect = el.getBoundingClientRect();
-        setOrigin({
-          x: (e.clientX - rect.left) / rect.width,
-          y: (e.clientY - rect.top) / rect.height,
-        });
-      });
-    };
-    const handleLeave = () => {
-      cancelAnimationFrame(raf);
-      setOrigin({ x: 0.5, y: 0.5 });
-    };
-
-    el.addEventListener('pointermove', handleMove);
-    el.addEventListener('pointerleave', handleLeave);
-    return () => {
-      cancelAnimationFrame(raf);
-      el.removeEventListener('pointermove', handleMove);
-      el.removeEventListener('pointerleave', handleLeave);
-    };
-  }, []);
-
-  return { ref, origin };
-}
-
-/**
  * Home's sections are full-viewport sheets inside .app-viewport, a custom
  * scroll container the browser's native same-document anchor jump can't
  * reach, so a direct /#explore load (or a stale layout at the moment it
@@ -164,22 +120,10 @@ function useHomeHashTarget() {
 export function HomePage() {
   useHomeHashTarget();
   const featured = projects.slice(0, 3);
-  const { ref: heroRef, origin } = usePointerOrigin<HTMLElement>();
 
   return (
     <div className="nb-page">
-      <section id="intro" ref={heroRef} className="hero nb-sheet hero-shader" data-sheet={SHEETS[0]}>
-        <MeshGradient
-          className="hero-shader-bg"
-          colors={['#1a4d3c', '#84c79d', '#d4ad52', '#0d2b3e', '#6c7ee6']}
-          distortion={0.85}
-          swirl={0.55}
-          speed={0.25}
-          grainMixer={0.15}
-          grainOverlay={0.1}
-          originX={origin.x}
-          originY={origin.y}
-        />
+      <section id="intro" className="hero">
         <div className="container hero-inner">
           {/* No entrance animation: tabs should switch instantly, not fade in. */}
           <div className="hero-main">

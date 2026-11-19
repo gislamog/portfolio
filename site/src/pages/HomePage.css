@@ -1,22 +1,15 @@
-.hero-shader {
-  /* The MeshGradient canvas replaces the notebook paper texture for this
-     sheet only; the other three sheets keep their dots/ruled/hatched/graph
-     background untouched. */
-  background: none;
-  box-shadow: none;
-}
-
-.hero-shader-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.hero-shader .hero-inner {
+.hero {
+  /* Plain solid background like the Work tab: no shader, no per-sheet
+     paper texture, just the page's own grain + dot grid over --nb-sheet. */
   position: relative;
-  z-index: 1;
+  min-height: 100cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(26px, 6vh, 60px) clamp(20px, 4vw, 56px);
+  scroll-snap-align: start;
+  border-bottom: 1px solid var(--nb-line);
 }
 
 .hero-inner {
