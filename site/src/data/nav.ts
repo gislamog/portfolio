@@ -13,6 +13,7 @@ export interface NavItem {
 
 export const links: NavItem[] = [
   { to: '/', label: 'Home' },
+  { to: '/about', label: 'About' },
   { to: '/experience', label: 'Work' },
   // MCS Portfolio and Big Data live under Education (linked from that page);
   // the tab stays lit on those sub-routes.

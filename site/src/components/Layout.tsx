@@ -7,6 +7,7 @@ import { railFor } from '../data/rails';
 import { SideRail, type SideRailProps } from './SideRail';
 import { ScrollToTop } from './ScrollToTop';
 import { AvatarButton } from './AvatarButton';
+import { CityScene } from '../pages/CityScene';
 import './Layout.css';
 
 /**
@@ -29,7 +30,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
   // so close the mobile menu rather than leaving it open over the new page.
   useEffect(() => setMenuOpen(false), [pathname]);
 
-  const rail: SideRailProps = { items: [], ...railFor(pathname), scrollRoot: viewport };
+  const railConfig = railFor(pathname);
+  const rail: SideRailProps | undefined = railConfig && { ...railConfig, scrollRoot: viewport };
 
   const navItems = links.filter((l) => l.to !== '/contact').map((l) => (
     <span key={l.to} className="nav-item">
@@ -60,6 +62,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
       ))}
     </span>
   ));
+
+  const isHome = pathname === '/';
+
+  if (isHome) {
+    return (
+      <div className="portfolio-home">
+        <CityScene />
+        <nav aria-label="Portfolio">
+          {links.map((link) => (
+            <NavLink key={link.to} to={link.to} end>
+              {link.label}
+            </NavLink>
+          ))}
+        </nav>
+        <main>{children}</main>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">
@@ -109,7 +129,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         )}
       </header>
       <div className="app-body">
-        <SideRail {...rail} />
+        {rail && <SideRail {...rail} />}
         <div className="app-stage">
           <div ref={setViewport} className="app-viewport">
             <main>{children}</main>

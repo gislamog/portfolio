@@ -24,8 +24,8 @@ export const hasMedia = (p: Project) => Boolean(p.images?.length || p.image);
 export const MORE_PROJECTS_ID = 'more-projects';
 
 const rails: Record<string, RailConfig> = {
-  '/': {
-    title: 'Home',
+  '/about': {
+    title: 'About',
     items: [
       { id: 'intro', label: 'Introduction' },
       { id: 'featured', label: 'Featured projects' },
