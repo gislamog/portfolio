@@ -37,16 +37,27 @@
   align-items: center;
   gap: 0.7rem clamp(1rem, 5vw, 4.35rem);
   padding: 1.6rem clamp(1rem, 4vw, 3rem) 1.45rem;
-  background: rgb(14 17 26 / 32%);
-  backdrop-filter: blur(9px);
+}
+
+.city-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(14 17 26 / 20%);
+  backdrop-filter: blur(4px);
+  mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent),
+    linear-gradient(180deg, transparent, #000b 52%, #000 100%);
+  mask-composite: intersect;
+  pointer-events: none;
 }
 
 .city-nav::after {
   content: '';
   position: absolute;
   inset: auto 0 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #a3a4c25e 50%, transparent);
+  height: 11px;
+  background: linear-gradient(90deg, transparent, #a3a4c254 50%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000);
   pointer-events: none;
 }
 
@@ -71,26 +82,34 @@
   line-height: 1.35;
 }
 
-.city-nav a:hover,
-.city-nav a:focus-visible,
-.portfolio-home .city-nav a[aria-current='page'] {
-  color: rgb(var(--city-nav-light));
-  text-shadow: 0 0 8px rgb(var(--city-nav-light) / 62%),
-    0 0 19px rgb(var(--city-nav-light) / 38%);
+.portfolio-home .city-nav a:hover,
+.portfolio-home .city-nav a:focus-visible {
+  --city-nav-link-light: var(--city-nav-hover-light, var(--city-nav-light));
+  text-decoration: none;
 }
 
-.city-nav a[aria-current='page']::after {
+.portfolio-home .city-nav a[aria-current='page'] {
+  --city-nav-link-light: var(--city-nav-light);
+}
+
+.portfolio-home .city-nav a:is(:hover, :focus-visible, [aria-current='page']) {
+  color: rgb(var(--city-nav-link-light));
+  text-shadow: 0 0 8px rgb(var(--city-nav-link-light) / 43%),
+    0 0 15px rgb(var(--city-nav-link-light) / 24%);
+}
+
+.city-nav a:is(:hover, :focus-visible, [aria-current='page'])::after {
   content: '';
   position: absolute;
   inset: auto 0 -8px;
-  height: 2px;
+  height: 1.5px;
   border-radius: 1px;
-  background-color: rgb(var(--city-nav-light));
-  box-shadow: 0 0 9px 2px rgb(var(--city-nav-light) / 65%);
+  background-color: rgb(var(--city-nav-link-light) / 85%);
+  box-shadow: 0 0 8px 1px rgb(var(--city-nav-link-light) / 30%);
 }
 
 .city-nav:has(.city-nav-glow[data-ready])::after,
-.city-nav:has(.city-nav-glow[data-ready]) a[aria-current='page']::after {
+.city-nav:has(.city-nav-glow[data-ready]) a::after {
   visibility: hidden;
 }
 
@@ -187,7 +206,7 @@
 .city-scene::after {
   content: '';
   z-index: 1;
-  background: linear-gradient(#10101ba6, transparent 36%, #10101b68);
+  background: linear-gradient(#10101b7a, #10101b65 13%, transparent 36%, #10101b68);
 }
 
 .city-street {

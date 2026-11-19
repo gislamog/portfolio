@@ -21,13 +21,18 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     canvas, alpha: true, depth: false, premultipliedAlpha: true, autoClear: false,
   });
   const { gl } = renderer;
-  const texture = new Texture(gl, { flipY: false, generateMipmaps: false });
+  const texture = new Texture(gl, {
+    flipY: false,
+    generateMipmaps: renderer.isWebgl2,
+    minFilter: renderer.isWebgl2 ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR,
+  });
   const uniforms = {
     city: { value: texture },
     size: { value: new Vec2() },
     imageOrigin: { value: new Vec2() },
     imageSpan: { value: new Vec2() },
     tab: { value: [0, 0, 0] },
+    hoverTab: { value: [0, 0, 0] },
     bottom: { value: 0 },
   };
   const program = new Program(gl, { vertex, fragment, uniforms, depthTest: false, depthWrite: false, cullFace: false });
@@ -40,18 +45,40 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
   let frame = 0;
   let lost = false;
 
+  function tabGeometry(link: HTMLElement, bounds: DOMRect) {
+    const rect = link.getBoundingClientRect();
+    return [
+      (rect.left + rect.right) / 2 - bounds.left,
+      Math.min(nav!.clientHeight - 3, rect.bottom - bounds.top + 7),
+      Math.min(28, rect.width * 0.48),
+    ];
+  }
+
+  function sampleTint([x, y]: number[], property: string) {
+    gl.readPixels(
+      Math.floor(x * renderer.dpr),
+      canvas.height - 1 - Math.floor(y * renderer.dpr),
+      1, 1, gl.RGBA, gl.UNSIGNED_BYTE, color,
+    );
+    if (color[3] <= 100) return false;
+    const rgb = Array.from(color.subarray(0, 3), (channel) => Math.min(255, Math.round(channel * 255 / color[3])));
+    nav!.style.setProperty(property, rgb.join(' '));
+    return true;
+  }
+
   function draw() {
     if (lost || !image!.complete || !image!.naturalWidth) return;
-    const { width, height, left, top } = canvas.getBoundingClientRect();
+    const bounds = canvas.getBoundingClientRect();
+    const { width, height, left, top } = bounds;
     const city = image!.getBoundingClientRect();
     if (!width || !height || !city.width || !city.height) return;
-    const link = active!.getBoundingClientRect();
-    const tabX = (link.left + link.right) / 2 - left;
-    const tabY = Math.min(nav!.clientHeight - 3, link.bottom - top + 7);
-    renderer.dpr = Math.min(window.devicePixelRatio, 2);
-    renderer.setSize(width, height);
-    canvas.style.removeProperty('width');
-    canvas.style.removeProperty('height');
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    if (renderer.width !== width || renderer.height !== height || renderer.dpr !== dpr) {
+      renderer.dpr = dpr;
+      renderer.setSize(width, height);
+      canvas.style.removeProperty('width');
+      canvas.style.removeProperty('height');
+    }
 
     const scale = Math.max(city.width / image!.naturalWidth, city.height / image!.naturalHeight);
     const imageWidth = image!.naturalWidth * scale;
@@ -61,20 +88,17 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     uniforms.size.value.set(width, height);
     uniforms.imageOrigin.value.set((left - imageLeft) / imageWidth, (top - imageTop) / imageHeight);
     uniforms.imageSpan.value.set(width / imageWidth, height / imageHeight);
-    uniforms.tab.value = [tabX, tabY, Math.min(28, link.width * 0.48)];
+    const hovered = nav!.querySelector<HTMLElement>('a:hover:not([aria-current="page"])')
+      ?? nav!.querySelector<HTMLElement>('a:focus-visible:not([aria-current="page"])');
+    uniforms.tab.value = tabGeometry(active!, bounds);
+    uniforms.hoverTab.value = hovered ? tabGeometry(hovered, bounds) : [0, 0, 0];
     uniforms.bottom.value = nav!.clientHeight - 0.5;
     renderer.render({ scene: mesh, frustumCull: false });
 
-    // Use the underline's sampled hue for the live text and its CSS glow.
-    gl.readPixels(
-      Math.floor(tabX * renderer.dpr),
-      canvas.height - 1 - Math.floor(tabY * renderer.dpr),
-      1, 1, gl.RGBA, gl.UNSIGNED_BYTE, color,
-    );
-    if (color[3] > 100) {
-      const rgb = Array.from(color.subarray(0, 3), (channel) => Math.min(255, Math.round(channel * 255 / color[3])));
-      nav!.style.setProperty('--city-nav-light', rgb.join(' '));
-      canvas.setAttribute('data-ready', '');
+    // Sample both underlines so the link text can use the same city colors as the shader.
+    if (sampleTint(uniforms.tab.value, '--city-nav-light')) canvas.setAttribute('data-ready', '');
+    if (!hovered || !sampleTint(uniforms.hoverTab.value, '--city-nav-hover-light')) {
+      nav!.style.removeProperty('--city-nav-hover-light');
     }
   }
 
@@ -93,12 +117,15 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     lost = true;
     canvas.removeAttribute('data-ready');
     nav!.style.removeProperty('--city-nav-light');
+    nav!.style.removeProperty('--city-nav-hover-light');
   }
 
   const resize = new ResizeObserver(update);
   resize.observe(nav);
   resize.observe(active);
   resize.observe(image);
+  const interactions = ['pointerover', 'pointerout', 'focusin', 'focusout'] as const;
+  for (const type of interactions) nav.addEventListener(type, update);
   image.addEventListener('load', loadImage);
   canvas.addEventListener('webglcontextlost', contextLost);
   if (image.complete && image.naturalWidth) loadImage();
@@ -106,10 +133,12 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
+    for (const type of interactions) nav.removeEventListener(type, update);
     image.removeEventListener('load', loadImage);
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
     nav.style.removeProperty('--city-nav-light');
+    nav.style.removeProperty('--city-nav-hover-light');
     geometry.remove();
     program.remove();
     gl.deleteShader(program.vertexShader);
