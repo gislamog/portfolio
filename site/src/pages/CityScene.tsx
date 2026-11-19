@@ -7,13 +7,15 @@ const city = `${import.meta.env.BASE_URL}images/city/city-front-on`;
 
 export function CityScene() {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const fog = useRef<HTMLDivElement>(null);
   const glass = useRef<HTMLCanvasElement>(null);
   const image = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const surface = glass.current;
     const background = image.current;
-    if (!surface || !background) return;
+    const mist = fog.current;
+    if (!surface || !background || !mist) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     let stop: (() => void) | undefined;
 
@@ -22,7 +24,7 @@ export function CityScene() {
       stop = undefined;
       if (motion.matches) return;
       try {
-        stop = startGlass(surface!, background!);
+        stop = startGlass(surface!, background!, mist!);
       } catch (error) {
         console.warn('Rain on glass unavailable', error);
       }
@@ -82,6 +84,7 @@ export function CityScene() {
             </picture>
             <canvas ref={canvas} className="city-rain" aria-hidden="true" />
           </div>
+          <div ref={fog} className="city-fog" aria-hidden="true" />
           <canvas ref={glass} className="city-glass" aria-hidden="true" />
         </div>
       </div>

@@ -98,6 +98,7 @@
 .city-scene::after,
 .city-scene img,
 .city-street,
+.city-fog,
 .city-glass,
 .city-rain {
   position: absolute;
@@ -121,17 +122,24 @@
   background: linear-gradient(#10101bc4, transparent 36%, #10101b68);
 }
 
+.city-street {
+  z-index: 0;
+}
+
+.city-fog {
+  z-index: 1;
+  visibility: hidden;
+  backdrop-filter: blur(1.7px);
+}
+
 .city-glass {
   visibility: hidden;
-  z-index: 1;
+  z-index: 2;
 }
 
+.city-view:has(.city-glass[data-ready]) .city-fog,
 .city-glass[data-ready] {
   visibility: visible;
-}
-
-.city-view:has(.city-glass[data-ready]) .city-street {
-  filter: blur(1.35px);
 }
 
 .city-rain {
@@ -139,9 +147,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .city-fog,
   .city-glass,
   .city-rain { display: none; }
-  .city-view:has(.city-glass[data-ready]) .city-street { filter: none; }
 }
 
 .rain-controls {
