@@ -35,8 +35,10 @@ vec4 underline(vec2 pixel, vec3 geometry, float intensity) {
     float dy = abs(pixel.y - geometry.y);
     float dx = max(0.0, abs(pixel.x - geometry.x) - geometry.z);
     float core = (1.0 - smoothstep(0.28, 1.16, dy)) * (1.0 - smoothstep(0.0, 1.5, dx));
-    float halo = 0.19 * exp(-dy * 0.33 - dx * 0.19)
+    float halo = 0.19 * exp(-dy * 0.33 - dx * 0.15)
         + 0.065 * exp(-dy * 0.105 - dx * 0.10);
+    // Extend the shine sideways without increasing the bloom above the label.
+    halo += 0.18 * intensity * exp(-dy * 0.70 - dx * 0.047);
     vec3 color = mix(cityLight(geometry.xy).rgb, vec3(1.0), 0.20);
     float alpha = min(0.90, (core * 0.78 + halo) * intensity);
     return vec4(color * alpha, alpha);

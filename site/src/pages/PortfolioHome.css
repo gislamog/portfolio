@@ -1,4 +1,5 @@
 .portfolio-home {
+  --city-accent-light: 255 172 139;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -28,7 +29,7 @@
 }
 
 .city-nav {
-  --city-nav-light: 255 172 139;
+  --city-nav-light: var(--city-accent-light);
   position: relative;
   z-index: 1;
   display: flex;
@@ -81,7 +82,7 @@
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 1.6rem clamp(0.5rem, 2.5vw, 2.175rem) 1.45rem;
+  padding: 1.28rem clamp(0.5rem, 2.5vw, 2.175rem) 1.14rem;
   color: #f3edf0;
   line-height: 1.35;
 }
@@ -148,11 +149,22 @@
 }
 
 .portfolio-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
   margin: 0 0 0.85rem;
-  color: #ffad98;
+  color: rgb(var(--city-accent-light));
   font: 600 0.875rem/1.4 ui-monospace, monospace;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.portfolio-role::after {
+  content: '';
+  width: clamp(2rem, 8vw, 6rem);
+  height: 1px;
+  background: linear-gradient(90deg, #ffdfc3, rgb(var(--city-accent-light) / 76%) 42%, transparent);
+  box-shadow: -3px 0 8px rgb(var(--city-accent-light) / 64%);
 }
 
 .portfolio-home .portfolio-intro h1 {
@@ -160,12 +172,29 @@
   color: inherit;
   font: 500 clamp(2.75rem, 9vw, 8rem)/0.9 Georgia, serif;
   letter-spacing: -0.07em;
+  text-shadow: 0 3px 22px rgb(9 9 18 / 65%);
 }
 
 .portfolio-summary {
-  max-width: 39ch;
-  color: #f0dfe4;
+  position: relative;
+  max-width: 43ch;
+  padding-inline-start: 1.25rem;
+  color: #f5e8e8;
   font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.55;
+  text-shadow: 0 1px 10px rgb(9 9 18 / 78%);
+}
+
+.portfolio-summary::before {
+  content: '';
+  position: absolute;
+  inset: 0.28em auto 0.25em 0;
+  width: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgb(var(--city-accent-light) / 64%), #ffe1c8 35%,
+    rgb(var(--city-accent-light) / 88%) 60%, rgb(var(--city-accent-light) / 50%));
+  box-shadow: 0 0 7px 1px rgb(var(--city-accent-light) / 50%),
+    0 0 17px 2px rgb(var(--city-accent-light) / 24%);
 }
 
 .portfolio-home .portfolio-tech,
@@ -179,21 +208,50 @@
 }
 
 .portfolio-tech li {
-  padding: 0.25rem 0.6rem;
-  border: 1px solid #fcf2eb38;
-  border-radius: 0.25rem;
+  padding: 0.42rem 0.88rem;
+  border: 1px solid rgb(var(--city-accent-light) / 27%);
+  border-radius: 0.85rem;
+  background: linear-gradient(145deg, rgb(255 244 238 / 12%), rgb(39 31 44 / 52%));
+  box-shadow: inset 0 1px rgb(255 238 222 / 10%), 0 3px 13px rgb(13 10 19 / 24%);
+  color: #f4e7e4;
   font: 400 0.875rem/1.4 ui-monospace, monospace;
 }
 
-.portfolio-home .portfolio-contacts {
-  gap: 0.6rem 1.35rem;
-  margin-top: 2rem;
-  font-weight: 600;
+.portfolio-home .portfolio-tech {
+  gap: 0.55rem 0.72rem;
 }
 
-.portfolio-contacts a {
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid #ffad98a0;
+.portfolio-home .portfolio-contacts {
+  gap: 0.65rem 1.45rem;
+  margin-top: 1.65rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.portfolio-home .portfolio-contacts a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2rem;
+  color: #f3e6e4;
+  text-decoration: none;
+}
+
+.portfolio-contacts svg {
+  width: 1.12rem;
+  height: 1.12rem;
+  color: #dbcbd0;
+}
+
+.portfolio-contacts span {
+  text-decoration: underline rgb(var(--city-accent-light) / 72%);
+  text-underline-offset: 0.3em;
+}
+
+.portfolio-home .portfolio-contacts a:is(:hover, :focus-visible),
+.portfolio-contacts a:is(:hover, :focus-visible) svg {
+  color: rgb(var(--city-accent-light));
+  text-shadow: 0 0 8px rgb(var(--city-accent-light) / 35%);
 }
 
 .city-scene,
@@ -201,6 +259,7 @@
 .city-scene img,
 .city-street,
 .city-fog,
+.city-hero-fog,
 .city-glass,
 .city-rain {
   position: absolute;
@@ -240,11 +299,28 @@
   z-index: 1;
   visibility: hidden;
   backdrop-filter: blur(1.7px);
+  mask-image: var(--city-portal-mask, none);
+}
+
+.city-hero-fog {
+  --hero-fog-focus: ellipse min(54vw, 33rem) min(45vh, 26rem) at clamp(14rem, 26vw, 30rem) 53%;
+  z-index: 2;
+  background: rgb(16 14 24 / 48%);
+  backdrop-filter: blur(9px);
+  mask-image: radial-gradient(var(--hero-fog-focus), #000 12%, #000d 41%, #0006 71%, transparent),
+    var(--city-portal-mask, linear-gradient(#000, #000));
+  mask-composite: intersect;
+}
+
+@media (max-width: 700px) {
+  .city-hero-fog {
+    --hero-fog-focus: ellipse 83% 43% at 50% 53%;
+  }
 }
 
 .city-glass {
   visibility: hidden;
-  z-index: 2;
+  z-index: 3;
 }
 
 .city-view:has(.city-glass[data-ready]) .city-fog,

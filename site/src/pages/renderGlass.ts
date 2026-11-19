@@ -47,6 +47,7 @@ export function startGlass(
   const flowmap = setupFlowmap(renderer);
   const clearCity = new Texture(gl, { flipY: false, generateMipmaps: false });
   const darkCity = new Texture(gl, { flipY: false, generateMipmaps: false });
+  const view = fog.parentElement;
   const street = image.closest('.city-street');
   const emptyFlow = flowmap ? undefined : new Texture(gl, { generateMipmaps: false });
   const uniforms = {
@@ -119,7 +120,7 @@ export function startGlass(
   function closePortal() {
     heldPointer = undefined;
     portalRadius = 0;
-    fog.style.removeProperty('mask-image');
+    view?.style.removeProperty('--city-portal-mask');
     previousMask = '';
   }
 
@@ -147,7 +148,7 @@ export function startGlass(
       ? `radial-gradient(circle at ${x.toFixed(1)}px ${y.toFixed(1)}px, transparent ${portalRadius.toFixed(1)}px, black ${(portalRadius + feather).toFixed(1)}px)`
       : '';
     if (mask !== previousMask) {
-      fog.style.maskImage = mask;
+      view?.style.setProperty('--city-portal-mask', mask);
       previousMask = mask;
     }
   }
@@ -303,7 +304,7 @@ export function startGlass(
     finePointer.removeEventListener('change', resetGaze);
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
-    fog.style.removeProperty('mask-image');
+    view?.style.removeProperty('--city-portal-mask');
     releaseMesh(glass);
     gl.deleteTexture(clearCity.texture);
     gl.deleteTexture(darkCity.texture);

@@ -100,6 +100,7 @@ export function CityScene() {
             <canvas ref={canvas} className="city-rain" aria-hidden="true" />
           </div>
           <div ref={fog} className="city-fog" aria-hidden="true" />
+          <div className="city-hero-fog" aria-hidden="true" />
           <canvas ref={glass} className="city-glass" aria-hidden="true" />
         </div>
       </div>

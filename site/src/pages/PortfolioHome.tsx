@@ -1,11 +1,12 @@
+import { FaGithub, FaLinkedin, FaRegEnvelope, FaRegHandshake } from 'react-icons/fa6';
 import { profile } from '../data/profile';
 import './PortfolioHome.css';
 
 const contacts = [
-  { label: 'GitHub', href: profile.github },
-  { label: 'LinkedIn', href: profile.linkedin },
-  { label: 'Email', href: `mailto:${profile.email}` },
-  { label: 'Handshake', href: profile.handshake },
+  { label: 'GitHub', href: profile.github, icon: FaGithub },
+  { label: 'LinkedIn', href: profile.linkedin, icon: FaLinkedin },
+  { label: 'Email', href: `mailto:${profile.email}`, icon: FaRegEnvelope },
+  { label: 'Handshake', href: profile.handshake, icon: FaRegHandshake },
 ];
 
 export function PortfolioHome() {
@@ -21,8 +22,13 @@ export function PortfolioHome() {
         {profile.tech.map((technology) => <li key={technology}>{technology}</li>)}
       </ul>
       <ul className="portfolio-contacts" aria-label="Contact and profiles">
-        {contacts.map(({ label, href }) => (
-          <li key={label}><a href={href}>{label}</a></li>
+        {contacts.map(({ label, href, icon: Icon }) => (
+          <li key={label}>
+            <a href={href}>
+              <Icon aria-hidden="true" focusable="false" />
+              <span>{label}</span>
+            </a>
+          </li>
         ))}
       </ul>
     </section>
