@@ -170,7 +170,8 @@ export async function startRain(
   function render(now: number) {
     frame = 0;
     if (!active() || !visible || document.hidden || lost) return;
-    const step = previous ? Math.min((now - previous) * 0.06, 2) : 1;
+    const seconds = previous ? (now - previous) / 1000 : 0;
+    const step = previous ? Math.min(seconds * 60, 2) : 1;
     previous = now;
     for (let index = 0; index < PARTICLE_COUNT; index++) {
       const offset = index * 2;
@@ -210,18 +211,18 @@ export async function startRain(
       flashDelay = flashRate > 0 ? 60 / flashRate : 0;
     }
     if (flashRate > 0) {
-      const seconds = step / 60;
       flashDelay -= seconds;
       if (flashDelay <= 0) {
         flash = 0.8;
         sinceFlash = 0;
         flashDelay = 60 / flashRate * (0.75 + Math.random() * 0.5);
+      } else {
+        flash = Math.max(0, flash - seconds * 3.3);
+        sinceFlash += seconds;
       }
-      flash = Math.max(0, flash - step * 0.055);
-      sinceFlash += seconds;
       // Two power dips begin after the lightning flash has faded.
-      updateCityLights((sinceFlash >= 0.28 && sinceFlash < 0.48)
-        || (sinceFlash >= 0.74 && sinceFlash < 0.96));
+      updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.78)
+        || (sinceFlash >= 1.03 && sinceFlash < 1.28));
     } else {
       flash = 0;
       sinceFlash = Infinity;
