@@ -11,14 +11,6 @@
   font-family: system-ui, sans-serif;
 }
 
-.portfolio-home > nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem 1.5rem;
-  padding: 1.25rem clamp(1.5rem, 7vw, 8rem);
-  border-bottom: 1px solid #fcf2eb25;
-}
-
 .portfolio-home a {
   color: inherit;
   text-decoration: none;
@@ -33,6 +25,82 @@
 .portfolio-home a:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
+}
+
+.city-nav {
+  --city-nav-light: 255 172 139;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem clamp(1rem, 5vw, 4.35rem);
+  padding: 1.6rem clamp(1rem, 4vw, 3rem) 1.45rem;
+  background: rgb(14 17 26 / 32%);
+  backdrop-filter: blur(9px);
+}
+
+.city-nav::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #a3a4c25e 50%, transparent);
+  pointer-events: none;
+}
+
+.city-nav-glow {
+  position: absolute;
+  inset: 0 0 auto;
+  display: block;
+  width: 100%;
+  height: calc(100% + 14px);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.city-nav-glow[data-ready] {
+  visibility: visible;
+}
+
+.city-nav a {
+  position: relative;
+  z-index: 1;
+  color: #f3edf0;
+  line-height: 1.35;
+}
+
+.city-nav a:hover,
+.city-nav a:focus-visible,
+.portfolio-home .city-nav a[aria-current='page'] {
+  color: rgb(var(--city-nav-light));
+  text-shadow: 0 0 8px rgb(var(--city-nav-light) / 62%),
+    0 0 19px rgb(var(--city-nav-light) / 38%);
+}
+
+.city-nav a[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -8px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: rgb(var(--city-nav-light));
+  box-shadow: 0 0 9px 2px rgb(var(--city-nav-light) / 65%);
+}
+
+.city-nav:has(.city-nav-glow[data-ready])::after,
+.city-nav:has(.city-nav-glow[data-ready]) a[aria-current='page']::after {
+  visibility: hidden;
+}
+
+@media (max-width: 700px) {
+  .city-nav {
+    gap: 0.9rem clamp(0.9rem, 4vw, 1.6rem);
+    padding-block: 0.9rem 1rem;
+  }
+
+  .city-nav a { font-size: 0.875rem; }
 }
 
 .portfolio-home > main {
@@ -119,7 +187,7 @@
 .city-scene::after {
   content: '';
   z-index: 1;
-  background: linear-gradient(#10101bc4, transparent 36%, #10101b68);
+  background: linear-gradient(#10101ba6, transparent 36%, #10101b68);
 }
 
 .city-street {

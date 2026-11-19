@@ -20,7 +20,8 @@ void main() {
     if (a_type > 0.5) {
         gl_PointSize = max(1.0, (4.0 * a_depth + 0.7) * u_splashSize);
     } else {
-        gl_PointSize = (25.0 * a_depth + 10.0) * max(1.0, u_streakLength);
+        float distanceScale = mix(0.74, 1.0, smoothstep(0.16, 0.57, a_depth));
+        gl_PointSize = distanceScale * (25.0 * a_depth + 10.0) * max(1.0, u_streakLength);
     }
 
     v_life = a_life;

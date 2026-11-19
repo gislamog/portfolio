@@ -8,6 +8,7 @@ import { SideRail, type SideRailProps } from './SideRail';
 import { ScrollToTop } from './ScrollToTop';
 import { AvatarButton } from './AvatarButton';
 import { CityScene } from '../pages/CityScene';
+import { CityNav } from '../pages/CityNav';
 import './Layout.css';
 
 /**
@@ -69,13 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     return (
       <div className="portfolio-home">
         <CityScene />
-        <nav aria-label="Portfolio">
-          {links.map((link) => (
-            <NavLink key={link.to} to={link.to} end>
-              {link.label}
-            </NavLink>
-          ))}
-        </nav>
+        <CityNav />
         <main>{children}</main>
       </div>
     );

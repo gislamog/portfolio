@@ -10,8 +10,8 @@ const layers = [
   { depth: 0.48, wind: 1, splash: 0.9 },
   { depth: 0.84, wind: 1.28, splash: 1.55 },
 ] as const;
-// Interleave layers so changing density keeps their 50 / 33 / 17 split.
-const layerOrder = [0, 1, 0, 2, 0, 1] as const;
+// Interleave layers so changing density keeps their 60 / 25 / 15 split.
+const layerOrder = [0, 1, 0, 2, 0, 0, 1, 0, 2, 0, 0, 1, 0, 0, 1, 0, 2, 0, 1, 0] as const;
 
 function layerFor(index: number) {
   return layers[layerOrder[index % layerOrder.length]];
