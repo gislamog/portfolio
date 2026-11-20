@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
+import { FiMenu } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router-dom';
 import { startCityNavGlow } from './renderCityNavGlow';
 
@@ -65,6 +66,7 @@ export function CityNav() {
         aria-controls={menuId}
         onClick={() => setMenuOpen((open) => !open)}
       >
+        <FiMenu aria-hidden="true" focusable="false" />
         Menu
       </button>
       <div id={menuId} className="city-nav-menu" data-open={menuOpen}>
