@@ -209,10 +209,10 @@
   inset: 0.28em auto 0.25em 0;
   width: 2.5px;
   border-radius: 2px;
-  background: linear-gradient(180deg, rgb(var(--city-accent-light) / 78%), #fff0d9 36%,
-    #ffb189 60%, rgb(var(--city-accent-light) / 58%));
-  box-shadow: 0 0 8px 1px rgb(var(--city-accent-light) / 68%),
-    0 0 18px 2px rgb(var(--city-accent-light) / 30%);
+  background: linear-gradient(180deg, rgb(var(--city-accent-light) / 67%), #ffd3bf 36%,
+    #efa785 60%, rgb(var(--city-accent-light) / 49%));
+  box-shadow: 0 0 6px 1px rgb(var(--city-accent-light) / 34%),
+    0 0 12px rgb(var(--city-accent-light) / 15%);
 }
 
 .portfolio-home .portfolio-tech,
@@ -309,14 +309,14 @@
 .portfolio-contact-label::before {
   inset: auto -0.58rem -0.68rem;
   height: 0.72rem;
-  background: radial-gradient(ellipse, rgb(var(--contact-light) / 48%), transparent 73%);
+  background: radial-gradient(ellipse, rgb(var(--contact-light) / 24%), transparent 70%);
 }
 
 .portfolio-contact-label::after {
   inset: auto -0.16rem -0.35rem;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgb(var(--contact-light) / 82%) 19%,
-    #ffe8d7 51%, rgb(var(--contact-light) / 80%) 81%, transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--contact-light) / 61%) 19%,
+    #ffd2bf 51%, rgb(var(--contact-light) / 61%) 81%, transparent);
 }
 
 .portfolio-home .portfolio-contacts a:is(:hover, :focus-visible),
@@ -326,7 +326,7 @@
 }
 
 .portfolio-contacts a:is(:hover, :focus-visible) .portfolio-contact-label::before {
-  background: radial-gradient(ellipse, rgb(var(--contact-light) / 68%), transparent 73%);
+  background: radial-gradient(ellipse, rgb(var(--contact-light) / 36%), transparent 70%);
 }
 
 .city-scene,
