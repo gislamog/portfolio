@@ -69,7 +69,6 @@ export function startGlass(
   const wipeTrail: { x: number; y: number; time: number; mark: SVGUseElement }[] = [];
   const wipeHold = 7600;
   const wipeFade = 2400;
-  const maxWipeMarks = 180;
   let maskActive = false;
 
   function addMark() {
@@ -84,8 +83,15 @@ export function startGlass(
   function placeMark(mark: SVGUseElement, x: number, y: number, opacity: number) {
     const transform = `translate(${(x * width).toFixed(1)} ${(y * height).toFixed(1)})`;
     if (mark.getAttribute('transform') !== transform) mark.setAttribute('transform', transform);
-    const alpha = opacity.toFixed(2);
+    const alpha = opacity.toFixed(3);
     if (mark.getAttribute('opacity') !== alpha) mark.setAttribute('opacity', alpha);
+  }
+
+  function markOpacity(now: number, time: number) {
+    const progress = Math.min(1, Math.max(0, (now - time - wipeHold) / wipeFade));
+    const remaining = 1 - progress * progress * (3 - 2 * progress);
+    // Overlapping marks reinforce the clear area, so taper each mark early in the fade.
+    return remaining * remaining;
   }
 
   function panePoint(event: MouseEvent) {
@@ -110,9 +116,11 @@ export function startGlass(
       maskActive = true;
     }
     for (const { x, y, time, mark } of wipeTrail) {
-      placeMark(mark, x, y, 1 - Math.max(0, (now - time - wipeHold) / wipeFade));
+      placeMark(mark, x, y, markOpacity(now, time));
     }
-    placeMark(tip, cursor.x, cursor.y, 1 - Math.max(0, (now - lastWipeTime - wipeHold) / wipeFade));
+    const last = wipeTrail[wipeTrail.length - 1];
+    const tipOpacity = last.x === cursor.x && last.y === cursor.y ? 0 : markOpacity(now, lastWipeTime);
+    placeMark(tip, cursor.x, cursor.y, tipOpacity);
   }
 
   function followPointer(event: PointerEvent) {
@@ -130,7 +138,6 @@ export function startGlass(
         const x = last ? last.x + (point.x - last.x) * t : point.x;
         const y = last ? last.y + (point.y - last.y) * t : point.y;
         wipeTrail.push({ x, y, time: now, mark: addMark() });
-        if (wipeTrail.length > maxWipeMarks) wipeTrail.shift()!.mark.remove();
       }
     } else {
       last.time = now;
