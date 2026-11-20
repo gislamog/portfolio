@@ -278,10 +278,10 @@
     left: calc(50% - 0.45rem);
     width: 0.9rem;
     height: 0.9rem;
-    border-block-start: 1.5px solid #b995a5;
-    border-inline-start: 1.5px solid #b995a5;
-    background: #2e2430;
-    clip-path: polygon(0 0, 100% 0, 100% 10%, 10% 100%, 0 100%);
+    border-block-start: 1.5px solid #817799;
+    border-inline-start: 1.5px solid #817799;
+    background: #3c2c32;
+    clip-path: polygon(0 0, 100% 0, 100% 23%, 23% 100%, 0 100%);
     transform: rotate(45deg);
     pointer-events: none;
   }
