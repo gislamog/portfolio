@@ -328,7 +328,7 @@
   --hero-fog-focus: ellipse min(54vw, 33rem) min(45vh, 26rem) at clamp(14rem, 26vw, 30rem) 53%;
   z-index: 2;
   background: rgb(16 14 24 / 48%);
-  backdrop-filter: blur(9px);
+  backdrop-filter: blur(14px);
   mask-image: radial-gradient(var(--hero-fog-focus), #000 12%, #000d 41%, #0006 71%, transparent),
     var(--city-portal-mask, linear-gradient(#000, #000));
   mask-composite: intersect;
