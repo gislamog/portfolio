@@ -5,7 +5,6 @@ uniform vec2 size;
 uniform vec2 imageOrigin;
 uniform vec2 imageSpan;
 uniform vec3 tab;
-uniform vec3 hoverTab;
 uniform float bottom;
 varying mediump vec2 viewUV;
 
@@ -61,9 +60,5 @@ void main() {
     float separator = fade * (core + bloom + haze);
 
     vec4 light = underline(pixel, tab, 1.0);
-    if (hoverTab.z > 0.0) {
-        vec4 hover = underline(pixel, hoverTab, 0.76);
-        light += hover * (1.0 - light.a);
-    }
     gl_FragColor = light + vec4(local.rgb, 1.0) * separator * (1.0 - light.a);
 }

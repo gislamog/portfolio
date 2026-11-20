@@ -34,7 +34,6 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     imageOrigin: { value: new Vec2() },
     imageSpan: { value: new Vec2() },
     tab: { value: [0, 0, 0] },
-    hoverTab: { value: [0, 0, 0] },
     bottom: { value: 0 },
   };
   const program = new Program(gl, { vertex, fragment, uniforms, depthTest: false, depthWrite: false, cullFace: false });
@@ -90,18 +89,12 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     uniforms.size.value.set(width, height);
     uniforms.imageOrigin.value.set((left - imageLeft) / imageWidth, (top - imageTop) / imageHeight);
     uniforms.imageSpan.value.set(width / imageWidth, height / imageHeight);
-    const hovered = nav!.querySelector<HTMLElement>('.city-nav-links a:hover:not([aria-current="page"])')
-      ?? nav!.querySelector<HTMLElement>('.city-nav-links a:focus-visible:not([aria-current="page"])');
     uniforms.tab.value = tabGeometry(active!, bounds);
-    uniforms.hoverTab.value = hovered ? tabGeometry(hovered, bounds) : [0, 0, 0];
     uniforms.bottom.value = nav!.clientHeight - 0.5;
     renderer.render({ scene: mesh, frustumCull: false });
 
-    // Sample both underlines so the link text can use the same city colors as the shader.
+    // Match the active link text to the underline drawn by the shader.
     if (sampleTint(uniforms.tab.value, '--city-nav-light')) canvas.setAttribute('data-ready', '');
-    if (!hovered || !sampleTint(uniforms.hoverTab.value, '--city-nav-hover-light')) {
-      nav!.style.removeProperty('--city-nav-hover-light');
-    }
   }
 
   function update() {
@@ -119,15 +112,12 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
     lost = true;
     canvas.removeAttribute('data-ready');
     nav!.style.removeProperty('--city-nav-light');
-    nav!.style.removeProperty('--city-nav-hover-light');
   }
 
   const resize = new ResizeObserver(update);
   resize.observe(nav);
   resize.observe(active);
   resize.observe(image);
-  const interactions = ['pointerover', 'pointerout', 'focusin', 'focusout'] as const;
-  for (const type of interactions) nav.addEventListener(type, update);
   image.addEventListener('load', loadImage);
   canvas.addEventListener('webglcontextlost', contextLost);
   if (image.complete && image.naturalWidth) loadImage();
@@ -135,12 +125,10 @@ export function startCityNavGlow(canvas: HTMLCanvasElement) {
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
-    for (const type of interactions) nav.removeEventListener(type, update);
     image.removeEventListener('load', loadImage);
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
     nav.style.removeProperty('--city-nav-light');
-    nav.style.removeProperty('--city-nav-hover-light');
     geometry.remove();
     program.remove();
     gl.deleteShader(program.vertexShader);
