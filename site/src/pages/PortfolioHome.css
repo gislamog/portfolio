@@ -281,7 +281,7 @@
     border-block-start: 1.5px solid #817799;
     border-inline-start: 1.5px solid #817799;
     background: #3c2c32;
-    clip-path: polygon(0 0, 100% 0, 100% 23%, 23% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 12%, 12% 100%, 0 100%);
     transform: rotate(45deg);
     pointer-events: none;
   }
