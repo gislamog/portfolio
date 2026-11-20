@@ -65,6 +65,7 @@ export function startGlass(
   let width = 0;
   let height = 0;
   const cursor = new Vec2(-1, -1);
+  let drag: { pointerId: number; x: number; y: number; started: boolean } | undefined;
   let lastWipeTime = -Infinity;
   const wipeTrail: { x: number; y: number; time: number; mark: SVGUseElement }[] = [];
   const wipeHold = 4000;
@@ -123,25 +124,39 @@ export function startGlass(
     placeMark(tip, cursor.x, cursor.y, tipOpacity);
   }
 
-  function followPointer(event: PointerEvent) {
-    if (!finePointer.matches || event.pointerType !== 'mouse' || event.buttons > 1) return;
+  function startDrag(event: PointerEvent) {
+    if (!finePointer.matches || event.pointerType !== 'mouse' || event.button !== 0) return;
+    if (event.target instanceof Element && event.target.closest('a, button, input, textarea, select, [contenteditable]')) return;
     const point = panePoint(event);
-    if (!point || (point.x === cursor.x && point.y === cursor.y)) return;
-    const last = wipeTrail[wipeTrail.length - 1];
+    if (point) drag = { ...point, pointerId: event.pointerId, started: false };
+  }
+
+  function endDrag(event: PointerEvent) {
+    if (drag?.pointerId === event.pointerId) drag = undefined;
+  }
+
+  function followPointer(event: PointerEvent) {
+    if (!drag || drag.pointerId !== event.pointerId || (event.buttons & 1) === 0) return;
+    const point = panePoint(event);
+    const previousPoint = drag.started ? cursor : drag;
+    if (!point || (point.x === previousPoint.x && point.y === previousPoint.y)) return;
+    const last = drag.started ? wipeTrail[wipeTrail.length - 1] : undefined;
     const now = performance.now();
-    const distance = last ? Math.hypot((point.x - last.x) * width, (point.y - last.y) * height) : 0;
+    const origin = last ?? previousPoint;
+    const distance = Math.hypot((point.x - origin.x) * width, (point.y - origin.y) * height);
     if (!last || distance >= 18) {
-      // Bridge gaps from coalesced mouse events without connecting a re-entry to the old trail.
-      const steps = last && now - lastWipeTime < 140 ? Math.min(32, Math.ceil(distance / 22)) : 1;
+      // Fill gaps within this drag without joining it to the previous stroke.
+      const steps = Math.max(1, Math.min(32, Math.ceil(distance / 22)));
       for (let i = 1; i <= steps; i++) {
         const t = i / steps;
-        const x = last ? last.x + (point.x - last.x) * t : point.x;
-        const y = last ? last.y + (point.y - last.y) * t : point.y;
+        const x = origin.x + (point.x - origin.x) * t;
+        const y = origin.y + (point.y - origin.y) * t;
         wipeTrail.push({ x, y, time: now, mark: addMark() });
       }
     } else {
       last.time = now;
     }
+    drag.started = true;
     cursor.set(point.x, point.y);
     lastWipeTime = now;
   }
@@ -205,7 +220,10 @@ export function startGlass(
   intersection.observe(canvas);
   image.addEventListener('load', loadImage);
   document.addEventListener('visibilitychange', visibilityChanged);
+  scene?.addEventListener('pointerdown', startDrag);
   scene?.addEventListener('pointermove', followPointer, { passive: true });
+  window.addEventListener('pointerup', endDrag, true);
+  window.addEventListener('pointercancel', endDrag, true);
   canvas.addEventListener('webglcontextlost', contextLost);
   loadImage();
 
@@ -215,7 +233,10 @@ export function startGlass(
     intersection.disconnect();
     image.removeEventListener('load', loadImage);
     document.removeEventListener('visibilitychange', visibilityChanged);
+    scene?.removeEventListener('pointerdown', startDrag);
     scene?.removeEventListener('pointermove', followPointer);
+    window.removeEventListener('pointerup', endDrag, true);
+    window.removeEventListener('pointercancel', endDrag, true);
     canvas.removeEventListener('webglcontextlost', contextLost);
     canvas.removeAttribute('data-ready');
     view?.style.removeProperty('--city-wipe-mask');
