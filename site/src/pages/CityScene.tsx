@@ -4,6 +4,10 @@ import { startGlass } from './renderGlass';
 
 const city = `${import.meta.env.BASE_URL}images/city/city-front-on`;
 
+function shouldLimitWeather() {
+  return window.matchMedia('(pointer: coarse)').matches || navigator.hardwareConcurrency <= 4;
+}
+
 export function CityScene() {
   const wipeId = useId();
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -24,7 +28,7 @@ export function CityScene() {
       stop = undefined;
       if (motion.matches) return;
       try {
-        stop = startGlass(surface!, background!, mask!);
+        stop = startGlass(surface!, background!, mask!, shouldLimitWeather() ? 1 : 1.5);
       } catch (error) {
         console.warn('Rain on glass unavailable', error);
       }
@@ -54,7 +58,9 @@ export function CityScene() {
       const active = () => current === generation;
       void import('./renderRain').then(async ({ startRain }) => {
         if (!active()) return;
-        const cleanup = await startRain(surface!, active, rainDefaults);
+        const limited = shouldLimitWeather();
+        const settings = limited ? { ...rainDefaults, density: 680 } : rainDefaults;
+        const cleanup = await startRain(surface!, active, settings, limited ? 1 : 1.5);
         if (active()) stop = cleanup;
         else cleanup?.();
       }).catch((error: unknown) => {

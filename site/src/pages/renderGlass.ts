@@ -20,7 +20,7 @@ function releaseMesh(mesh: Mesh) {
 }
 
 export function startGlass(
-  canvas: HTMLCanvasElement, image: HTMLImageElement, mask: SVGMaskElement,
+  canvas: HTMLCanvasElement, image: HTMLImageElement, mask: SVGMaskElement, maxDpr: number,
 ) {
   const renderer = new Renderer({
     canvas,
@@ -187,7 +187,7 @@ export function startGlass(
     maskBase.setAttribute('width', String(width));
     maskBase.setAttribute('height', String(height));
     if (!textureAspect || !width || !height || !visible || lost || document.hidden) return;
-    renderer.dpr = Math.min(devicePixelRatio, 1.5);
+    renderer.dpr = Math.min(devicePixelRatio, maxDpr);
     renderer.setSize(width, height);
     // CSS owns the layout size so preview resizing stays responsive.
     canvas.style.removeProperty('width');

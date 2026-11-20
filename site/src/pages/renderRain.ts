@@ -21,6 +21,7 @@ export async function startRain(
   canvas: HTMLCanvasElement,
   active: () => boolean,
   settings: RainSettings,
+  maxDpr: number,
 ) {
   const mask = new Image();
   mask.src = MASK_URL;
@@ -218,7 +219,7 @@ export async function startRain(
     const ratio = aspect / (maskWidth / maskHeight);
     coverX = Math.min(1, ratio);
     coverY = Math.min(1, 1 / ratio);
-    const dpr = Math.min(devicePixelRatio, 1.5);
+    const dpr = Math.min(devicePixelRatio, maxDpr);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     gpu.viewport(0, 0, canvas.width, canvas.height);
