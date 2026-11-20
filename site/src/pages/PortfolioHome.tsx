@@ -25,8 +25,10 @@ export function PortfolioHome() {
         {contacts.map(({ label, href, icon: Icon }) => (
           <li key={label}>
             <a href={href}>
-              <Icon aria-hidden="true" focusable="false" />
-              <span>{label}</span>
+              <span className="portfolio-contact-icon" aria-hidden="true">
+                <Icon focusable="false" />
+              </span>
+              <span className="portfolio-contact-label">{label}</span>
             </a>
           </li>
         ))}
