@@ -1,5 +1,6 @@
 import { Flowmap, Mesh, Program, Renderer, Texture, Triangle, Vec2 } from 'ogl';
 import fragmentShader from './glass.fragment.glsl?raw';
+import { isCityBackdrop } from './cityInteraction';
 
 const vertexShader = `
 attribute vec2 position;
@@ -105,7 +106,7 @@ export function startGlass(
   function pressPortal(event: PointerEvent) {
     if (!visible || lost || !event.isPrimary || event.button !== 0 || event.defaultPrevented) return;
     const target = event.target;
-    if (target instanceof Element && target.closest('a, button, input, select, textarea, label, summary, [role="button"], [contenteditable], .rain-controls')) return;
+    if (!isCityBackdrop(target)) return;
     const point = panePoint(event);
     if (!point) return;
     // A drag that starts on the backdrop moves the portal without selecting page text.

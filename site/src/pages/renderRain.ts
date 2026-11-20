@@ -1,4 +1,5 @@
 import type { RainSettings } from './rainSettings';
+import { isCityBackdrop } from './cityInteraction';
 import vertexShader from './rain.vertex.glsl?raw';
 import fragmentShader from './rain.fragment.glsl?raw';
 
@@ -119,6 +120,8 @@ export async function startRain(
   let coverX = 1;
   let coverY = 1;
   let nextSplash = RAIN_COUNT;
+  const scene = canvas.closest<HTMLElement>('.portfolio-home');
+  let manualStrikePending = false;
   let flashRate = settings.lightning;
   let flashDelay = flashRate > 0 ? 60 / flashRate : 0;
   let flash = 0;
@@ -129,6 +132,13 @@ export async function startRain(
     if (lightsOff === off) return;
     lightsOff = off;
     setLightsOff(off);
+  }
+
+  function requestStrike(event: MouseEvent) {
+    if (!active() || !visible || lost || document.hidden
+      || event.button !== 0 || event.detail === 0 || event.defaultPrevented
+      || !isCityBackdrop(event.target) || window.getSelection()?.toString()) return;
+    manualStrikePending = true;
   }
 
   function resetDrop(index: number, initial = false) {
@@ -210,24 +220,19 @@ export async function startRain(
       flashRate = settings.lightning;
       flashDelay = flashRate > 0 ? 60 / flashRate : 0;
     }
-    if (flashRate > 0) {
-      flashDelay -= seconds;
-      if (flashDelay <= 0) {
-        flash = 0.8;
-        sinceFlash = 0;
-        flashDelay = 60 / flashRate * (0.75 + Math.random() * 0.5);
-      } else {
-        flash = Math.max(0, flash - seconds * 3.3);
-        sinceFlash += seconds;
-      }
-      // Two power dips begin after the lightning flash has faded.
-      updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.78)
-        || (sinceFlash >= 1.03 && sinceFlash < 1.28));
+    if (flashRate > 0) flashDelay -= seconds;
+    if (manualStrikePending || (flashRate > 0 && flashDelay <= 0)) {
+      manualStrikePending = false;
+      flash = 0.8;
+      sinceFlash = 0;
+      flashDelay = flashRate > 0 ? 60 / flashRate * (0.75 + Math.random() * 0.5) : 0;
     } else {
-      flash = 0;
-      sinceFlash = Infinity;
-      updateCityLights(false);
+      flash = Math.max(0, flash - seconds * 3.3);
+      sinceFlash += seconds;
     }
+    // Two power dips begin after the lightning flash has faded.
+    updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.78)
+      || (sinceFlash >= 1.03 && sinceFlash < 1.28));
     color(rainColor, settings.rainColor);
     color(splashColor, settings.splashColor);
     color(lightColor, settings.lightColor);
@@ -279,12 +284,14 @@ export async function startRain(
   });
   intersection.observe(canvas);
   document.addEventListener('visibilitychange', update);
+  scene?.addEventListener('click', requestStrike);
   canvas.addEventListener('webglcontextlost', contextLost);
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
     intersection.disconnect();
     document.removeEventListener('visibilitychange', update);
+    scene?.removeEventListener('click', requestStrike);
     updateCityLights(false);
     canvas.removeEventListener('webglcontextlost', contextLost);
     gpu.clear(gpu.COLOR_BUFFER_BIT);
