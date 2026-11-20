@@ -350,6 +350,12 @@
   text-shadow: 0 1px 10px rgb(9 9 18 / 78%);
 }
 
+@media (min-width: 1024px) {
+  .portfolio-summary {
+    max-width: 62ch;
+  }
+}
+
 .portfolio-summary::before {
   content: '';
   position: absolute;
