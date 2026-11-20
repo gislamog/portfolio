@@ -360,8 +360,13 @@
     opacity: 1;
   }
 
-  .city-nav-links a[aria-current='page'] {
-    border-radius: 0.45rem;
+  .city-nav-links a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 3px 5px;
+    border-radius: 0.65rem;
+    pointer-events: none;
     background: linear-gradient(90deg, rgb(var(--city-accent-light) / 28%), rgb(var(--city-accent-light) / 12%) 48%, rgb(var(--city-accent-light) / 4%));
     box-shadow: inset 0 0 0 1px rgb(var(--city-accent-light) / 22%);
   }
