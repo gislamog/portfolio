@@ -67,7 +67,7 @@ export function startGlass(
   const cursor = new Vec2(-1, -1);
   let lastWipeTime = -Infinity;
   const wipeTrail: { x: number; y: number; time: number; mark: SVGUseElement }[] = [];
-  const wipeHold = 7600;
+  const wipeHold = 4000;
   const wipeFade = 2400;
   let maskActive = false;
 
