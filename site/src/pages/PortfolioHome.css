@@ -364,6 +364,7 @@
 
 .portfolio-actions {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-block-start: clamp(0.9rem, 2.4svh, 1.5rem);
@@ -380,6 +381,7 @@
   border-radius: 0.55rem;
   font-size: 0.875rem;
   font-weight: 600;
+  text-decoration: none;
   transition: transform 160ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
@@ -387,7 +389,9 @@
   background: linear-gradient(135deg, #ffd2b6, #e8a181);
   box-shadow: 0 3px 14px rgb(15 9 15 / 35%);
   min-inline-size: min(15.5rem, 100%);
+  min-height: 49px;
   color: #321c1b;
+  font-size: 0.9375rem;
 }
 
 .portfolio-home .portfolio-action-primary:is(:hover, :focus-visible, :active) {
@@ -399,12 +403,19 @@
   box-shadow: 0 4px 16px rgb(var(--city-accent-light) / 36%);
 }
 
-.portfolio-action-primary span {
+.portfolio-action-arrow {
+  flex: none;
+  width: 1em;
+  height: 1em;
   transition: transform 160ms ease;
 }
 
-.portfolio-action-primary:hover:not(:active) span {
+.portfolio-action-primary:hover:not(:active) .portfolio-action-arrow {
   transform: translate(2px, -2px);
+}
+
+.portfolio-action-secondary:hover:not(:active) .portfolio-action-arrow {
+  transform: translateX(2px);
 }
 
 .portfolio-home .portfolio-action-primary:active {
@@ -616,7 +627,6 @@
 
 .city-fog {
   z-index: 1;
-  visibility: hidden;
   backdrop-filter: blur(2.8px);
   mask-image: var(--city-wipe-mask, none);
   mask-composite: intersect;
@@ -644,14 +654,16 @@
 
 .city-glass {
   visibility: hidden;
+  opacity: 0;
   z-index: 3;
+  transition: opacity 240ms ease-out;
   mask-image: var(--city-wipe-mask, none);
   mask-composite: intersect;
 }
 
-.city-view:has(.city-glass[data-ready]) .city-fog,
 .city-glass[data-ready] {
   visibility: visible;
+  opacity: 1;
 }
 
 .city-rain {
@@ -664,7 +676,7 @@
 
   .portfolio-home :is(
     .city-nav a, .city-nav-brand img, .city-nav-star,
-    .portfolio-action, .portfolio-action-primary span, .portfolio-tech li,
+    .portfolio-action, .portfolio-action-arrow, .portfolio-tech li,
     .portfolio-tech-icon, .portfolio-contacts a, .portfolio-contact-icon,
     .portfolio-contact-icon svg
   ) {
@@ -680,7 +692,7 @@
 
   .city-nav a:is(:hover, :focus-visible, [aria-current="page"]) .city-nav-label::after,
   .portfolio-home .portfolio-actions .portfolio-action:is(:hover, :active),
-  .portfolio-home .portfolio-action-primary:hover:not(:active) span,
+  .portfolio-home .portfolio-action:hover:not(:active) .portfolio-action-arrow,
   .portfolio-home .portfolio-tech li:hover,
   .portfolio-home .portfolio-contacts a:hover .portfolio-contact-icon {
     transform: none;

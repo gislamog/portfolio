@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaRegEnvelope, FaRegHandshake } from 'react-icons/fa6';
+import { FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { TechnologyIcon } from '../components/technologyIcons';
 import { profile } from '../data/profile';
@@ -23,10 +24,10 @@ export function PortfolioHome() {
       </p>
       <div className="portfolio-actions">
         <Link className="portfolio-action portfolio-action-primary" to="/projects">
-          See What I&apos;ve Built <span aria-hidden="true">↗</span>
+          See What I&apos;ve Built <FiArrowUpRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
         </Link>
         <Link className="portfolio-action portfolio-action-secondary" to="/explore">
-          Explore Ideas &amp; Experiments <span aria-hidden="true">→</span>
+          Explore Ideas &amp; Experiments <FiArrowRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
         </Link>
       </div>
       <ul className="portfolio-tech" aria-label="Technologies">

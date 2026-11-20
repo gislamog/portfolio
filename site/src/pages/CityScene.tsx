@@ -107,7 +107,7 @@ export function CityScene() {
         <div className="city-street">
           <picture>
             <source media="(max-width: 700px)" srcSet={`${city}-mobile.webp`} />
-            <img ref={image} id="fallback" src={`${city}.webp`}
+            <img ref={image} id="fallback" src={`${city}.webp`} fetchPriority="high"
               alt="Illuminated ramen shops lining a rain-slicked Japanese street at night" />
           </picture>
           <canvas ref={canvas} className="city-rain" aria-hidden="true" />
