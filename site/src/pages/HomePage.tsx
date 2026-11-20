@@ -1,15 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import type { IconType } from 'react-icons';
-import {
-  SiJavascript,
-  SiPython,
-  SiReact,
-  SiNuxt,
-  SiVuedotjs,
-  SiPytorch,
-  SiJoomla,
-} from 'react-icons/si';
+import { SiJoomla } from 'react-icons/si';
 import { VscBeaker } from 'react-icons/vsc';
 import {
   FiBriefcase,
@@ -34,18 +26,9 @@ import { projectHref, projects } from '../data/projects';
 import { BioSummary } from '../components/BioSummary';
 import { SocialLinks } from '../components/SocialLinks';
 import { AsuLogo } from '../components/AsuLogo';
+import { technologyIcons } from '../components/technologyIcons';
 import { ProjectVisual, projectIcon } from '../components/ProjectVisual';
 import './HomePage.css';
-
-const techIcons: Record<(typeof profile.tech)[number], IconType> = {
-  JavaScript: SiJavascript,
-  Python: SiPython,
-  React: SiReact,
-  Nuxt: SiNuxt,
-  Playwright: VscBeaker,
-  Vue: SiVuedotjs,
-  PyTorch: SiPytorch,
-};
 
 const skillIcons: Record<string, IconType> = {
   'Languages & Frameworks': FiCode,
@@ -65,16 +48,16 @@ const skillAccents: Record<string, 'teal' | 'gold' | 'indigo' | 'rose'> = {
 // Each skill item gets its own icon: real brand logos for concrete tech,
 // concept icons for the softer/abstract items.
 const itemIcons: Record<string, IconType> = {
-  JavaScript: SiJavascript,
-  Python: SiPython,
-  React: SiReact,
-  'Nuxt / Vue': SiNuxt,
+  JavaScript: technologyIcons.JavaScript,
+  Python: technologyIcons.Python,
+  React: technologyIcons.React,
+  'Nuxt / Vue': technologyIcons.Nuxt,
   Joomla: SiJoomla,
   Playwright: VscBeaker,
   'AI-assisted implementation': FiCpu,
   'Full-stack debugging': FiTerminal,
   'Multi-service local platforms': FiServer,
-  PyTorch: SiPytorch,
+  PyTorch: technologyIcons.PyTorch,
   'Statistical machine learning': FiGitBranch,
   'Data visualization': FiBarChart2,
   'Analytics validation': FiCheckCircle,
@@ -141,7 +124,7 @@ export function HomePage() {
             <p className="hero-summary"><BioSummary /></p>
             <div className="tech-row" aria-label="Technical stack">
               {profile.tech.map((name) => {
-                const Icon = techIcons[name];
+                const Icon = name === 'Playwright' ? VscBeaker : technologyIcons[name];
                 return (
                   <span key={name} className="tech-chip">
                     <Icon className="tech-chip-icon" />

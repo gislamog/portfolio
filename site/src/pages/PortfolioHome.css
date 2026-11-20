@@ -158,7 +158,7 @@
 }
 
 .portfolio-intro {
-  width: min(100%, 44rem);
+  width: min(100%, 54rem);
 }
 
 .portfolio-role {
@@ -183,6 +183,7 @@
 }
 
 .portfolio-home .portfolio-intro h1 {
+  max-width: 44rem;
   margin: 0 0 1.6rem;
   color: #fff0ef;
   font: 400 clamp(2.6rem, 8.5vw, 7.5rem)/0.9 'Newsreader', Georgia, serif;
@@ -228,6 +229,9 @@
 .portfolio-tech li {
   --pill-glint: 25%;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   padding: 0.52rem clamp(0.95rem, 2vw, 1.08rem);
   border: 1px solid rgb(239 187 168 / 28%);
   border-radius: 0.95rem;
@@ -255,6 +259,22 @@
   background: radial-gradient(ellipse at var(--pill-glint) 50%, rgb(255 224 204 / 55%), transparent 70%);
   pointer-events: none;
 }
+
+.portfolio-tech-icon {
+  display: block;
+  flex: none;
+  width: 0.98rem;
+  height: 0.98rem;
+  object-fit: contain;
+  color: var(--tech-icon-color, #efd6c7);
+}
+
+.portfolio-tech [data-brand='JavaScript'] { --tech-icon-color: #eed477; }
+.portfolio-tech [data-brand='Python'] { --tech-icon-color: #9bbbe7; }
+.portfolio-tech [data-brand='React'] { --tech-icon-color: #a1d7e8; }
+.portfolio-tech [data-brand='Nuxt'] { --tech-icon-color: #91dcb7; }
+.portfolio-tech [data-brand='Vue'] { --tech-icon-color: #90cbb0; }
+.portfolio-tech [data-brand='PyTorch'] { --tech-icon-color: #efa58f; }
 
 .portfolio-home .portfolio-tech {
   gap: 0.55rem 0.72rem;
