@@ -151,13 +151,20 @@
 .city-nav-contact {
   justify-self: end;
   padding: 0.25rem 0.95rem;
-  border: 1px solid rgb(255 224 209 / 36%);
-  border-radius: 0.5rem;
   font-size: 0.875rem;
-  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
 
-.city-nav-contact:is(:hover, :focus-visible) {
+.city-nav-contact::before {
+  content: '';
+  position: absolute;
+  inset: 6px 0;
+  border: 1px solid rgb(255 224 209 / 36%);
+  border-radius: 0.5rem;
+  pointer-events: none;
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.city-nav-contact:is(:hover, :focus-visible)::before {
   border-color: rgb(255 224 209 / 60%);
   background-color: rgb(var(--city-accent-light) / 8%);
   box-shadow: 0 0 9px rgb(var(--city-accent-light) / 14%);
@@ -582,6 +589,7 @@
     transform: none;
   }
 
+  .city-nav-contact::before,
   .city-nav-label::after {
     transition: none;
     transform: none;
