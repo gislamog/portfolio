@@ -9,8 +9,6 @@ uniform bool u_enableLighting;
 uniform vec3 u_lightColor;
 uniform float u_lightIntensity;
 uniform float u_lightRadius;
-uniform float u_lightningIntensity;
-uniform vec3 u_lightningColor;
 
 varying float v_life;
 varying float v_type;
@@ -23,7 +21,6 @@ void main() {
     float lightFalloff = 1.0 / (1.0 + (lightDist * lightDist) / (u_lightRadius * u_lightRadius));
     float lightEffect = lightFalloff * u_lightIntensity;
 
-    float flashEffect = u_lightningIntensity * 0.8;
 
     if (v_type < 0.5) {
         vec2 coord = gl_PointCoord - vec2(0.5);
@@ -65,8 +62,6 @@ void main() {
             alpha *= (1.0 + lightEffect * 0.5);
         }
 
-        finalColor += u_lightningColor * flashEffect * 0.6;
-        alpha *= (1.0 + flashEffect * 0.3);
 
         gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), alpha);
     } else {
@@ -84,8 +79,6 @@ void main() {
             alpha *= (1.0 + lightEffect * 0.8);
         }
 
-        finalColor += u_lightningColor * flashEffect * 0.8;
-        alpha *= (1.0 + flashEffect * 0.5);
 
         gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), alpha);
     }

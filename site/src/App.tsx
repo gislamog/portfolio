@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { HomePage } from './pages/HomePage';
 import { PortfolioHome } from './pages/PortfolioHome';
@@ -24,6 +24,13 @@ export default function App() {
           <Route path="/experience" element={<ExperiencePage />} />
           <Route path="/education" element={<EducationPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/explore" element={
+            <section className="container page-header">
+              <h1>Explore</h1>
+              <Link className="btn btn-ghost" to="/learning">Ideas and notes</Link>{' '}
+              <Link className="btn btn-ghost" to="/demos">Interactive experiments</Link>
+            </section>
+          } />
           <Route path="/demos" element={<DemosPage />} />
           <Route path="/learning" element={<LearningPage />} />
           <Route path="/contact" element={<ContactPage />} />

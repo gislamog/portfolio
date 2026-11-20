@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaRegEnvelope, FaRegHandshake } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 import { TechnologyIcon } from '../components/technologyIcons';
 import { profile } from '../data/profile';
 import './PortfolioHome.css';
@@ -14,11 +15,20 @@ export function PortfolioHome() {
   return (
     <section className="portfolio-intro" aria-labelledby="portfolio-title">
       <p className="portfolio-role">Software Engineer</p>
-      <h1 id="portfolio-title">{profile.name}</h1>
+      <h1 id="portfolio-title">Gulsum<br />Islamoglu</h1>
       <p className="portfolio-summary">
-        I build web applications and explore machine learning and data visualization.
-        This portfolio brings together my projects, experiments, and what I’m learning along the way.
+        I&apos;m a software engineer with a master&apos;s in Computer Science. I work on production web applications,
+        from building features and visualizations to investigating bugs and improving test coverage.
+        Outside of work, I like experimenting with machine learning, security, and whatever else catches my interest.
       </p>
+      <div className="portfolio-actions">
+        <Link className="portfolio-action portfolio-action-primary" to="/projects">
+          See What I&apos;ve Built <span aria-hidden="true">↗</span>
+        </Link>
+        <Link className="portfolio-action portfolio-action-secondary" to="/explore">
+          Explore Ideas &amp; Experiments <span aria-hidden="true">→</span>
+        </Link>
+      </div>
       <ul className="portfolio-tech" aria-label="Technologies">
         {profile.tech.map((technology) => (
           <li key={technology} data-brand={technology}>
@@ -27,18 +37,24 @@ export function PortfolioHome() {
           </li>
         ))}
       </ul>
-      <ul className="portfolio-contacts" aria-label="Contact and profiles">
+    </section>
+  );
+}
+
+export function PortfolioFooter() {
+  return (
+    <footer className="portfolio-footer">
+      <ul className="portfolio-contacts">
         {contacts.map(({ label, href, icon: Icon }) => (
           <li key={label}>
-            <a href={href}>
+            <a href={href} aria-label={label}>
               <span className="portfolio-contact-icon" aria-hidden="true">
                 <Icon focusable="false" />
               </span>
-              <span className="portfolio-contact-label">{label}</span>
             </a>
           </li>
         ))}
       </ul>
-    </section>
+    </footer>
   );
 }

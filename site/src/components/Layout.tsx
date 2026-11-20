@@ -9,6 +9,7 @@ import { ScrollToTop } from './ScrollToTop';
 import { AvatarButton } from './AvatarButton';
 import { CityScene } from '../pages/CityScene';
 import { CityNav } from '../pages/CityNav';
+import { PortfolioFooter } from '../pages/PortfolioHome';
 import './Layout.css';
 
 /**
@@ -72,6 +73,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <CityScene />
         <CityNav />
         <main>{children}</main>
+        <PortfolioFooter />
       </div>
     );
   }

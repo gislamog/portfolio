@@ -11,18 +11,26 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto 1fr auto;
   min-height: 100svh;
   overflow: hidden;
   color: #fcf2eb;
   color-scheme: dark;
   caret-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
   background: radial-gradient(ellipse at 87% 72%, #321e36 0%, transparent 58%), #10101b;
   font-family: system-ui, sans-serif;
 }
 
+#root:has(> .portfolio-home) {
+  overflow-y: auto;
+}
+
 .portfolio-home :is(input, textarea, [contenteditable='true']) {
   caret-color: auto;
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 .portfolio-home a {
@@ -45,9 +53,8 @@
   --city-nav-light: var(--city-accent-light);
   position: relative;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   padding-inline: clamp(1rem, 4vw, 3rem);
 }
@@ -95,9 +102,46 @@
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 1.28rem clamp(0.5rem, 2.5vw, 2.175rem) 1.14rem;
   color: #f3edf0;
   line-height: 1.35;
+}
+
+.city-nav-links {
+  display: flex;
+  justify-content: center;
+}
+
+.city-nav-links a {
+  padding: 1rem clamp(0.65rem, 1.75vw, 1.7rem) 0.9rem;
+}
+
+.city-nav-brand {
+  justify-self: start;
+  gap: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+
+.city-nav-brand img {
+  border-radius: 50%;
+  border: 1px solid rgb(255 224 209 / 40%);
+  object-fit: cover;
+}
+
+.city-nav-star {
+  display: inline-block;
+  margin-inline-start: 0.3em;
+  color: rgb(var(--city-accent-light));
+  font-size: 0.72em;
+  vertical-align: 0.12em;
+}
+
+.city-nav-contact {
+  justify-self: end;
+  padding: 0.25rem 0.95rem;
+  border: 1px solid rgb(255 224 209 / 36%);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
 }
 
 .portfolio-home .city-nav a:hover,
@@ -140,13 +184,19 @@
   visibility: hidden;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
   .city-nav {
-    padding-block: 0.25rem 0.35rem;
+    grid-template-columns: 1fr 1fr;
+    padding-block: 0.4rem 0.2rem;
   }
 
-  .city-nav a {
-    padding: 0.6rem clamp(0.45rem, 2vw, 0.8rem);
+  .city-nav-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .city-nav-links a {
+    padding: 0.6rem clamp(0.3rem, 2vw, 0.8rem);
     font-size: 0.875rem;
   }
 }
@@ -154,18 +204,19 @@
 .portfolio-home > main {
   display: grid;
   align-items: center;
-  padding: clamp(3rem, 9vh, 8rem) clamp(1.5rem, 7vw, 8rem);
+  padding: clamp(0.9rem, 3svh, 2.8rem) clamp(1.25rem, 7vw, 8rem);
 }
 
 .portfolio-intro {
-  width: min(100%, 63rem);
+  position: relative;
+  width: min(100%, 70rem);
 }
 
 .portfolio-role {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  margin: 0 0 1.2rem;
+  margin: 0 0 clamp(0.55rem, 1.6svh, 1.2rem);
   color: rgb(var(--city-accent-light));
   font: 600 clamp(0.94rem, 1.35vw, 1rem)/1.4 ui-monospace, monospace;
   letter-spacing: 0.14em;
@@ -184,9 +235,9 @@
 
 .portfolio-home .portfolio-intro h1 {
   max-width: 44rem;
-  margin: 0 0 1.6rem;
+  margin: 0 0 clamp(0.65rem, 2svh, 1.6rem);
   color: #fff0ef;
-  font: 400 clamp(2.6rem, 8.5vw, 7.5rem)/0.9 'Newsreader', Georgia, serif;
+  font: 400 clamp(3rem, min(10.8svh, 12vw), 7.5rem)/0.9 'Newsreader', Georgia, serif;
   font-optical-sizing: auto;
   letter-spacing: -0.043em;
   text-shadow: 0 0 16px rgb(255 180 183 / 25%),
@@ -199,7 +250,7 @@
   max-width: 56ch;
   padding-inline-start: 1.25rem;
   color: #f5e8e8;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1rem, 2.25svh, 1.2rem);
   line-height: 1.55;
   text-shadow: 0 1px 10px rgb(9 9 18 / 78%);
 }
@@ -216,12 +267,50 @@
     0 0 12px rgb(var(--city-accent-light) / 15%);
 }
 
+.portfolio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-block-start: clamp(0.9rem, 2.4svh, 1.5rem);
+}
+
+.portfolio-home .portfolio-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.58rem 0.86rem;
+  border: 1px solid rgb(255 224 209 / 42%);
+  border-radius: 0.55rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.portfolio-home .portfolio-action-primary {
+  background: linear-gradient(135deg, #ffd2b6, #e8a181);
+  box-shadow: 0 3px 14px rgb(15 9 15 / 35%);
+  color: #321c1b;
+}
+
+.portfolio-home .portfolio-action-primary:hover {
+  background: #ffdcc4;
+}
+
+.portfolio-home .portfolio-action-primary:focus-visible {
+  outline-color: #ffdcc4;
+}
+
+.portfolio-home .portfolio-action-secondary:hover {
+  background: rgb(255 224 209 / 10%);
+}
+
 .portfolio-home .portfolio-tech,
 .portfolio-home .portfolio-contacts {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 1rem;
-  margin: 1.5rem 0 0;
+  margin: clamp(0.8rem, 2.15svh, 1.5rem) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -280,77 +369,50 @@
   gap: 0.55rem 0.72rem;
 }
 
+@media (min-width: 761px) and (max-height: 680px) {
+  .city-nav-links a {
+    padding-block: 0.65rem;
+  }
+
+  .portfolio-tech li {
+    padding-block: 0.35rem;
+  }
+}
+
+.portfolio-footer {
+  padding-block: 0.2rem clamp(0.45rem, 2svh, 1.2rem);
+}
+
 .portfolio-home .portfolio-contacts {
-  gap: 1.05rem clamp(1.9rem, 3vw, 2.55rem);
-  margin-top: 1.95rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  justify-content: center;
+  gap: clamp(0.6rem, 2.5vw, 1.5rem);
+  margin: 0;
 }
 
 .portfolio-home .portfolio-contacts a {
   --contact-light: var(--city-accent-light);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  /* Extend the hit area into the existing space between links. */
-  min-height: 3.25rem;
-  padding: 0.45rem 0.68rem;
-  margin: -0.45rem -0.68rem;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
   border-radius: 0.45rem;
   color: #f3e6e4;
-  text-decoration: none;
 }
 
 .portfolio-contact-icon {
   display: grid;
-  flex: none;
   place-items: center;
-  width: 1.65rem;
-  height: 1.65rem;
-  border-radius: 50%;
-  background: radial-gradient(ellipse, rgb(var(--contact-light) / 14%), transparent 74%);
-  color: #f2e4df;
 }
 
 .portfolio-contact-icon svg {
   display: block;
   width: 1.4rem;
   height: 1.4rem;
-  filter: drop-shadow(0 0 4px rgb(var(--contact-light) / 33%));
+  filter: drop-shadow(0 1px 3px #150e17) drop-shadow(0 0 4px rgb(var(--contact-light) / 33%));
 }
 
-.portfolio-contact-label {
-  position: relative;
-}
-
-.portfolio-contact-label::before,
-.portfolio-contact-label::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-}
-
-.portfolio-contact-label::before {
-  inset: auto -0.58rem -0.68rem;
-  height: 0.72rem;
-  background: radial-gradient(ellipse, rgb(var(--contact-light) / 24%), transparent 70%);
-}
-
-.portfolio-contact-label::after {
-  inset: auto -0.16rem -0.35rem;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgb(var(--contact-light) / 61%) 19%,
-    #ffd2bf 51%, rgb(var(--contact-light) / 61%) 81%, transparent);
-}
-
-.portfolio-home .portfolio-contacts a:is(:hover, :focus-visible),
-.portfolio-contacts a:is(:hover, :focus-visible) .portfolio-contact-icon {
+.portfolio-home .portfolio-contacts a:is(:hover, :focus-visible) {
   color: rgb(var(--contact-light));
-  text-shadow: 0 0 8px rgb(var(--contact-light) / 35%);
-}
-
-.portfolio-contacts a:is(:hover, :focus-visible) .portfolio-contact-label::before {
-  background: radial-gradient(ellipse, rgb(var(--contact-light) / 36%), transparent 70%);
 }
 
 .city-scene,
@@ -376,38 +438,38 @@
   object-fit: cover;
 }
 
+.city-wipe-definitions {
+  position: absolute;
+}
+
 .city-scene::after {
   content: '';
   z-index: 1;
-  background: linear-gradient(#10101b7a, #10101b65 13%, transparent 36%, #10101b68);
+  background: radial-gradient(ellipse min(68vw, 60rem) 50% at clamp(14rem, 24vw, 25rem) 51%,
+      rgb(11 10 20 / 73%), rgb(11 10 20 / 58%) 32%, rgb(11 10 20 / 21%) 68%, transparent 100%),
+    linear-gradient(#10101b7a, #10101b65 13%, transparent 36%, #10101b68);
 }
 
 .city-street {
   z-index: 0;
-}
-
-.city-lights-off {
-  opacity: 0;
-}
-
-.city-street[data-lights-off] .city-lights-off {
-  opacity: 1;
+  background: #10101b;
 }
 
 .city-fog {
   z-index: 1;
   visibility: hidden;
-  backdrop-filter: blur(1.7px);
-  mask-image: var(--city-portal-mask, none);
+  backdrop-filter: blur(2.8px);
+  mask-image: var(--city-wipe-mask, none);
+  mask-composite: intersect;
 }
 
 .city-hero-fog {
   --hero-fog-focus: ellipse min(54vw, 33rem) min(45vh, 26rem) at clamp(14rem, 26vw, 30rem) 53%;
   z-index: 2;
-  background: rgb(16 14 24 / 48%);
+  background: rgb(16 14 24 / 43%);
   backdrop-filter: blur(14px);
-  mask-image: radial-gradient(var(--hero-fog-focus), #000 12%, #000d 41%, #0006 71%, transparent),
-    var(--city-portal-mask, linear-gradient(#000, #000));
+  mask-image: radial-gradient(var(--hero-fog-focus), #000 10%, #000c 40%, #0005 72%, transparent),
+    var(--city-wipe-mask, linear-gradient(#000, #000));
   mask-composite: intersect;
 }
 
@@ -420,6 +482,8 @@
 .city-glass {
   visibility: hidden;
   z-index: 3;
+  mask-image: var(--city-wipe-mask, none);
+  mask-composite: intersect;
 }
 
 .city-view:has(.city-glass[data-ready]) .city-fog,
@@ -432,7 +496,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .city-fog,
   .city-glass,
   .city-rain { display: none; }
 }

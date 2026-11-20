@@ -1,5 +1,4 @@
 import type { RainSettings } from './rainSettings';
-import { isCityBackdrop } from './cityInteraction';
 import vertexShader from './rain.vertex.glsl?raw';
 import fragmentShader from './rain.fragment.glsl?raw';
 
@@ -22,7 +21,6 @@ export async function startRain(
   canvas: HTMLCanvasElement,
   active: () => boolean,
   settings: RainSettings,
-  setLightsOff: (off: boolean) => void,
 ) {
   const mask = new Image();
   mask.src = MASK_URL;
@@ -104,8 +102,6 @@ export async function startRain(
   const streakThickness = uniform('u_streakThickness');
   const rainOpacity = uniform('u_rainOpacity');
   const splashSize = uniform('u_splashSize');
-  const lightning = uniform('u_lightningIntensity');
-  gpu.uniform3f(uniform('u_lightningColor'), 0.86, 0.92, 1);
 
   function color(location: WebGLUniformLocation | null, hex: string) {
     const value = Number.parseInt(hex.slice(1), 16);
@@ -120,27 +116,6 @@ export async function startRain(
   let coverX = 1;
   let coverY = 1;
   let nextSplash = RAIN_COUNT;
-  const scene = canvas.closest<HTMLElement>('.portfolio-home');
-  let manualStrikePending = false;
-  let flashRate = settings.lightning;
-  let flashDelay = flashRate > 0 ? 60 / flashRate : 0;
-  let flash = 0;
-  let sinceFlash = Infinity;
-  let lightsOff = false;
-
-  function updateCityLights(off: boolean) {
-    if (lightsOff === off) return;
-    lightsOff = off;
-    setLightsOff(off);
-  }
-
-  function requestStrike(event: MouseEvent) {
-    if (!active() || !visible || lost || document.hidden
-      || event.button !== 0 || event.detail === 0 || event.defaultPrevented
-      || !isCityBackdrop(event.target) || window.getSelection()?.toString()) return;
-    manualStrikePending = true;
-  }
-
   function resetDrop(index: number, initial = false) {
     const offset = index * 2;
     const y = initial ? Math.random() * 2 - 1 : 1.05 + Math.random();
@@ -216,23 +191,6 @@ export async function startRain(
       gpu.bindBuffer(gpu.ARRAY_BUFFER, buffer);
       gpu.bufferSubData(gpu.ARRAY_BUFFER, 0, values);
     }
-    if (settings.lightning !== flashRate) {
-      flashRate = settings.lightning;
-      flashDelay = flashRate > 0 ? 60 / flashRate : 0;
-    }
-    if (flashRate > 0) flashDelay -= seconds;
-    if (manualStrikePending || (flashRate > 0 && flashDelay <= 0)) {
-      manualStrikePending = false;
-      flash = 0.8;
-      sinceFlash = 0;
-      flashDelay = flashRate > 0 ? 60 / flashRate * (0.75 + Math.random() * 0.5) : 0;
-    } else {
-      flash = Math.max(0, flash - seconds * 3.3);
-      sinceFlash += seconds;
-    }
-    // Two power dips begin after the lightning flash has faded.
-    updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.69)
-      || (sinceFlash >= 0.81 && sinceFlash < 0.95));
     color(rainColor, settings.rainColor);
     color(splashColor, settings.splashColor);
     color(lightColor, settings.lightColor);
@@ -242,9 +200,7 @@ export async function startRain(
     gpu.uniform1f(streakThickness, settings.thickness);
     gpu.uniform1f(rainOpacity, settings.opacity);
     gpu.uniform1f(splashSize, settings.splashSize);
-    gpu.uniform1f(lightning, flash);
-    const flashAlpha = flash * 0.24;
-    gpu.clearColor(flashAlpha * 0.86, flashAlpha * 0.92, flashAlpha, flashAlpha);
+    gpu.clearColor(0, 0, 0, 0);
     gpu.clear(gpu.COLOR_BUFFER_BIT);
     gpu.drawArrays(gpu.POINTS, 0, settings.density);
     gpu.drawArrays(gpu.POINTS, RAIN_COUNT, PARTICLE_COUNT - RAIN_COUNT);
@@ -271,7 +227,6 @@ export async function startRain(
 
   function contextLost() {
     lost = true;
-    updateCityLights(false);
     update();
   }
 
@@ -284,15 +239,12 @@ export async function startRain(
   });
   intersection.observe(canvas);
   document.addEventListener('visibilitychange', update);
-  scene?.addEventListener('click', requestStrike);
   canvas.addEventListener('webglcontextlost', contextLost);
   return () => {
     cancelAnimationFrame(frame);
     resize.disconnect();
     intersection.disconnect();
     document.removeEventListener('visibilitychange', update);
-    scene?.removeEventListener('click', requestStrike);
-    updateCityLights(false);
     canvas.removeEventListener('webglcontextlost', contextLost);
     gpu.clear(gpu.COLOR_BUFFER_BIT);
     for (const { buffer } of buffers) gpu.deleteBuffer(buffer);
