@@ -272,13 +272,14 @@
   .city-nav-menu-toggle[aria-expanded='true']::after {
     content: '';
     position: absolute;
-    top: calc(100% + 0.45rem);
-    left: calc(50% - 0.3rem);
-    width: 0.6rem;
-    height: 0.6rem;
-    border-block-start: 1px solid rgb(255 224 209 / 38%);
-    border-inline-start: 1px solid rgb(255 224 209 / 38%);
-    background: #25202b;
+    top: calc(100% + 0.6rem);
+    left: calc(50% - 0.45rem);
+    width: 0.9rem;
+    height: 0.9rem;
+    border-block-start: 2px solid #b995a5;
+    border-inline-start: 2px solid #b995a5;
+    background: #302434;
+    box-shadow: -3px -3px 9px -4px rgb(255 172 139 / 65%);
     transform: rotate(45deg);
     pointer-events: none;
   }
@@ -286,15 +287,22 @@
   .city-nav-menu {
     position: absolute;
     z-index: 2;
-    inset: calc(100% + 0.25rem) clamp(1rem, 4vw, 3rem) auto;
+    inset: calc(100% + 0.55rem) clamp(1rem, 4vw, 3rem) auto;
     display: none;
     max-height: calc(100svh - 4rem);
     overflow: auto;
     padding: 0.45rem;
-    border: 1px solid rgb(255 224 209 / 38%);
+    border: 2px solid transparent;
     border-radius: 0.65rem;
-    background: linear-gradient(155deg, #25202b, #191722 65%);
-    box-shadow: 0 8px 24px rgb(9 7 15 / 45%), inset 0 0 16px rgb(var(--city-accent-light) / 5%);
+    background:
+      radial-gradient(ellipse at 88% -12%, rgb(226 134 111 / 18%), transparent 55%) padding-box,
+      radial-gradient(ellipse at 65% 112%, rgb(99 145 221 / 24%), transparent 55%) padding-box,
+      radial-gradient(ellipse at -15% 55%, rgb(182 134 209 / 15%), transparent 60%) padding-box,
+      linear-gradient(155deg, #251e2b, #171722 65%) padding-box,
+      linear-gradient(145deg, #e5ad98, #817597 38%, #6c8bb9 70%, #c6949d) border-box;
+    box-shadow: 0 -2px 15px rgb(255 172 139 / 19%),
+      -3px 2px 16px rgb(185 139 219 / 16%), 3px 6px 18px rgb(111 159 233 / 21%),
+      0 8px 24px rgb(9 7 15 / 45%);
   }
 
   .city-nav-menu[data-open='true'],
