@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Newsreader';
+  src: url('../assets/fonts/newsreader-display.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 .portfolio-home {
   --city-accent-light: 255 172 139;
   position: relative;
@@ -8,8 +16,13 @@
   overflow: hidden;
   color: #fcf2eb;
   color-scheme: dark;
+  caret-color: transparent;
   background: radial-gradient(ellipse at 87% 72%, #321e36 0%, transparent 58%), #10101b;
   font-family: system-ui, sans-serif;
+}
+
+.portfolio-home :is(input, textarea, [contenteditable='true']) {
+  caret-color: auto;
 }
 
 .portfolio-home a {
@@ -162,17 +175,22 @@
 .portfolio-role::after {
   content: '';
   width: clamp(2rem, 8vw, 6rem);
-  height: 1px;
-  background: linear-gradient(90deg, #ffdfc3, rgb(var(--city-accent-light) / 76%) 42%, transparent);
-  box-shadow: -3px 0 8px rgb(var(--city-accent-light) / 64%);
+  height: 2.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #fff0d9, rgb(var(--city-accent-light) / 90%) 42%, transparent);
+  box-shadow: -2px 0 8px rgb(var(--city-accent-light) / 68%),
+    -2px 0 16px rgb(var(--city-accent-light) / 30%);
 }
 
 .portfolio-home .portfolio-intro h1 {
   margin: 0 0 1.6rem;
-  color: inherit;
-  font: 500 clamp(2.75rem, 9vw, 8rem)/0.9 Georgia, serif;
-  letter-spacing: -0.07em;
-  text-shadow: 0 3px 22px rgb(9 9 18 / 65%);
+  color: #fff0ef;
+  font: 400 clamp(2.75rem, 9vw, 8rem)/0.9 'Newsreader', Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.043em;
+  text-shadow: 0 0 16px rgb(255 180 183 / 25%),
+    0 0 38px rgb(232 144 138 / 21%),
+    0 3px 18px rgb(9 9 18 / 65%);
 }
 
 .portfolio-summary {
