@@ -300,8 +300,8 @@
       radial-gradient(ellipse at -15% 55%, rgb(182 134 209 / 15%), transparent 60%) padding-box,
       linear-gradient(155deg, #251e2b, #171722 65%) padding-box,
       linear-gradient(145deg, #e5ad98, #817597 38%, #6c8bb9 70%, #c6949d) border-box;
-    box-shadow: 0 -2px 15px rgb(255 172 139 / 19%),
-      -3px 2px 16px rgb(185 139 219 / 16%), 3px 6px 18px rgb(111 159 233 / 21%),
+    box-shadow: 0 -2px 12px rgb(255 172 139 / 9%),
+      -2px 2px 12px rgb(185 139 219 / 7%), 2px 4px 14px rgb(111 159 233 / 10%),
       0 8px 24px rgb(9 7 15 / 45%);
   }
 
