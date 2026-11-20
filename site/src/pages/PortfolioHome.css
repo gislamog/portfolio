@@ -277,6 +277,10 @@
     display: grid;
   }
 
+  .city-nav-links {
+    justify-content: stretch;
+  }
+
   .city-nav-links a,
   .city-nav .city-nav-contact {
     justify-content: flex-start;
