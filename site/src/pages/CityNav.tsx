@@ -1,14 +1,14 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { FiMenu } from 'react-icons/fi';
+import { FiBookOpen, FiBriefcase, FiCompass, FiHome, FiLayers, FiMail, FiMenu } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router-dom';
 import { startCityNavGlow } from './renderCityNavGlow';
 
 const links = [
-  { to: '/', label: 'Home' },
-  { to: '/experience', label: 'Work' },
-  { to: '/education', label: 'Education' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/explore', label: 'Explore' },
+  { to: '/', label: 'Home', icon: FiHome },
+  { to: '/experience', label: 'Work', icon: FiBriefcase },
+  { to: '/education', label: 'Education', icon: FiBookOpen },
+  { to: '/projects', label: 'Projects', icon: FiLayers },
+  { to: '/explore', label: 'Explore', icon: FiCompass },
 ];
 
 export function CityNav() {
@@ -71,7 +71,7 @@ export function CityNav() {
       </button>
       <div id={menuId} className="city-nav-menu" data-open={menuOpen}>
         <div className="city-nav-links">
-          {links.map((link) => (
+          {links.map(({ icon: Icon, ...link }) => (
             <NavLink
               key={link.to}
               to={link.to}
@@ -81,6 +81,7 @@ export function CityNav() {
                 if (link.to === '/' && menuOpen) menuButton.current?.focus();
               }}
             >
+              <Icon className="city-nav-menu-icon" aria-hidden="true" focusable="false" />
               <span className="city-nav-label">
                 {link.label}
                 {link.to === '/explore' && <span className="city-nav-star" aria-hidden="true">✦</span>}
@@ -88,7 +89,10 @@ export function CityNav() {
             </NavLink>
           ))}
         </div>
-        <Link className="city-nav-contact" to="/contact">Contact</Link>
+        <Link className="city-nav-contact" to="/contact">
+          <FiMail className="city-nav-menu-icon" aria-hidden="true" focusable="false" />
+          Contact
+        </Link>
       </div>
     </nav>
   );
