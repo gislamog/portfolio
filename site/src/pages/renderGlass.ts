@@ -68,8 +68,8 @@ export function startGlass(
   let drag: { pointerId: number; x: number; y: number; started: boolean } | undefined;
   let lastWipeTime = -Infinity;
   const wipeTrail: { x: number; y: number; time: number; mark: SVGUseElement }[] = [];
-  const wipeHold = 4000;
-  const wipeFade = 2400;
+  const wipeHold = 2000;
+  const wipeFade = 1600;
   let maskActive = false;
 
   function addMark() {
