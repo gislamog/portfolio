@@ -33,6 +33,7 @@ export const profile = {
     'Playwright',
     'Vue',
     'PyTorch',
+    'Godot',
   ] as const,
   skills: [
     {

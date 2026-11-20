@@ -1,6 +1,5 @@
 import { FaGithub, FaLinkedin, FaRegEnvelope, FaRegHandshake } from 'react-icons/fa6';
-import { technologyIcons } from '../components/technologyIcons';
-import playwrightLogo from '../assets/brands/playwright.svg';
+import { TechnologyIcon } from '../components/technologyIcons';
 import { profile } from '../data/profile';
 import './PortfolioHome.css';
 
@@ -21,17 +20,12 @@ export function PortfolioHome() {
         This portfolio brings together my projects, experiments, and what I’m learning along the way.
       </p>
       <ul className="portfolio-tech" aria-label="Technologies">
-        {profile.tech.map((technology) => {
-          const Icon = technology === 'Playwright' ? null : technologyIcons[technology];
-          return (
-            <li key={technology} data-brand={technology}>
-              {Icon
-                ? <Icon className="portfolio-tech-icon" aria-hidden="true" focusable="false" />
-                : <img className="portfolio-tech-icon" src={playwrightLogo} alt="" />}
-              <span>{technology}</span>
-            </li>
-          );
-        })}
+        {profile.tech.map((technology) => (
+          <li key={technology} data-brand={technology}>
+            <TechnologyIcon technology={technology} className="portfolio-tech-icon" />
+            <span>{technology}</span>
+          </li>
+        ))}
       </ul>
       <ul className="portfolio-contacts" aria-label="Contact and profiles">
         {contacts.map(({ label, href, icon: Icon }) => (
