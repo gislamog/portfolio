@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { RainControls } from './RainControls';
 import { rainDefaults } from './rainSettings';
 import { startGlass } from './renderGlass';
 
@@ -42,7 +41,6 @@ export function CityScene() {
     };
   }, []);
 
-  const settings = useRef({ ...rainDefaults });
 
   useEffect(() => {
     const surface = canvas.current;
@@ -65,7 +63,7 @@ export function CityScene() {
       const active = () => current === generation;
       void import('./renderRain').then(async ({ startRain }) => {
         if (!active()) return;
-        const cleanup = await startRain(surface!, active, settings.current, setLightsOff);
+        const cleanup = await startRain(surface!, active, rainDefaults, setLightsOff);
         if (active()) stop = cleanup;
         else cleanup?.();
       }).catch((error: unknown) => {
@@ -83,28 +81,25 @@ export function CityScene() {
   }, []);
 
   return (
-    <>
-      <div className="city-scene">
-        <div className="city-view">
-          <div ref={street} className="city-street">
-            <picture>
-              <source media="(max-width: 700px)" srcSet={`${city}-mobile.webp`} />
-              <img ref={image} id="fallback" src={`${city}.webp`}
-                alt="Illuminated ramen shops lining a rain-slicked Japanese street at night" />
-            </picture>
-            <picture aria-hidden="true">
-              <source media="(max-width: 700px)" srcSet={`${darkCity}-mobile.webp`} />
-              <img ref={lightsOff} src={`${darkCity}.webp`} className="city-lights-off"
-                alt="" decoding="async" />
-            </picture>
-            <canvas ref={canvas} className="city-rain" aria-hidden="true" />
-          </div>
-          <div ref={fog} className="city-fog" aria-hidden="true" />
-          <div className="city-hero-fog" aria-hidden="true" />
-          <canvas ref={glass} className="city-glass" aria-hidden="true" />
+    <div className="city-scene">
+      <div className="city-view">
+        <div ref={street} className="city-street">
+          <picture>
+            <source media="(max-width: 700px)" srcSet={`${city}-mobile.webp`} />
+            <img ref={image} id="fallback" src={`${city}.webp`}
+              alt="Illuminated ramen shops lining a rain-slicked Japanese street at night" />
+          </picture>
+          <picture aria-hidden="true">
+            <source media="(max-width: 700px)" srcSet={`${darkCity}-mobile.webp`} />
+            <img ref={lightsOff} src={`${darkCity}.webp`} className="city-lights-off"
+              alt="" decoding="async" />
+          </picture>
+          <canvas ref={canvas} className="city-rain" aria-hidden="true" />
         </div>
+        <div ref={fog} className="city-fog" aria-hidden="true" />
+        <div className="city-hero-fog" aria-hidden="true" />
+        <canvas ref={glass} className="city-glass" aria-hidden="true" />
       </div>
-      {import.meta.env.DEV && <RainControls settings={settings.current} />}
-    </>
+    </div>
   );
 }

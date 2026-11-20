@@ -231,8 +231,8 @@ export async function startRain(
       sinceFlash += seconds;
     }
     // Two power dips begin after the lightning flash has faded.
-    updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.78)
-      || (sinceFlash >= 1.03 && sinceFlash < 1.28));
+    updateCityLights((sinceFlash >= 0.55 && sinceFlash < 0.69)
+      || (sinceFlash >= 0.81 && sinceFlash < 0.95));
     color(rainColor, settings.rainColor);
     color(splashColor, settings.splashColor);
     color(lightColor, settings.lightColor);

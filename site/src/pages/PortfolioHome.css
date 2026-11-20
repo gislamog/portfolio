@@ -158,14 +158,14 @@
 }
 
 .portfolio-intro {
-  width: min(100%, 43rem);
+  width: min(100%, 44rem);
 }
 
 .portfolio-role {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  margin: 0 0 0.85rem;
+  margin: 0 0 1.2rem;
   color: rgb(var(--city-accent-light));
   font: 600 clamp(0.94rem, 1.35vw, 1rem)/1.4 ui-monospace, monospace;
   letter-spacing: 0.14em;
@@ -185,7 +185,7 @@
 .portfolio-home .portfolio-intro h1 {
   margin: 0 0 1.6rem;
   color: #fff0ef;
-  font: 400 clamp(2.75rem, 9vw, 8rem)/0.9 'Newsreader', Georgia, serif;
+  font: 400 clamp(2.6rem, 8.5vw, 7.5rem)/0.9 'Newsreader', Georgia, serif;
   font-optical-sizing: auto;
   letter-spacing: -0.043em;
   text-shadow: 0 0 16px rgb(255 180 183 / 25%),
@@ -226,13 +226,17 @@
 }
 
 .portfolio-tech li {
-  padding: 0.42rem clamp(0.95rem, 2vw, 1.08rem);
-  border: 1px solid rgb(var(--city-accent-light) / 27%);
-  border-radius: 0.85rem;
-  background: linear-gradient(145deg, rgb(255 244 238 / 12%), rgb(39 31 44 / 52%));
-  box-shadow: inset 0 1px rgb(255 238 222 / 10%), 0 3px 13px rgb(13 10 19 / 24%);
-  color: #f4e7e4;
-  font: 400 0.875rem/1.4 ui-monospace, monospace;
+  padding: 0.52rem clamp(0.95rem, 2vw, 1.08rem);
+  border: 1px solid rgb(239 187 168 / 25%);
+  border-radius: 0.95rem;
+  background: linear-gradient(150deg, rgb(246 230 222 / 12%), rgb(65 52 55 / 26%) 55%,
+    rgb(228 159 124 / 10%));
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 1px rgb(255 238 228 / 11%),
+    inset 0 -1px 5px rgb(236 170 146 / 9%), 0 3px 12px rgb(13 10 19 / 24%);
+  color: #e9ded9;
+  font: 500 0.875rem/1.4 ui-monospace, monospace;
+  letter-spacing: 0.035em;
 }
 
 .portfolio-home .portfolio-tech {
@@ -354,50 +358,6 @@
   .city-fog,
   .city-glass,
   .city-rain { display: none; }
-}
-
-.rain-controls {
-  position: absolute;
-  z-index: 2;
-  top: 5rem;
-  right: clamp(0.75rem, 3vw, 2rem);
-  width: min(17rem, calc(100% - 1.5rem));
-  color: #fcf2eb;
-  background: #15131cf5;
-  border: 1px solid #fcf2eb40;
-  border-radius: 0.5rem;
-}
-
-.rain-controls summary {
-  padding: 0.75rem;
-  cursor: pointer;
-}
-
-.rain-controls-fields {
-  display: grid;
-  gap: 0.5rem;
-  max-height: min(65svh, 35rem);
-  overflow-y: auto;
-  padding: 0 0.75rem 0.75rem;
-}
-
-.rain-controls label span,
-.rain-color-control {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.rain-controls input[type='range'] { width: 100%; }
-.rain-controls input { accent-color: #ffad98; }
-.rain-controls output { font-variant-numeric: tabular-nums; }
-
-@media (max-width: 700px) {
-  .rain-controls {
-    position: fixed;
-    top: auto;
-    bottom: 0.75rem;
-  }
 }
 
 .city-view {
