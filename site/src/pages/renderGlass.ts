@@ -67,8 +67,9 @@ export function startGlass(
   const cursor = new Vec2(-1, -1);
   let lastWipeTime = -Infinity;
   const wipeTrail: { x: number; y: number; time: number; mark: SVGUseElement }[] = [];
-  const wipeHold = 4400;
-  const wipeFade = 1600;
+  const wipeHold = 7600;
+  const wipeFade = 2400;
+  const maxWipeMarks = 180;
   let maskActive = false;
 
   function addMark() {
@@ -123,13 +124,13 @@ export function startGlass(
     const distance = last ? Math.hypot((point.x - last.x) * width, (point.y - last.y) * height) : 0;
     if (!last || distance >= 18) {
       // Bridge gaps from coalesced mouse events without connecting a re-entry to the old trail.
-      const steps = last && now - lastWipeTime < 140 ? Math.min(12, Math.ceil(distance / 22)) : 1;
+      const steps = last && now - lastWipeTime < 140 ? Math.min(32, Math.ceil(distance / 22)) : 1;
       for (let i = 1; i <= steps; i++) {
         const t = i / steps;
         const x = last ? last.x + (point.x - last.x) * t : point.x;
         const y = last ? last.y + (point.y - last.y) * t : point.y;
         wipeTrail.push({ x, y, time: now, mark: addMark() });
-        if (wipeTrail.length > 36) wipeTrail.shift()!.mark.remove();
+        if (wipeTrail.length > maxWipeMarks) wipeTrail.shift()!.mark.remove();
       }
     } else {
       last.time = now;

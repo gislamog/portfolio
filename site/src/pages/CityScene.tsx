@@ -80,7 +80,16 @@ export function CityScene() {
               C26 -55 28 -38 43 -30C55 -23 46 -12 53 1C60 14 43 24 38 34
               C30 48 18 45 7 51C-7 60 -19 44 -33 42C-49 39 -41 25 -49 16C-57 8 -47 4 -51 -3Z" />
             <filter id={`${wipeId}-feather`} x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="4.5" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.032 0.047"
+                numOctaves="3" seed="17" result="texture" />
+              <feDisplacementMap in="SourceGraphic" in2="texture" scale="34"
+                xChannelSelector="R" yChannelSelector="G" result="contour" />
+              <feGaussianBlur in="contour" stdDeviation="5.5" result="softEdge" />
+              <feGaussianBlur in="contour" stdDeviation="1.8" result="clearCenter" />
+              <feMerge>
+                <feMergeNode in="softEdge" />
+                <feMergeNode in="clearCenter" />
+              </feMerge>
             </filter>
             <mask ref={wipe} id={wipeId} x="0" y="0" width="100%" height="100%"
               maskContentUnits="userSpaceOnUse">
