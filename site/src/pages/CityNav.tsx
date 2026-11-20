@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { FiBookOpen, FiBriefcase, FiCompass, FiHome, FiLayers, FiMail, FiMenu } from 'react-icons/fi';
+import { FiBookOpen, FiBriefcase, FiChevronRight, FiCompass, FiHome, FiLayers, FiMail, FiMenu } from 'react-icons/fi';
 import { Link, NavLink } from 'react-router-dom';
 import { startCityNavGlow } from './renderCityNavGlow';
 
@@ -86,6 +86,7 @@ export function CityNav() {
                 {link.label}
                 {link.to === '/explore' && <span className="city-nav-star" aria-hidden="true">✦</span>}
               </span>
+              <FiChevronRight className="city-nav-menu-chevron" aria-hidden="true" focusable="false" />
             </NavLink>
           ))}
         </div>
