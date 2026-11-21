@@ -1,183 +1,376 @@
-/*
- * Work Experience: a single vertical timeline instead of the sheet-per-job
- * layout other pages use. A fixed spine runs down the left with a node per
- * job; every card sits to its right in one column.
- */
-
-.exp-page { padding-bottom: clamp(40px, 8vh, 80px); }
-
-.timeline {
-  position: relative;
-  list-style: none;
-  margin: 0 auto;
-  padding: 8px clamp(20px, 4vw, 56px) 0;
-  max-width: 1080px;
+.portfolio-work {
+  --work-peach: #ffc0a3;
+  --work-muted: #e2d4d7;
+  --work-line: rgb(237 219 226 / 23%);
+  --work-serif: 'Newsreader', Georgia, serif;
+  user-select: auto;
+  -webkit-user-select: auto;
+  caret-color: auto;
 }
 
-/* The spine: a vertical line running the height of the list, centered on
-   the nodes. */
-.timeline::before {
+.portfolio-work::before {
   content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(clamp(20px, 4vw, 56px) + 17px);
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--border) 20px, var(--border) calc(100% - 20px), transparent);
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 32%, rgb(13 16 26 / 82%), rgb(14 16 27 / 58%) 85%),
+    url('/images/city/city-front-on.webp') center / cover no-repeat;
 }
 
-.tl-item {
-  position: relative;
+.portfolio-work .app-viewport > main {
+  display: block;
+  padding: clamp(1.4rem, 3vw, 2.5rem) clamp(1rem, 5vw, 5rem) 2.5rem;
+}
+
+.work-page {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+.work-page p:not(:where(.portfolio-eyebrow, .portfolio-summary)) { color: inherit; }
+.work-page :is(h1, h2, h3, p):not(:where(.portfolio-eyebrow, .portfolio-summary)) { margin: 0; }
+
+.work-intro {
+  margin-block-end: clamp(1.15rem, 2.2vw, 1.65rem);
+}
+
+.work-intro .portfolio-summary { font-size: 1rem; }
+
+.work-intro h1 {
+  font: 400 clamp(2.15rem, 4.1vw, 3.7rem)/0.98 var(--work-serif);
+  letter-spacing: -0.045em;
+  margin-block-end: 0.7rem;
+}
+
+.work-card {
+  border: 1px solid var(--work-line);
+  border-radius: 1.125rem;
+  background: linear-gradient(145deg, rgb(40 42 54 / 93%), rgb(29 31 41 / 94%));
+  box-shadow: inset 0 1px rgb(255 255 255 / 5%), 0 12px 36px rgb(9 10 16 / 19%);
+}
+
+.work-current {
+  border-color: rgb(237 219 226 / 31%);
+  padding: clamp(1rem, 2.4vw, 1.8rem);
+}
+
+.work-role {
   display: grid;
-  grid-template-columns: 36px 1fr;
-  column-gap: 18px;
-  padding-bottom: clamp(20px, 3.5vh, 36px);
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
-.tl-item:last-child { padding-bottom: 0; }
 
-.tl-node {
-  position: relative;
-  grid-column: 1;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+.work-role-icon {
   display: grid;
   place-items: center;
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-size: 15px;
-  box-shadow: 0 0 0 4px var(--bg), inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent);
-  z-index: 1;
+  width: clamp(2.5rem, 5vw, 3.8rem);
+  aspect-ratio: 1;
+  border: 1px solid var(--work-line);
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgb(255 196 168 / 15%), rgb(255 196 168 / 5%));
+  color: var(--work-peach);
+  font-size: clamp(1.15rem, 2.5vw, 1.65rem);
 }
 
-.tl-now {
-  display: inline-block;
-  margin-top: 6px;
-  grid-column: 1;
-  justify-self: center;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: var(--accent-dim);
-  padding: 1px 6px;
-  border-radius: 999px;
-  white-space: nowrap;
+.work-current h2 {
+  font: 400 clamp(1.45rem, 2.6vw, 2.2rem)/1.02 var(--work-serif);
 }
 
-.tl-card {
-  grid-column: 2;
-  padding: 1.1rem 1.25rem;
+.work-page .work-company {
+  color: var(--work-peach);
+  font-weight: 650;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-block-end: 0.2rem;
+}
+
+.work-page .work-meta {
   display: flex;
-  align-items: stretch;
-  gap: 1.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-start: 0.35rem;
+  color: var(--work-muted);
+  font-size: 0.9rem;
 }
 
-.tl-card-main { flex: 1; min-width: 0; }
+.work-meta svg { color: var(--work-peach); }
+.work-page .work-overview { margin-block-start: 0.55rem; font-size: 0.9375rem; }
 
-.tl-head { margin-bottom: 0.6rem; }
-.tl-head h2 {
+.work-metrics,
+.work-history,
+.work-flow {
+  list-style: none;
+  padding: 0;
+  color: inherit;
+}
+
+.work-metrics > li,
+.work-history > li,
+.work-flow > li {
   margin: 0;
+}
+
+.work-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-block: 1.4rem 1rem;
+  border: 1px solid var(--work-line);
+  border-radius: 0.85rem;
+  background: rgb(255 224 209 / 5%);
+}
+
+.work-metrics li {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.45rem, 1.2vw, 0.9rem);
+  padding: clamp(0.75rem, 1.6vw, 1.25rem);
+}
+
+.work-metrics li + li { border-inline-start: 1px solid var(--work-line); }
+
+.work-metrics svg {
+  flex: none;
+  width: 1.3rem;
+  height: 1.3rem;
+  color: var(--work-peach);
+  margin-block-start: 0.18rem;
+}
+
+.work-metrics strong {
+  display: block;
+  font: 400 clamp(1.6rem, 3vw, 2.55rem)/1 var(--work-serif);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.work-metrics span {
+  display: block;
+  margin-block-start: 0.3rem;
+  font-size: 0.9rem;
+  color: var(--work-muted);
+  line-height: 1.4;
+}
+
+.work-selected {
+  border-block-start: 1px solid var(--work-line);
+  padding-block-start: 0.9rem;
+}
+
+.work-selected > h3 {
+  margin-block-end: 0.7rem;
   font-size: 1.15rem;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
-}
-.tl-sub {
-  margin: 1px 0 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-}
-.tl-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-top: 6px;
-}
-.tl-meter {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-}
-.tl-loc {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  color: var(--text-muted);
+  font-weight: 700;
 }
 
-.tl-highlights { margin: 0; font-size: 0.86rem; }
-.tl-highlights li { margin-bottom: 0.45em; }
-.tl-highlights li:last-child { margin-bottom: 0; }
-.tl-highlights li::marker { color: var(--accent); }
-
-/* Tech-stack icon strip: a vertical rail of brand-icon chips on the card's
-   right edge, separated from the body by a divider. */
-.tl-stack {
-  flex-shrink: 0;
-  list-style: none;
-  margin: 0;
-  padding-left: 1.25rem;
-  border-left: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 10px;
-  width: 44px;
-}
-.tl-stack-chip {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+.work-case-studies {
   display: grid;
-  place-items: center;
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-size: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
 }
-.tl-stack-chip .asu-logo-sm,
-.tl-stack-chip .asu-fallback-sm { height: 20px; width: 20px; }
 
-/* Connector from the node to the card. */
-.tl-card::before {
+.work-case-studies section {
+  display: grid;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 0.9rem;
+  border: 1px solid var(--work-line);
+  border-radius: 0.8rem;
+  background: rgb(255 224 209 / 4%);
+  color: var(--work-muted);
+  font-size: 0.9375rem;
+}
+
+.work-case-studies h4 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  color: #fcf2eb;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.work-case-studies h4 svg {
+  flex: none;
+  align-self: flex-start;
+  margin-block-start: 0.12em;
+  color: var(--work-peach);
+}
+
+.work-case-studies strong { color: #fcf2eb; }
+
+.work-inline-brand { white-space: nowrap; }
+
+.work-inline-brand svg {
+  margin-inline-end: 0.28em;
+  vertical-align: -0.12em;
+  color: #ffb36b;
+}
+
+.portfolio-work .work-project-link {
+  justify-self: start;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.45rem 0.7rem;
+  color: var(--work-peach);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.work-project-link svg { flex: none; }
+
+.portfolio-work .work-project-link:is(:hover, :focus-visible) {
+  border-color: var(--work-peach);
+  color: #fff0e8;
+}
+
+.work-project-link:focus-visible {
+  outline: 2px solid var(--work-peach);
+  outline-offset: 3px;
+}
+
+.work-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.3rem;
+}
+
+.work-flow li {
+  display: grid;
+  position: relative;
+  place-items: center;
+  text-align: center;
+  padding: 0.55rem;
+  font-size: 0.875rem;
+}
+
+.work-flow li + li::before {
   content: '';
   position: absolute;
-  top: 18px;
-  left: -18px;
-  width: 18px;
-  height: 2px;
-  background: var(--border);
+  inset: 50% 100% auto auto;
+  width: 1.3rem;
+  height: 1px;
+  background: var(--work-peach);
 }
 
-/* Below this width the side rail leaves too little room for the card body,
-   so the icons move below the content as a horizontal row instead. */
-@media (max-width: 680px) {
-  .tl-card { flex-direction: column; }
-  .tl-stack {
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: auto;
-    padding-left: 0;
-    padding-top: 0.9rem;
-    border-left: 0;
-    border-top: 1px solid var(--border);
+.work-history {
+  display: grid;
+  gap: 0.85rem;
+  margin-block-start: 1.5rem;
+}
+
+.work-previous {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.35fr);
+  align-items: start;
+  gap: clamp(0.75rem, 2vw, 1.55rem);
+  padding: clamp(0.95rem, 1.8vw, 1.35rem) clamp(0.95rem, 2.4vw, 1.8rem);
+}
+
+.work-previous .work-role-icon { width: clamp(2.4rem, 4vw, 3.3rem); }
+
+.work-previous h2 {
+  font: 400 clamp(1.25rem, 2vw, 1.65rem)/1.05 var(--work-serif);
+}
+
+.work-page .work-position { margin-block-start: 0.15rem; }
+
+.work-history-highlights {
+  display: grid;
+  gap: 0.28rem;
+  color: var(--work-muted);
+  font-size: 0.9375rem;
+  padding-inline-start: 1.2rem;
+}
+
+.work-history-highlights li { margin: 0; }
+.work-history-highlights li::marker { color: var(--work-peach); }
+
+@media (max-width: 760px) {
+  .portfolio-work::before {
+    background-image: linear-gradient(rgb(14 16 27 / 70%), rgb(14 16 27 / 81%)),
+      url('/images/city/city-front-on-mobile.webp');
   }
+
+  .work-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .work-metrics li:nth-child(odd) { border-inline-start: 0; }
+  .work-metrics li:nth-child(n + 3) { border-block-start: 1px solid var(--work-line); }
+  .work-previous, .work-case-studies { grid-template-columns: 1fr; }
+  .work-history-highlights {
+  display: grid;
+  gap: 0.28rem;
+  color: var(--work-muted);
+  font-size: 0.9375rem;
+  padding-inline-start: 1.2rem;
 }
 
-@media (max-width: 560px) {
-  .timeline { padding-inline: 16px; }
-  .timeline::before { left: 34px; }
-  .tl-item { grid-template-columns: 32px 1fr; column-gap: 14px; }
-  .tl-node { width: 32px; height: 32px; font-size: 13px; }
-  .tl-card { padding: 0.9rem 1rem; }
-  .tl-card::before { left: -14px; width: 14px; }
-  .tl-head h2 { font-size: 1.02rem; }
-  .tl-sub { font-size: 12px; }
-  .tl-highlights { font-size: 0.82rem; }
-  .tl-stack-chip { width: 28px; height: 28px; font-size: 14px; }
+.work-history-highlights li { margin: 0; }
+.work-history-highlights li::marker { color: var(--work-peach); }
+}
+
+@media (max-width: 1050px) {
+  .work-flow { grid-template-columns: 1fr; gap: 0.75rem; }
+  .work-flow li + li::before { inset: auto auto 100% 50%; width: 1px; height: 0.75rem; }
+}
+
+.work-practices {
+  margin-block-start: clamp(2.25rem, 5vw, 4rem);
+}
+
+.work-practices h2 {
+  margin-block-end: 0.9rem;
+  font: 400 clamp(1.7rem, 3vw, 2.45rem)/1 var(--work-serif);
+}
+
+.work-practices-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.work-practices dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0;
+}
+
+.work-practices .work-card {
+  padding: 1rem;
+}
+
+.work-practices dt {
+  color: var(--work-peach);
+  font-weight: 650;
+}
+
+.work-practices dd {
+  margin: 0.3rem 0 0;
+  color: var(--work-muted);
+}
+
+.work-practices-diagram {
+  display: grid;
+  align-content: center;
+  gap: 0.85rem;
+}
+
+.work-practices-diagram .work-flow {
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+
+.work-practices-diagram .work-flow li + li::before {
+  inset: auto auto 100% 50%;
+  width: 1px;
+  height: 0.65rem;
+}
+
+@media (max-width: 760px) {
+  .work-practices-layout { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 380px) {
+  .work-practices dl { grid-template-columns: 1fr; }
 }

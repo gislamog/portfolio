@@ -1,7 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { FiBookOpen, FiBriefcase, FiChevronRight, FiCompass, FiHome, FiLayers, FiMail, FiMenu } from 'react-icons/fi';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { startCityNavGlow } from './renderCityNavGlow';
+
+const exploreRoutes = ['/explore', '/about', '/learning', '/demos'];
 
 const links = [
   { to: '/', label: 'Home', icon: FiHome },
@@ -11,15 +13,20 @@ const links = [
   { to: '/explore', label: 'Explore', icon: FiCompass },
 ];
 
-export function CityNav() {
+export function CityNav({ animatedGlow = true }: { animatedGlow?: boolean }) {
+  const { pathname } = useLocation();
+  const route = pathname.replace(/\/$/, '').toLowerCase() || '/';
+  const activeTab = exploreRoutes.includes(route) ? '/explore' : route;
   const glow = useRef<HTMLCanvasElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => setMenuOpen(false), [pathname]);
+
   useEffect(() => {
     const canvas = glow.current;
-    if (!canvas) return;
+    if (!animatedGlow || !canvas) return;
     const desktop = window.matchMedia('(width > 760px)');
     let stop: (() => void) | undefined;
 
@@ -41,7 +48,7 @@ export function CityNav() {
       desktop.removeEventListener('change', update);
       stop?.();
     };
-  }, []);
+  }, [animatedGlow]);
 
   return (
     <nav
@@ -53,7 +60,7 @@ export function CityNav() {
         menuButton.current?.focus();
       }}
     >
-      <canvas ref={glow} className="city-nav-glow" aria-hidden="true" />
+      {animatedGlow && <canvas ref={glow} className="city-nav-glow" aria-hidden="true" />}
       <Link className="city-nav-brand" to="/" aria-label="Gulsum, home" onClick={() => setMenuOpen(false)}>
         <img src={`${import.meta.env.BASE_URL}avatar-cat.jpg`} alt="" width={32} height={32} />
         Gulsum
@@ -72,13 +79,13 @@ export function CityNav() {
       <div id={menuId} className="city-nav-menu" data-open={menuOpen}>
         <div className="city-nav-links">
           {links.map(({ icon: Icon, ...link }) => (
-            <NavLink
+            <Link
               key={link.to}
               to={link.to}
-              end
-              onClick={() => {
+              aria-current={link.to === activeTab ? 'page' : undefined}
+              onClick={(event) => {
                 setMenuOpen(false);
-                if (link.to === '/' && menuOpen) menuButton.current?.focus();
+                if (event.currentTarget.getAttribute('aria-current') === 'page' && menuOpen) menuButton.current?.focus();
               }}
             >
               <Icon className="city-nav-menu-icon" aria-hidden="true" focusable="false" />
@@ -87,10 +94,10 @@ export function CityNav() {
                 {link.to === '/explore' && <span className="city-nav-star" aria-hidden="true">✦</span>}
               </span>
               <FiChevronRight className="city-nav-menu-chevron" aria-hidden="true" focusable="false" />
-            </NavLink>
+            </Link>
           ))}
         </div>
-        <Link className="city-nav-contact" to="/contact">
+        <Link className="city-nav-contact" to="/contact" aria-current={route === '/contact' ? 'page' : undefined} onClick={() => setMenuOpen(false)}>
           <FiMail className="city-nav-menu-icon" aria-hidden="true" focusable="false" />
           Contact
         </Link>

@@ -94,8 +94,6 @@
   height: auto;
 }
 
-[data-theme='c'] .project-card-media { background: color-mix(in srgb, var(--accent) 7%, var(--bg-elevated)); }
-[data-theme='c'] .project-card-media .project-visual { box-shadow: 0 10px 26px rgba(30, 55, 80, 0.16); }
 
 /* Compact grid for projects without screenshots. */
 .projects-subhead {

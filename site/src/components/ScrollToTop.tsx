@@ -16,7 +16,7 @@ export function ScrollToTop({ target }: { target: HTMLElement | null }) {
 
   useLayoutEffect(() => {
     if (hash || !target) return;
-    target.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    target.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname, hash, target]);
 
   return null;

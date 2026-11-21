@@ -58,7 +58,7 @@ export function startGlass(
   let previous = 0;
   let elapsed = 0;
   let textureAspect = 0;
-  let visible = false;
+  let visible = true;
   let lost = false;
   const scene = canvas.closest<HTMLElement>('.portfolio-home');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
@@ -193,7 +193,8 @@ export function startGlass(
     canvas.style.removeProperty('width');
     canvas.style.removeProperty('height');
     uniforms.size.value.set(width, height);
-    frame = requestAnimationFrame(render);
+    if (canvas.hasAttribute('data-ready')) frame = requestAnimationFrame(render);
+    else render(performance.now());
   }
 
   function loadImage() {

@@ -199,8 +199,6 @@
 .skill-card[data-accent='indigo'] { --cat: #6c7ee6; --cat-dim: rgba(108, 126, 230, 0.16); }
 .skill-card[data-accent='rose'] { --cat: #e0708a; --cat-dim: rgba(224, 112, 138, 0.16); }
 
-[data-theme='c'] .skill-card[data-accent='indigo'] { --cat: #3f4ec9; --cat-dim: rgba(63, 78, 201, 0.12); }
-[data-theme='c'] .skill-card[data-accent='rose'] { --cat: #b3466a; --cat-dim: rgba(179, 70, 106, 0.12); }
 
 .skill-card-head {
   display: flex;
@@ -279,8 +277,6 @@
 .explore-card[data-accent='indigo'] { --cat: #6c7ee6; --cat-dim: rgba(108, 126, 230, 0.16); }
 .explore-card[data-accent='rose'] { --cat: #e0708a; --cat-dim: rgba(224, 112, 138, 0.16); }
 
-[data-theme='c'] .explore-card[data-accent='indigo'] { --cat: #3f4ec9; --cat-dim: rgba(63, 78, 201, 0.12); }
-[data-theme='c'] .explore-card[data-accent='rose'] { --cat: #b3466a; --cat-dim: rgba(179, 70, 106, 0.12); }
 
 .explore-card:hover {
   border-top-color: var(--cat);

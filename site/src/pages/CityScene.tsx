@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import { rainDefaults } from './rainSettings';
 import { startGlass } from './renderGlass';
+import { startRain } from './renderRain';
 
 const city = `${import.meta.env.BASE_URL}images/city/city-front-on`;
 
@@ -42,7 +43,6 @@ export function CityScene() {
     };
   }, []);
 
-
   useEffect(() => {
     const surface = canvas.current;
     if (!surface) return;
@@ -56,16 +56,13 @@ export function CityScene() {
       stop = undefined;
       if (motion.matches) return;
       const active = () => current === generation;
-      void import('./renderRain').then(async ({ startRain }) => {
-        if (!active()) return;
-        const limited = shouldLimitWeather();
-        const settings = limited ? { ...rainDefaults, density: 680 } : rainDefaults;
-        const cleanup = await startRain(surface!, active, settings, limited ? 1 : 1.5);
-        if (active()) stop = cleanup;
-        else cleanup?.();
-      }).catch((error: unknown) => {
-        if (active()) console.warn('City rain unavailable', error);
-      });
+      const limited = shouldLimitWeather();
+      const settings = limited ? { ...rainDefaults, density: 680 } : rainDefaults;
+      try {
+        stop = startRain(surface!, active, settings, limited ? 1 : 1.5);
+      } catch (error) {
+        console.warn('City rain unavailable', error);
+      }
     }
 
     motion.addEventListener('change', update);

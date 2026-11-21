@@ -6,26 +6,37 @@
   font-display: block;
 }
 
-.portfolio-home {
+.portfolio-shell {
   --city-accent-light: 255 172 139;
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 100svh;
-  overflow: hidden;
+}
+
+.portfolio-shell :is(.city-nav, .portfolio-footer),
+.portfolio-home .app-body,
+.portfolio-work .app-body {
   color: #fcf2eb;
   color-scheme: dark;
-  caret-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
-  background: radial-gradient(ellipse at 87% 72%, #321e36 0%, transparent 58%), #10101b;
   font-family: system-ui, sans-serif;
 }
 
-#root:has(> .portfolio-home) {
-  overflow-y: auto;
+.portfolio-shell .city-nav {
+  flex: none;
+  background-color: rgb(15 16 26 / 42%);
 }
+
+.portfolio-shell:not(.portfolio-home, .portfolio-work) .city-nav {
+  background-color: #151623;
+}
+
+.portfolio-shell .city-nav { z-index: 5; }
+
+.portfolio-home,
+.portfolio-work {
+  background: radial-gradient(ellipse at 87% 72%, #321e36 0%, transparent 58%), #10101b;
+}
+
+.portfolio-home { caret-color: transparent; user-select: none; -webkit-user-select: none; }
 
 .portfolio-home :is(input, textarea, [contenteditable='true']) {
   caret-color: auto;
@@ -33,18 +44,20 @@
   user-select: text;
 }
 
-.portfolio-home a {
+.portfolio-home :where(.portfolio-intro a),
+.portfolio-shell :is(.city-nav, .portfolio-footer) a {
   color: inherit;
   text-decoration: none;
 }
 
-.portfolio-home a:hover,
-.portfolio-home a:focus-visible,
-.portfolio-home a[aria-current='page'] {
+.portfolio-shell :is(.city-nav, .portfolio-footer) a:hover,
+.portfolio-shell :is(.city-nav, .portfolio-footer) a:focus-visible,
+.portfolio-shell :is(.city-nav, .portfolio-footer) a[aria-current='page'] {
   color: #ffad98;
 }
 
-.portfolio-home a:focus-visible {
+.portfolio-home .portfolio-intro a:focus-visible,
+.portfolio-shell :is(.city-nav, .portfolio-footer) a:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
 }
@@ -180,23 +193,23 @@
   box-shadow: 0 0 9px rgb(var(--city-accent-light) / 14%);
 }
 
-.portfolio-home .city-nav a:hover,
-.portfolio-home .city-nav a:focus-visible {
+.portfolio-shell .city-nav a:hover,
+.portfolio-shell .city-nav a:focus-visible {
   --city-nav-link-light: 255 219 197;
   text-decoration: none;
 }
 
-.portfolio-home .city-nav a[aria-current='page'] {
+.portfolio-shell .city-nav a[aria-current='page'] {
   --city-nav-link-light: var(--city-nav-light);
 }
 
-.portfolio-home .city-nav a:is(:hover, :focus-visible, [aria-current='page']) {
+.portfolio-shell .city-nav a:is(:hover, :focus-visible, [aria-current='page']) {
   color: rgb(var(--city-nav-link-light));
   text-shadow: 0 0 8px rgb(var(--city-nav-link-light) / 43%),
     0 0 15px rgb(var(--city-nav-link-light) / 24%);
 }
 
-.portfolio-home .city-nav a:focus-visible {
+.portfolio-shell .city-nav a:focus-visible {
   outline-offset: -5px;
   border-radius: 0.35rem;
 }
@@ -389,7 +402,7 @@
   }
 }
 
-.portfolio-home > main {
+.portfolio-home .app-viewport > main {
   display: grid;
   align-items: center;
   padding: clamp(0.9rem, 3svh, 2.8rem) clamp(1.25rem, 7vw, 8rem);
@@ -400,7 +413,7 @@
   width: min(100%, 70rem);
 }
 
-.portfolio-role {
+.portfolio-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 1rem;
@@ -411,7 +424,7 @@
   text-transform: uppercase;
 }
 
-.portfolio-role::after {
+.portfolio-eyebrow::after {
   content: '';
   width: clamp(2rem, 8vw, 6rem);
   height: 2.5px;
@@ -435,7 +448,6 @@
 
 .portfolio-summary {
   position: relative;
-  max-width: 56ch;
   padding-inline-start: 1.25rem;
   color: #f5e8e8;
   font-size: clamp(1rem, 2.25svh, 1.2rem);
@@ -443,8 +455,10 @@
   text-shadow: 0 1px 10px rgb(9 9 18 / 78%);
 }
 
+.portfolio-home .portfolio-summary { max-width: 56ch; }
+
 @media (min-width: 1024px) {
-  .portfolio-summary {
+  .portfolio-home .portfolio-summary {
     max-width: 72ch;
   }
 }
@@ -489,12 +503,12 @@
   box-shadow: 0 3px 14px rgb(15 9 15 / 35%);
   min-inline-size: min(15.5rem, 100%);
   min-height: 49px;
-  color: #321c1b;
+  color: #221323;
   font-size: 0.9375rem;
 }
 
 .portfolio-home .portfolio-action-primary:is(:hover, :focus-visible, :active) {
-  color: #321c1b;
+  color: #221323;
 }
 
 .portfolio-home .portfolio-action-primary:hover {
@@ -550,7 +564,7 @@
 }
 
 .portfolio-home .portfolio-tech,
-.portfolio-home .portfolio-contacts {
+.portfolio-shell .portfolio-contacts {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 1rem;
@@ -559,7 +573,7 @@
   list-style: none;
 }
 
-.portfolio-tech li {
+.portfolio-pill {
   --pill-glint: 25%;
   position: relative;
   display: inline-flex;
@@ -576,6 +590,9 @@
   box-shadow: inset 0 1px 1px rgb(255 238 228 / 13%),
     inset 0 -1px 5px rgb(236 170 146 / 13%), 0 3px 12px rgb(13 10 19 / 24%);
   color: #e9ded9;
+}
+
+.portfolio-tech .portfolio-pill {
   font: 500 0.875rem/1.4 ui-monospace, monospace;
   letter-spacing: 0.035em;
   transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
@@ -632,22 +649,24 @@
     padding-block: 0.65rem;
   }
 
-  .portfolio-tech li {
+  .portfolio-pill {
     padding-block: 0.35rem;
   }
 }
 
 .portfolio-footer {
-  padding-block: 0.2rem clamp(0.45rem, 2svh, 1.2rem);
+  flex: none;
+  scroll-snap-align: end;
+  padding: 0.2rem 0.5rem clamp(0.45rem, 2svh, 1.2rem);
 }
 
-.portfolio-home .portfolio-contacts {
+.portfolio-shell .portfolio-contacts {
   justify-content: center;
   gap: clamp(0.6rem, 2.5vw, 1.5rem);
   margin: 0;
 }
 
-.portfolio-home .portfolio-contacts a {
+.portfolio-shell .portfolio-contacts a {
   --contact-light: var(--city-accent-light);
   display: grid;
   place-items: center;
@@ -680,7 +699,7 @@
   transform: translateY(-2px);
 }
 
-.portfolio-home .portfolio-contacts a:is(:hover, :focus-visible) {
+.portfolio-shell .portfolio-contacts a:is(:hover, :focus-visible) {
   color: rgb(var(--contact-light));
 }
 
@@ -753,16 +772,20 @@
 
 .city-glass {
   visibility: hidden;
-  opacity: 0;
   z-index: 3;
-  transition: opacity 240ms ease-out;
   mask-image: var(--city-wipe-mask, none);
   mask-composite: intersect;
 }
 
+/* Match the glass shader's mist while its first frame is being prepared. */
+@media (prefers-reduced-motion: no-preference) {
+  .city-view:not(:has(.city-glass[data-ready])) .city-fog {
+    background: radial-gradient(ellipse at 65% 35%, rgb(130 163 191 / 22%), rgb(130 163 191 / 13%));
+  }
+}
+
 .city-glass[data-ready] {
   visibility: visible;
-  opacity: 1;
 }
 
 .city-rain {
@@ -793,7 +816,7 @@
   .portfolio-home .portfolio-actions .portfolio-action:is(:hover, :active),
   .portfolio-home .portfolio-action:hover:not(:active) .portfolio-action-arrow,
   .portfolio-home .portfolio-tech li:hover,
-  .portfolio-home .portfolio-contacts a:hover .portfolio-contact-icon {
+  .portfolio-shell .portfolio-contacts a:hover .portfolio-contact-icon {
     transform: none;
   }
 }

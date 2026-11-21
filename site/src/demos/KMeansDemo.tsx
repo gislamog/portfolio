@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FiCheck, FiPlay } from 'react-icons/fi';
 import './Demos.css';
-import { useTheme } from '../components/ThemeProvider';
 import { KMEANS_SAMPLES } from './kmeansSamples';
 import {
   lloydTrace,
@@ -19,10 +18,7 @@ const K_MIN = 2;
 const K_MAX = 10;
 
 /** Up to ten clusters. Clusters are spatially separate and each carries a centroid marker, so hue is never the only cue. */
-const CLUSTER_COLORS = {
-  dark: ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#2fa52f', '#9085e9', '#e66767', '#38bdf8', '#b08968'],
-  light: ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#4a3aa7', '#e34948', '#0e8fb5', '#8a5a2b'],
-};
+const CLUSTER_COLORS = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#2fa52f', '#9085e9', '#e66767', '#38bdf8', '#b08968'];
 
 type Algo = 'kmeans' | 'kmeanspp';
 
@@ -611,8 +607,7 @@ function AlgoColumn({
 // --- Demo -----------------------------------------------------------------
 
 export function KMeansDemo() {
-  const { theme } = useTheme();
-  const colors = theme === 'c' ? CLUSTER_COLORS.light : CLUSTER_COLORS.dark;
+  const colors = CLUSTER_COLORS;
   const [kText, setKText] = useState('4');
   const [run, setRun] = useState<Run | null>(null);
   const [history, setHistory] = useState<Record<Algo, LossPoint[]>>({ kmeans: [], kmeanspp: [] });

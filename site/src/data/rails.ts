@@ -1,4 +1,3 @@
-import { experience } from './experience';
 import { projects, type Project } from './projects';
 import { demos } from '../pages/DemosPage';
 import { SECTIONS as LEARNING_SECTIONS } from './learningBoard';
@@ -32,10 +31,6 @@ const rails: Record<string, RailConfig> = {
       { id: 'skills', label: 'Technical focus' },
       { id: 'explore', label: 'On this site' },
     ],
-  },
-  '/experience': {
-    title: 'Work',
-    items: experience.map((j) => ({ id: jobId(j), label: j.company })),
   },
   '/education': {
     title: 'Education',

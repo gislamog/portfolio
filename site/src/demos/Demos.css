@@ -403,7 +403,6 @@
   max-width: 1080px;
   --kmx-good: #22c55e;
 }
-[data-theme='c'] .kmx { --kmx-good: #15803d; }
 
 .kmx-controls {
   display: flex;

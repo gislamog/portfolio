@@ -1,6 +1,5 @@
 /* Style A: Soft slate */
-:root,
-[data-theme='a'] {
+:root {
   /* The Learning board's "Articles" sheet: deep green-teal with a staggered dot
      grid. Mint accent, dirty-yellow second accent. */
   --bg: #171e1c;
@@ -27,32 +26,6 @@
   --max: 1320px;
   --nav-h: 56px;
   --header-bg: rgba(23, 30, 28, 0.88);
-}
-
-/* Style C: Paper light */
-[data-theme='c'] {
-  --bg: #e7e3d9;
-  --bg-elevated: #f8f6f0;
-  --bg-card: #ffffff;
-  --border: rgba(29, 39, 51, 0.22);
-  --text: #1d2733;
-  --text-muted: #5b6775;
-  /* Darkened from #0f766e: that shade read at 4.27:1 on --bg, under the 4.5:1
-     WCAG AA minimum for normal text (the --accent color is used as text in
-     many places, e.g. .section-label). This clears 5:1 with headroom. */
-  --accent: #0d6a63;
-  --accent-dim: rgba(15, 118, 110, 0.12);
-  --accent-2: #1d4ed8;
-  /* Both darkened for the same reason as --accent above: used as text (pill
-     labels, form errors) and the originals read under 4.5:1 on --bg. */
-  --cert-accent: #7a4a05;
-  --danger: #b01c1c;
-  --hero-glow-1: rgba(15, 118, 110, 0.08);
-  --hero-glow-2: rgba(29, 78, 216, 0.06);
-  --mesh-1: rgba(15, 118, 110, 0.07);
-  --mesh-2: rgba(29, 78, 216, 0.05);
-  --mesh-3: rgba(180, 140, 90, 0.06);
-  --header-bg: rgba(243, 241, 234, 0.92);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -160,7 +133,6 @@ li { margin-bottom: 0.4em; }
 }
 .btn:hover { transform: translateY(-1px); }
 .btn-primary { background: var(--accent); color: #0b1220; }
-[data-theme='c'] .btn-primary { color: #fff; }
 .btn-primary:hover { filter: brightness(1.08); }
 .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn-ghost:hover { background: var(--bg-elevated); }
@@ -240,69 +212,6 @@ li { margin-bottom: 0.4em; }
 .learning-list { display: grid; gap: 0.85rem; margin-top: 1rem; }
 .learning-item h3 { font-size: 1rem; margin-bottom: 0.35rem; }
 .learning-item p { margin: 0; font-size: 0.9rem; }
-
-.theme-switch {
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  line-height: 0;
-}
-
-/* Segmented moon/sun control, drawn like the nav tabs: same 8px corners,
-   the active side filled with the tab's accent tint. */
-.theme-switch-track {
-  --switch-slot: 26px;
-  --switch-pad: 2px;
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, var(--switch-slot));
-  padding: var(--switch-pad);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg-elevated);
-  line-height: 0;
-  transition: border-color 0.15s;
-}
-.theme-switch:hover .theme-switch-track { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-.theme-switch:focus-visible { outline: none; }
-.theme-switch:focus-visible .theme-switch-track { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.theme-switch-thumb {
-  position: absolute;
-  top: var(--switch-pad);
-  bottom: var(--switch-pad);
-  left: var(--switch-pad);
-  width: var(--switch-slot);
-  border-radius: 6px;
-  background: var(--accent-dim);
-  transition: transform 0.2s ease;
-  pointer-events: none;
-}
-.theme-switch-on .theme-switch-thumb { transform: translateX(var(--switch-slot)); }
-@media (prefers-reduced-motion: reduce) { .theme-switch-thumb { transition: none; } }
-
-.theme-icon {
-  position: relative;
-  width: var(--switch-slot);
-  height: 22px;
-  padding: 4px 0;
-  fill: none;
-  stroke: var(--text-muted);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 0.15s;
-}
-.theme-icon-dark path { fill: currentColor; stroke: none; }
-.theme-icon-dark { color: var(--text-muted); }
-.theme-switch:not(.theme-switch-on) .theme-icon-dark { color: var(--accent); }
-.theme-switch-on .theme-icon-light { stroke: var(--accent); }
-.theme-switch-on .theme-icon-light circle { fill: color-mix(in srgb, var(--accent) 25%, transparent); }
 
 .contact-grid { margin-top: 1rem; }
 .contact-card {

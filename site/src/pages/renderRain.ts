@@ -17,25 +17,14 @@ function layerFor(index: number) {
   return layers[layerOrder[index % layerOrder.length]];
 }
 
-export async function startRain(
+export function startRain(
   canvas: HTMLCanvasElement,
   active: () => boolean,
   settings: RainSettings,
   maxDpr: number,
 ) {
-  const mask = new Image();
-  mask.src = MASK_URL;
-  await mask.decode();
-  if (!active()) return;
-
-  const maskCanvas = document.createElement('canvas');
-  const maskWidth = maskCanvas.width = mask.naturalWidth;
-  const maskHeight = maskCanvas.height = mask.naturalHeight;
-  const context = maskCanvas.getContext('2d');
-  if (!context) return;
-  context.drawImage(mask, 0, 0);
-  const pixels = context.getImageData(0, 0, maskWidth, maskHeight).data;
-
+  // Falling rain can render while the optional surface map for splashes loads.
+  let splashMap: { width: number; height: number; pixels: Uint8ClampedArray } | undefined;
   const gl = canvas.getContext('webgl', { alpha: true, antialias: false });
   if (!gl) return;
   const gpu = gl;
@@ -111,11 +100,12 @@ export async function startRain(
 
   let frame = 0;
   let previous = 0;
-  let visible = false;
+  let visible = true;
   let lost = false;
   let aspect = 1;
   let coverX = 1;
   let coverY = 1;
+  let hasDrawn = false;
   let nextSplash = RAIN_COUNT;
   function resetDrop(index: number, initial = false) {
     const offset = index * 2;
@@ -131,12 +121,13 @@ export async function startRain(
   }
 
   function splash(x: number, y: number, depth: number, spread: number) {
-    // The mask uses the same centered cover crop as the city picture.
-    const column = Math.floor((0.5 + x * 0.5 * coverX) * maskWidth);
-    const row = Math.floor((0.5 - y * 0.5 * coverY) * maskHeight);
-    if (!settings.splashSize || Math.random() * 100 >= settings.splashFrequency) return false;
-    if (Math.abs(x) >= 1 || Math.abs(y) >= 1 || pixels[(row * maskWidth + column) * 4] < 128) return false;
-
+    if (!splashMap || !settings.splashSize || Math.random() * 100 >= settings.splashFrequency) return false;
+    if (Math.abs(x) >= 1 || Math.abs(y) >= 1) return false;
+    // The splash map uses the same centered cover crop as the city picture.
+    const { width, height, pixels } = splashMap;
+    const column = Math.floor((0.5 + x * 0.5 * coverX) * width);
+    const row = Math.floor((0.5 - y * 0.5 * coverY) * height);
+    if (pixels[(row * width + column) * 4] < 128) return false;
     const count = Math.ceil((3 + depth * 3) * settings.splashSize * spread);
     for (let index = 0; index < count; index++) {
       const offset = nextSplash * 2;
@@ -205,7 +196,14 @@ export async function startRain(
     gpu.clear(gpu.COLOR_BUFFER_BIT);
     gpu.drawArrays(gpu.POINTS, 0, settings.density);
     gpu.drawArrays(gpu.POINTS, RAIN_COUNT, PARTICLE_COUNT - RAIN_COUNT);
+    hasDrawn = true;
     frame = requestAnimationFrame(render);
+  }
+
+  function updateCover() {
+    const ratio = splashMap ? aspect / (splashMap.width / splashMap.height) : 1;
+    coverX = Math.min(1, ratio);
+    coverY = Math.min(1, 1 / ratio);
   }
 
   function update() {
@@ -216,14 +214,13 @@ export async function startRain(
     const height = canvas.clientHeight;
     if (!active() || !visible || document.hidden || lost || !width || !height) return;
     aspect = width / height;
-    const ratio = aspect / (maskWidth / maskHeight);
-    coverX = Math.min(1, ratio);
-    coverY = Math.min(1, 1 / ratio);
+    updateCover();
     const dpr = Math.min(devicePixelRatio, maxDpr);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     gpu.viewport(0, 0, canvas.width, canvas.height);
-    frame = requestAnimationFrame(render);
+    if (hasDrawn) frame = requestAnimationFrame(render);
+    else render(performance.now());
   }
 
   function contextLost() {
@@ -231,7 +228,27 @@ export async function startRain(
     update();
   }
 
+  async function loadSplashMap() {
+    const mask = new Image();
+    mask.src = MASK_URL;
+    await mask.decode();
+    if (!active() || lost) return;
+
+    const maskCanvas = document.createElement('canvas');
+    const width = maskCanvas.width = mask.naturalWidth;
+    const height = maskCanvas.height = mask.naturalHeight;
+    const context = maskCanvas.getContext('2d');
+    if (!context) return;
+    context.drawImage(mask, 0, 0);
+    splashMap = { width, height, pixels: context.getImageData(0, 0, width, height).data };
+    updateCover();
+  }
+
   for (let index = 0; index < RAIN_COUNT; index++) resetDrop(index, true);
+  update();
+  void loadSplashMap().catch((error: unknown) => {
+    if (active()) console.warn('Rain splash map unavailable', error);
+  });
   const resize = new ResizeObserver(update);
   resize.observe(canvas);
   const intersection = new IntersectionObserver(([entry]) => {

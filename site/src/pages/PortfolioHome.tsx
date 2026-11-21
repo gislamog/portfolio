@@ -15,7 +15,7 @@ const contacts = [
 export function PortfolioHome() {
   return (
     <section className="portfolio-intro" aria-labelledby="portfolio-title">
-      <p className="portfolio-role">Software Engineer</p>
+      <p className="portfolio-eyebrow">Software Engineer</p>
       <h1 id="portfolio-title">Gulsum<br />Islamoglu</h1>
       <p className="portfolio-summary">
         I&apos;m a software engineer with a master&apos;s in Computer Science. I work on production web applications,
@@ -24,15 +24,15 @@ export function PortfolioHome() {
       </p>
       <div className="portfolio-actions">
         <Link className="portfolio-action portfolio-action-primary" to="/projects">
-          See What I&apos;ve Built <FiArrowUpRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
+          Explore My Work <FiArrowUpRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
         </Link>
         <Link className="portfolio-action portfolio-action-secondary" to="/explore">
-          Explore Ideas &amp; Experiments <FiArrowRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
+          Ideas and Experiments <FiArrowRight className="portfolio-action-arrow" aria-hidden="true" focusable="false" />
         </Link>
       </div>
       <ul className="portfolio-tech" aria-label="Technologies">
         {profile.tech.map((technology) => (
-          <li key={technology} data-brand={technology}>
+          <li className="portfolio-pill" key={technology} data-brand={technology}>
             <TechnologyIcon technology={technology} className="portfolio-tech-icon" />
             <span>{technology}</span>
           </li>

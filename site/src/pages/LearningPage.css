@@ -5,12 +5,6 @@
   --s-almost: #7a56b8;
   --s-done: #23874f;
 }
-[data-theme='c'] .learning-page {
-  --s-todo: #8f9886;
-  --s-doing: #c97a1c;
-  --s-almost: #7a56b8;
-  --s-done: #23874f;
-}
 
 .learning-section-title {
   text-align: center;

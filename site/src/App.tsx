@@ -28,7 +28,8 @@ export default function App() {
             <section className="container page-header">
               <h1>Explore</h1>
               <Link className="btn btn-ghost" to="/learning">Ideas and notes</Link>{' '}
-              <Link className="btn btn-ghost" to="/demos">Interactive experiments</Link>
+              <Link className="btn btn-ghost" to="/demos">Interactive experiments</Link>{' '}
+              <Link className="btn btn-ghost" to="/about">About</Link>
             </section>
           } />
           <Route path="/demos" element={<DemosPage />} />
