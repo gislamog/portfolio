@@ -10,10 +10,10 @@ function courseHref(code: string) {
 const ASU_PROGRAM_URL =
   'https://degrees.asu.edu/masters-phd/major/ASU00/ESBDTAGRCT/big-data-graduate-certificate#quick-facts';
 
-export function LearningBigDataCertArticle() {
+export function LearningBigDataCertArticle({ includeTitle = true }: { includeTitle?: boolean }) {
   return (
     <article className="art-body cert-article">
-      <h1>{cert.title}</h1>
+      {includeTitle && <h1>{cert.title}</h1>}
       <p className="art-lede">
         Awarded by the {cert.awardedBy} for nine credit hours of graduate coursework in data mining, machine
         learning, and visualization.

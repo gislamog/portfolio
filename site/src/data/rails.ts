@@ -1,6 +1,3 @@
-import { projects, type Project } from './projects';
-import { demos } from '../pages/DemosPage';
-import { SECTIONS as LEARNING_SECTIONS } from './learningBoard';
 
 /**
  * The left section panel for every page, keyed by route. Layout renders it once
@@ -18,10 +15,6 @@ export interface RailConfig {
 export const jobId = (job: { company: string; title: string }) =>
   'job-' + `${job.company}-${job.title}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
-export const hasMedia = (p: Project) => Boolean(p.images?.length || p.image);
-
-export const MORE_PROJECTS_ID = 'more-projects';
-
 const rails: Record<string, RailConfig> = {
   '/about': {
     title: 'About',
@@ -31,37 +24,6 @@ const rails: Record<string, RailConfig> = {
       { id: 'skills', label: 'Technical focus' },
       { id: 'explore', label: 'On this site' },
     ],
-  },
-  '/education': {
-    title: 'Education',
-    items: [
-      { id: 'masters', label: "Master's Degree" },
-      { id: 'bachelors', label: "Bachelor's Degree" },
-    ],
-    // Both pieces of content now live on Learning; these just point there.
-    related: [
-      { to: '/learning#mcs-portfolio', label: 'MCS Portfolio →' },
-      { to: '/learning#big-data-cert', label: 'Big Data Certificate →' },
-    ],
-  },
-  '/projects': {
-    title: 'Projects',
-    items: [
-      ...projects.filter(hasMedia).map((p) => ({ id: p.id, label: p.title })),
-      ...(projects.some((p) => !hasMedia(p)) ? [{ id: MORE_PROJECTS_ID, label: 'More projects' }] : []),
-    ],
-  },
-  '/demos': {
-    title: 'Demos',
-    items: demos.map(({ id, title }) => ({ id, label: title })),
-  },
-  '/learning': {
-    title: 'Continued Learning',
-    items: LEARNING_SECTIONS.map(({ id, title }) => ({ id, label: title })),
-  },
-  '/contact': {
-    title: 'Contact',
-    items: [{ id: 'contact-page', label: 'Get in touch' }],
   },
 };
 

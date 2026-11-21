@@ -1,30 +1,66 @@
-/* Form and contact-links side by side, so the page reads as one sheet
-   instead of stacking into a second screen's worth of scroll. */
+.contact-page {
+  max-width: 66rem;
+}
+
 .contact-columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
   align-items: start;
-  margin-top: 1.5rem;
+  gap: clamp(0.85rem, 2vw, 1.3rem);
 }
 
-.contact-sheet .contact-grid {
-  grid-template-columns: repeat(2, 1fr);
+.contact-profile {
+  padding: clamp(1rem, 2.2vw, 1.4rem);
+}
+
+.contact-profile-person {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
-  margin-top: 0;
 }
 
-.contact-sheet .contact-card {
-  padding: 1rem;
+.contact-profile-person img {
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--interior-line);
+  object-fit: cover;
 }
 
-@media (max-width: 860px) {
-  .contact-sheet .contact-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 520px) {
-  .contact-sheet .contact-grid { grid-template-columns: 1fr; }
+.contact-profile-person h2 {
+  margin: 0 0 0.15rem;
+  font: 400 clamp(1.35rem, 2.5vw, 1.8rem)/1.1 var(--interior-serif);
 }
 
-@media (max-width: 860px) {
+.contact-profile-person p {
+  margin: 0;
+  color: var(--interior-muted);
+  font-size: 0.9rem;
+}
+
+.contact-profile address {
+  display: grid;
+  margin-block-start: 1rem;
+  border-block-start: 1px solid var(--interior-line);
+  font-style: normal;
+}
+
+.contact-profile address a {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  min-height: 44px;
+  padding: 0.65rem 0.4rem;
+  border-radius: 0.45rem;
+  color: #fcf2eb;
+  overflow-wrap: anywhere;
+}
+
+.contact-profile address a:hover { background: rgb(255 224 209 / 7%); text-decoration: none; }
+.contact-profile address a:hover > span > span { text-decoration: underline; text-underline-offset: 0.2em; }
+.contact-profile address svg { flex: none; margin-block-start: 0.2rem; color: var(--interior-peach); }
+.contact-profile address strong { display: block; color: var(--interior-muted); font-size: 0.875rem; }
+.contact-profile address a:focus-visible { outline: 2px solid var(--interior-peach); outline-offset: 2px; }
+
+@media (max-width: 760px) {
   .contact-columns { grid-template-columns: 1fr; }
 }

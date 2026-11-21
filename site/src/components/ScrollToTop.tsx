@@ -11,13 +11,14 @@ import { useLocation } from 'react-router-dom';
  * cards, the report contents, the demos list) scroll to it themselves, and
  * jumping to the top first would fight that.
  */
-export function ScrollToTop({ target }: { target: HTMLElement | null }) {
+export function ScrollToTop({ target, scrollPath }: { target: HTMLElement | null; scrollPath?: string }) {
   const { pathname, hash } = useLocation();
+  const path = scrollPath ?? pathname;
 
   useLayoutEffect(() => {
     if (hash || !target) return;
     target.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-  }, [pathname, hash, target]);
+  }, [path, hash, target]);
 
   return null;
 }

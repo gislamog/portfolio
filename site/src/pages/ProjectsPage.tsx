@@ -1,139 +1,262 @@
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { courseHref, requestAccessHref, projects, type Project } from '../data/projects';
-import { ProjectVisual, projectIcon } from '../components/ProjectVisual';
-import { hasMedia, MORE_PROJECTS_ID } from '../data/rails';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { FiArrowLeft, FiArrowRight, FiMaximize2, FiX } from 'react-icons/fi';
+import { courseHref, demoHref, projectHref, projects, requestAccessHref, type Project } from '../data/projects';
+import { projectStudies } from '../data/projectStudies';
+import { projectIcon } from '../components/ProjectVisual';
+import { getExperiment, experiments } from '../data/explore';
+import './ProjectsPage.css';
 
-/**
- * Featured cards (and any other /projects#id link) are router Links, so the
- * browser never does a native anchor jump. Scroll to the card ourselves.
- */
+const featured = projects.find(({ id }) => id === 'academic-quintiles')!;
+const projectGroups = [
+  { title: 'Major projects', ids: ['git-worktrees', 'capstone', 'piano-pogo'] },
+  { title: 'Applied machine learning', compact: true, ids: ['mcs-collision', 'mcs-kmeans'] },
+];
+const archiveGroups = [
+  { title: 'Applications and reporting', ids: ['analytics-viz', 'property-management'] },
+  { title: 'Coursework and experiments', ids: ['density-classification', 'mcs-crypto', 'mcs-mnist', 'mcs-matching', 'mcs-lexer', 'mcs-sdn', 'ants-sphere'] },
+];
+const screenshotCaptions: Record<string, string[]> = {
+  'piano-pogo': ['Piano Pogo home screen', 'Lesson roadmap with current, completed, and locked lessons', 'Mini-games with best scores and a daily challenge', 'Song selection screen'],
+  'mcs-collision': ['Robot simulator with distance sensors', 'Collision prediction in the simulator', 'Robot steering interface'],
+  'mcs-kmeans': ['K-means clustering experiment visualization'],
+};
+
 function useProjectHashTarget() {
-  const { hash } = useLocation();
-
+  const { hash, key } = useLocation();
   useEffect(() => {
-    if (!hash) return;
-    const el = document.querySelector(hash);
-    if (!(el instanceof HTMLElement)) return;
-
-    const jump = (behavior: ScrollBehavior) => el.scrollIntoView({ behavior, block: 'start' });
-
-    // Wait a frame so layout has settled before measuring the scroll target.
-    const raf = requestAnimationFrame(() => {
-      jump(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
-      el.classList.remove('project-card-flash');
-      void el.offsetWidth;
-      el.classList.add('project-card-flash');
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+    const frame = requestAnimationFrame(() => {
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ behavior: 'instant', block: 'start' });
     });
-    // Each project is a full-viewport sheet, so a webfont swap after that jump
-    // (fonts load with display: swap) reflows every sheet's height and throws
-    // off the scroll above; correct it once fonts have settled.
-    document.fonts?.ready.then(() => jump('auto'));
-
-    const clear = window.setTimeout(() => el.classList.remove('project-card-flash'), 3000);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.clearTimeout(clear);
-      el.classList.remove('project-card-flash');
-    };
-  }, [hash]);
+    return () => cancelAnimationFrame(frame);
+  }, [hash, key]);
 }
 
-function ProjectActions({ project: p }: { project: Project }) {
-  const accessHref = requestAccessHref(p);
-  if (!p.liveUrl && !p.demoId && !p.courseCode && !accessHref) return null;
+function ProjectActions({ project, showStudy = false }: { project: Project; showStudy?: boolean }) {
+  const accessHref = requestAccessHref(project);
+  const liveDemo = project.demoId && getExperiment(project.demoId);
   return (
-    <div className="project-actions">
-      {p.liveUrl && (
-        <a href={p.liveUrl} className="btn btn-primary" target="_blank" rel="noopener noreferrer">
-          Live Site
-        </a>
-      )}
-      {p.demoId && <Link to={`/demos#${p.demoId}`} className="btn btn-primary">Try Demo</Link>}
-      {p.courseCode && (
-        <Link to={courseHref(p.courseCode)} className="btn btn-ghost">{p.courseCode}</Link>
-      )}
-      {accessHref && (
-        <Link
-          to={accessHref}
-          className="btn btn-ghost"
-          title="This repository is private. Request access via the contact form."
-        >
-          GitHub (Private)
-        </Link>
-      )}
+    <div className="projects-actions">
+      {showStudy && <Link className="portfolio-pill project-primary" aria-label={`Read case study: ${project.title}`} to={`/projects/${project.id}`}>Read case study <FiArrowRight aria-hidden="true" /></Link>}
+      {project.liveUrl && <a className="portfolio-pill" href={project.liveUrl}>Visit {project.title}</a>}
+      {liveDemo && <Link className="portfolio-pill" to={demoHref(liveDemo)}>Try {experiments[liveDemo].title}</Link>}
+      {projectStudies[project.id]?.report && <Link className="portfolio-pill" to="/explore/mcs-portfolio">Read MCS report</Link>}
+      {project.courseCode && <Link className="portfolio-pill" to={courseHref(project.courseCode)}>Course · {project.courseCode}</Link>}
+      {accessHref && <Link className="portfolio-pill" to={accessHref}>Request repository access</Link>}
+      {project.id === 'analytics-viz' && <Link className="portfolio-pill" to="/experience">Related experience</Link>}
+      {project.id === 'capstone' && <Link className="portfolio-pill" to={courseHref('SER 401/402')}>Capstone coursework</Link>}
     </div>
   );
 }
 
+function ProjectMedia({ project }: { project: Project }) {
+  const captions = screenshotCaptions[project.id];
+  const screenshots = project.images ?? (project.image ? [project.image] : []);
+  const [index, setIndex] = useState(project.id === 'piano-pogo' ? 1 : 0);
+  const dialog = useRef<HTMLDialogElement>(null);
 
-const SHEETS = ['dots', 'ruled', 'hatched', 'graph'] as const;
+  if (captions && screenshots.length) {
+    return (
+      <figure className="projects-media">
+        <button className="projects-image-button" type="button" aria-label={`Enlarge ${captions[index]}`} onClick={() => dialog.current?.showModal()}>
+          <img loading="lazy" src={screenshots[index]} alt={captions[index]} />
+          <FiMaximize2 aria-hidden="true" />
+        </button>
+        <figcaption aria-live="polite">{captions[index]}</figcaption>
+        {screenshots.length > 1 && (
+          <div className="projects-gallery-controls" aria-label="Choose screenshot" role="group">
+            {captions.map((caption, i) => (
+              <button key={caption} type="button" aria-label={caption} aria-pressed={index === i} onClick={() => setIndex(i)}>{i + 1}</button>
+            ))}
+          </div>
+        )}
+        <dialog ref={dialog} className="projects-image-dialog" aria-label={`${project.title} screenshots`}>
+          <button type="button" aria-label="Close screenshot" onClick={() => dialog.current?.close()}><FiX aria-hidden="true" /></button>
+          <img loading="lazy" src={screenshots[index]} alt={captions[index]} />
+          <div className="projects-dialog-caption">
+            {screenshots.length > 1 && (
+              <button type="button" aria-label="Previous screenshot" onClick={() => setIndex((i) => (i + screenshots.length - 1) % screenshots.length)}>
+                <FiArrowLeft aria-hidden="true" />
+              </button>
+            )}
+            <span aria-live="polite">{captions[index]} ({index + 1} of {screenshots.length})</span>
+            {screenshots.length > 1 && (
+              <button type="button" aria-label="Next screenshot" onClick={() => setIndex((i) => (i + 1) % screenshots.length)}>
+                <FiArrowRight aria-hidden="true" />
+              </button>
+            )}
+          </div>
+        </dialog>
+      </figure>
+    );
+  }
+
+  if (project.id === 'academic-quintiles') {
+    return (
+      <figure className="projects-diagram">
+        <figcaption>How one filter serves two views</figcaption>
+        <div className="portfolio-pill">Application cohort + active filters</div>
+        <div className="projects-diagram-branches">
+          <div><strong>Three stacked charts</strong><span>Dim unmatched selectivity bands. Keep the full distribution in view.</span></div>
+          <div><strong>Application detail table</strong><span>Apply all active filters. Show only matching applications.</span></div>
+        </div>
+      </figure>
+    );
+  }
+
+  if (project.id === 'git-worktrees') {
+    return (
+      <figure className="projects-diagram">
+        <figcaption>How local branches stay isolated</figcaption>
+        <div className="portfolio-pill">Bash CLI generates routes and mounts</div>
+        <div className="projects-diagram-branches">
+          <div><strong>Frontend worktree</strong><span>Local hostname → Caddy → branch port</span></div>
+          <div><strong>PHP worktree</strong><span>Local hostname → nginx → branch application</span></div>
+        </div>
+        <p className="projects-diagram-note">Docker mounts the branch directories and generated proxy configuration. Symlinks keep the larger application tree shared.</p>
+      </figure>
+    );
+  }
+
+  if (project.id === 'capstone') {
+    return (
+      <figure className="projects-diagram">
+        <figcaption>Assignment workflow</figcaption>
+        <ol className="projects-workflow">
+          <li className="portfolio-pill">Administrator assigns reviews</li>
+          <li className="portfolio-pill">Scheduling checks absences and conflicts</li>
+          <li className="portfolio-pill">Employee sees assigned work</li>
+        </ol>
+      </figure>
+    );
+  }
+
+  return null;
+}
+
+function ProjectTags({ project }: { project: Project }) {
+  return <ul className="projects-tags" aria-label="Technologies and topics">{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>;
+}
+
+function MajorProject({ project, isFeatured = false }: { project: Project; isFeatured?: boolean }) {
+  const study = projectStudies[project.id];
+  const Heading = isFeatured ? 'h2' : 'h3';
+  return (
+    <article className={`portfolio-card projects-major${isFeatured ? ' projects-featured' : ''}`} id={project.id} tabIndex={-1} aria-labelledby={`${project.id}-title`}>
+      <div className="projects-major-copy">
+        <ProjectTags project={project} />
+        <Heading id={`${project.id}-title`}>{project.title}</Heading>
+        <p>{study.summary}</p>
+        <p className="projects-role">{study.role}</p>
+        {isFeatured && (
+          <>
+            <p>Built a custom chart to show academic ranges alongside stacked bars and designed different filter behaviors for aggregate and application-level views.</p>
+            <dl className="projects-feature-results">
+              <div><dt>Playwright end-to-end tests</dt><dd>78</dd></div>
+              <div><dt>Applications in the validation cohort</dt><dd>14,875</dd></div>
+            </dl>
+          </>
+        )}
+        <ProjectActions project={project} showStudy />
+      </div>
+      <ProjectMedia project={project} />
+    </article>
+  );
+}
+
+function ArchiveProject({ project }: { project: Project }) {
+  const Icon = projectIcon(project.id);
+  const unreleased = Boolean(project.demoId && !getExperiment(project.demoId));
+  return (
+    <article className="portfolio-card projects-archive-card" id={project.id} tabIndex={-1} aria-labelledby={`${project.id}-title`}>
+      <h4 id={`${project.id}-title`}><Icon aria-hidden="true" />{project.title}</h4>
+      {unreleased && <p className="projects-status">Browser demo unreleased</p>}
+      <p>{project.id === 'mcs-mnist' ? 'A browser sketchpad prototype inspired by the CSE 575 neural-network lab. The prototype compares downsampled sketches with digit templates.' : project.description}</p>
+      <details>
+        <summary>Technical details</summary>
+        <ProjectTags project={project} />
+        <ul className="projects-highlights">{project.highlights.map((item) => <li key={item}>{item}</li>)}</ul>
+      </details>
+      <ProjectActions project={project} />
+    </article>
+  );
+}
 
 export function ProjectsPage() {
   useProjectHashTarget();
-
-  const showcase = projects.filter(hasMedia);
-  const more = projects.filter((p) => !hasMedia(p));
-
   return (
-    <div className="nb-page">
-      {/* Projects with screenshots: text beside a media panel, alternating sides,
-          one full-viewport sheet per project. */}
-      {showcase.map((p, i) => (
-        <section key={p.id} className="nb-sheet" data-sheet={SHEETS[i % SHEETS.length]}>
-          {i === 0 && (
-            <div className="page-header container">
-              <p className="section-label">Portfolio</p>
-              <h1>Projects</h1>
-              <p className="page-lead">Selected product, academic, and visualization work.</p>
-            </div>
-          )}
-          <div className="container projects-showcase">
-            <article
-              id={p.id}
-              className={`card project-card project-card--media${i % 2 ? ' is-flipped' : ''}`}
-            >
-              <div className="project-card-body">
-                <div className="project-tags">{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
-                <h2>{p.title}</h2>
-                <p className="project-desc">{p.description}</p>
-                <ul>{p.highlights.map((h) => <li key={h.slice(0, 30)}>{h}</li>)}</ul>
-                <ProjectActions project={p} />
-              </div>
-              <div className={`project-card-media tone-${p.tone}`}>
-                <ProjectVisual project={p} Icon={projectIcon(p.id)} />
-              </div>
-            </article>
+    <div className="portfolio-content projects-page">
+      <header className="portfolio-section-intro">
+        <p className="portfolio-eyebrow">Selected Engineering Work</p>
+        <h1>Projects</h1>
+        <p className="portfolio-summary">Production features, independent applications, and technical projects across data visualization, application architecture, developer tooling, and machine learning.</p>
+      </header>
+
+      <MajorProject project={featured} isFeatured />
+      {projectGroups.map(({ title, compact, ids }) => (
+        <section key={title} className="projects-section">
+          <h2>{title}</h2>
+          <div className={compact ? "projects-group projects-group-compact" : "projects-group"}>
+            {ids.map((id) => <MajorProject key={id} project={projects.find((project) => project.id === id)!} />)}
           </div>
         </section>
       ))}
-
-      {more.length > 0 && (
-        <section className="nb-sheet" data-sheet={SHEETS[showcase.length % SHEETS.length]}>
-          <div className="container">
-            <h2 id={MORE_PROJECTS_ID} className="projects-subhead">More projects</h2>
-            <div className="projects-compact">
-              {more.map((p) => {
-                const Icon = projectIcon(p.id);
-                return (
-                  <article key={p.id} id={p.id} className="card project-card project-card--compact">
-                    <div className="project-compact-head">
-                      <span className={`project-compact-icon tone-${p.tone}`} aria-hidden>
-                        <Icon />
-                      </span>
-                      <div className="project-tags">{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
-                    </div>
-                    <h2>{p.title}</h2>
-                    <p className="project-desc">{p.description}</p>
-                    <ul>{p.highlights.map((h) => <li key={h.slice(0, 30)}>{h}</li>)}</ul>
-                    <ProjectActions project={p} />
-                  </article>
-                );
-              })}
+      <section className="projects-section" id="more-projects" tabIndex={-1}>
+        <h2>More projects</h2>
+        {archiveGroups.map(({ title, ids }) => (
+          <section key={title} className="projects-archive-group">
+            <h3>{title}</h3>
+            <div className="projects-archive">
+              {ids.map((id) => <ArchiveProject key={id} project={projects.find((project) => project.id === id)!} />)}
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        ))}
+      </section>
     </div>
+  );
+}
+
+export function ProjectStudyPage() {
+  const { projectId } = useParams();
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+  }, [projectId]);
+  const project = projects.find(({ id }) => id === projectId);
+  const study = project ? projectStudies[project.id] : undefined;
+
+  if (!project || !study) {
+    return <section className="portfolio-content projects-page"><h1>Case study unavailable</h1><Link className="portfolio-pill" to="/projects">Browse projects</Link></section>;
+  }
+
+  return (
+    <article className="portfolio-content projects-page projects-study">
+      <Link className="projects-back" to={projectHref(project.id)}><FiArrowLeft aria-hidden="true" /> Back to Projects</Link>
+      <header className="portfolio-section-intro">
+        <p className="portfolio-eyebrow">Engineering Case Study</p>
+        <h1 ref={heading} tabIndex={-1}>{project.title}</h1>
+        <p className="portfolio-summary">{study.summary}</p>
+      </header>
+      <div className="portfolio-card projects-study-overview">
+        <div>
+          <h2>My contribution</h2>
+          <p>{study.role}</p>
+          <ProjectTags project={project} />
+          <ProjectActions project={project} />
+        </div>
+        <ProjectMedia key={project.id} project={project} />
+      </div>
+      <div className="projects-study-sections">
+        {study.sections.map(({ title, text }) => (
+          <section key={title}>
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </section>
+        ))}
+      </div>
+    </article>
   );
 }

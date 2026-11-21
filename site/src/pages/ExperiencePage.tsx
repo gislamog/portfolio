@@ -93,13 +93,13 @@ function HowIWork() {
       <div className="work-practices-layout">
         <dl>
           {workPractices.map(({ title, description }) => (
-            <div className="work-card" key={title}>
+            <div className="portfolio-card" key={title}>
               <dt>{title}</dt>
               <dd>{description}</dd>
             </div>
           ))}
         </dl>
-        <div className="work-card work-practices-diagram">
+        <div className="portfolio-card work-practices-diagram">
           <h3>Selectivity by Quintiles data flow</h3>
           <WorkFlow label="Selectivity by Quintiles data flow" steps={['Application cohort', 'Group by quintile and selectivity', 'Calculate distributions', 'Render interactive charts and detail rows']} />
         </div>
@@ -138,14 +138,14 @@ export function ExperiencePage() {
 
   const currentId = jobId(currentRole);
   return (
-    <div className="work-page">
-      <header className="work-intro">
+    <div className="portfolio-content work-page">
+      <header className="portfolio-section-intro">
         <p className="portfolio-eyebrow">Professional Experience</p>
         <h1>Work Experience</h1>
         <p className="portfolio-summary">Production software development, analytics, automated testing, and technical problem-solving across the application stack.</p>
       </header>
 
-      <article className="work-card work-current" id={currentId} aria-labelledby={`${currentId}-title`}>
+      <article className="portfolio-card work-current" id={currentId} aria-labelledby={`${currentId}-title`}>
         <header className="work-role">
           <span className="work-role-icon"><FiLayers aria-hidden="true" /></span>
           <div>
@@ -174,7 +174,7 @@ export function ExperiencePage() {
           const Icon = pastRoleIcons[index];
           return (
             <li key={id}>
-              <article className="work-card work-previous" id={id} aria-labelledby={`${id}-title`}>
+              <article className="portfolio-card work-previous" id={id} aria-labelledby={`${id}-title`}>
                 <header className="work-role">
                   <span className="work-role-icon"><Icon aria-hidden="true" /></span>
                   <div>

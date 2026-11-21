@@ -70,7 +70,7 @@ const itemIcons: Record<string, IconType> = {
 const explore = [
   { to: '/experience', title: 'Work', desc: 'Development, automated testing, and quality assurance on production EdTech software and a software internship.', icon: FiBriefcase, accent: 'teal' as const },
   { to: '/projects', title: 'Projects', desc: 'Healthcare capstone, analytics platform work, and ML portfolio pieces.', icon: FiLayers, accent: 'gold' as const },
-  { to: '/demos', title: 'Demos', desc: 'K-Means, crypto, income viz, robot ML, matching, lexer, and more.', icon: FiPlayCircle, accent: 'indigo' as const },
+  { to: '/explore', title: 'Explore', desc: 'Investigations and interactive experiments in clustering, robotics, and fractals.', icon: FiPlayCircle, accent: 'indigo' as const },
   { to: '/education', title: 'Education', desc: 'M.S. Computer Science and B.S. Software Engineering at ASU.', icon: FiBookOpen, accent: 'rose' as const },
 ];
 
@@ -133,7 +133,7 @@ export function HomePage() {
             <div className="hero-actions">
               <Link to="/projects" className="btn btn-primary">View Projects</Link>
               <Link to="/experience" className="btn btn-ghost">Work Experience</Link>
-              <Link to="/demos" className="btn btn-ghost">Interactive Demos</Link>
+              <Link to="/explore" className="btn btn-ghost">Explore experiments</Link>
             </div>
           </div>
           <div className="hero-stats">

@@ -152,13 +152,8 @@ export function SierpinskiDemo() {
     return () => window.clearTimeout(walkTimerRef.current);
   }, [running, walkthrough, takeStep]);
 
-  const onCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * SIZE;
-    const y = ((e.clientY - rect.top) / rect.height) * SIZE;
-    const ctx = canvas.getContext('2d');
+  const startAt = (x: number, y: number) => {
+    const ctx = canvasRef.current?.getContext('2d');
     if (!ctx) return;
 
     if (!currentRef.current) {
@@ -179,7 +174,11 @@ export function SierpinskiDemo() {
         width={SIZE}
         height={SIZE}
         className="demo-canvas sierpinski-canvas"
-        onClick={onCanvasClick}
+        aria-label="Sierpiński triangle construction"
+        onClick={(event) => {
+          const rect = event.currentTarget.getBoundingClientRect();
+          startAt((event.clientX - rect.left) / rect.width * SIZE, (event.clientY - rect.top) / rect.height * SIZE);
+        }}
       />
       <div className="demo-controls demo-fields">
         <label>
@@ -215,6 +214,11 @@ export function SierpinskiDemo() {
           />
           Walkthrough
         </label>
+        {!started && (
+          <button type="button" className="btn btn-primary" onClick={() => startAt(SIZE / 2, SIZE / 2)}>
+            Start at center
+          </button>
+        )}
         {started && (
           <button type="button" className="btn btn-ghost" onClick={() => setRunning((v) => !v)}>
             {running ? 'Pause' : 'Keep going'}
@@ -228,7 +232,7 @@ export function SierpinskiDemo() {
           ? walkthrough
             ? 'Walkthrough runs automatically: gold vertex, dashed line to that corner, pink midpoint marker. Pause or Keep going anytime.'
             : 'Click was the first point. Points keep landing at midpoints until the limit.'
-          : 'Click the canvas to place the first point. Walkthrough slows each step so you can see the construction.'}
+          : 'Choose Start at center or tap the canvas to place the first point. Walkthrough slows each step so you can see the construction.'}
       </p>
     </div>
   );

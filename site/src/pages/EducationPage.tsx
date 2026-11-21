@@ -1,192 +1,195 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { bachelorsDegree, mastersDegree } from '../data/education';
-import { demoHref, demoIdForCourse } from '../data/projects';
-import { hasPaperForCourse } from '../data/mcsPortfolio';
-import { isCertificateCourse } from '../data/bigDataCertificate';
+import { FiAward, FiBarChart2, FiChevronDown, FiCpu, FiLayers, FiShield } from 'react-icons/fi';
 import { AsuLogo } from '../components/AsuLogo';
-import { ArticleReader } from '../components/ArticleReader';
-import { LearningMcsPortfolioArticle } from '../components/LearningMcsPortfolioArticle';
-import '../components/AsuLogo.css';
-import '../components/ExpandableEmbed.css';
+import { isCertificateCourse } from '../data/bigDataCertificate';
+import { bachelorsDegree, mastersDegree, type Course, type Degree } from '../data/education';
+import { hasPaperForCourse } from '../data/mcsPortfolio';
+import { courseHref, demoHref, projectHref, projects } from '../data/projects';
+import { experiments } from '../data/explore';
+import './EducationPage.css';
 
-function CourseCard({ course, onOpenPortfolio }: { course: (typeof mastersDegree.courses)[0]; onOpenPortfolio: () => void }) {
-  const demoId = demoIdForCourse(course.code);
-  const hasPaper = hasPaperForCourse(course.code);
-  const certificateCourse = isCertificateCourse(course.code);
+const coursework = [mastersDegree, bachelorsDegree].flatMap((degree) =>
+  degree.courses.map((course) => ({ course, degree })),
+);
 
+const foundations = [
+  {
+    id: 'ai-ml', title: 'AI, Machine Learning & Data Mining', icon: FiCpu,
+    summary: 'Artificial intelligence, statistical machine learning, data mining, and biocomputing.',
+    courses: ['CSE 571', 'CSE 575', 'CSE 572', 'CSE 568'],
+  },
+  {
+    id: 'security', title: 'Security & Cryptography', icon: FiShield,
+    summary: 'Applied cryptography, software and network security, information assurance, and secure design.',
+    courses: ['CSE 539', 'CSE 545', 'CSE 543', 'CSE 548', 'SER 335'],
+  },
+  {
+    id: 'engineering', title: 'Software Engineering & Systems', icon: FiLayers,
+    summary: 'Operating systems, distributed services, databases, programming languages, and Software Enterprise.',
+    courses: ['SER 401/402', 'SER 334', 'SER 321', 'SER 322', 'CSE 340', 'CSE 240', 'SER 423', 'SER 316', 'SER 315', 'SER 216'],
+  },
+  {
+    id: 'algorithms-visualization', title: 'Algorithms, Visualization & HCI', icon: FiBarChart2,
+    summary: 'Algorithm design, data structures, visual communication, and usability testing.',
+    courses: ['CSE 551', 'SER 222', 'CSE 578', 'SER 463'],
+  },
+];
+
+const relatedCoursework: Record<string, { code: string; connection: string }[]> = {
+  'CSE 539': [
+    { code: 'CSE 548', connection: 'Connects cryptographic protocols to PKI and network defense.' },
+    { code: 'CSE 543', connection: 'Places cryptography within defense in depth and security risk management.' },
+    { code: 'SER 335', connection: 'Applies hashing concepts to password storage and secure software design.' },
+  ],
+  'CSE 575': [
+    { code: 'CSE 572', connection: 'Extends the study of clustering and classification to larger datasets.' },
+    { code: 'CSE 571', connection: 'Applies supervised learning to collision prediction in a robotics simulation.' },
+    { code: 'CSE 578', connection: 'Uses visual exploration to make patterns in data easier to inspect and explain.' },
+  ],
+};
+
+const reportHref = '/explore/mcs-portfolio';
+const certificateHref = '/explore/big-data-cert';
+
+function DegreeCard({ degree }: { degree: Degree }) {
   return (
-    <article
-      id={`course-${course.code.toLowerCase().replace(/\s+/g, '-')}`}
-      className={`card course-card ${course.portfolioFeatured ? 'featured' : ''}`}
-    >
-      <div className="course-summary-main">
-        <div className="course-top">
-          <span className="tag">{course.code}</span>
-          <span className="course-term">{course.term}</span>
+    <article id={degree.id} className="portfolio-card education-degree" aria-labelledby={`${degree.id}-title`}>
+      <header>
+        <span className="education-school-mark" aria-hidden="true"><AsuLogo size="sm" /></span>
+        <div>
+          <h2 id={`${degree.id}-title`}>{degree.degree}</h2>
+          <p>{degree.school}</p>
         </div>
-        <h4>{course.title}</h4>
-      </div>
-      <ul>
-        {course.bullets.map((b) => (
-          <li key={b.slice(0, 30)}>{b}</li>
-        ))}
+      </header>
+      <ul className="education-degree-meta">
+        <li>Conferred <strong>{degree.conferred}</strong></li>
+        {degree.gpa && <li>GPA <strong>{degree.gpa}</strong></li>}
       </ul>
-      {(demoId || hasPaper || certificateCourse) && (
-        <p className="course-actions">
-          {demoId && (
-            <Link to={demoHref(demoId)} className="btn btn-primary">Try Demo</Link>
-          )}
-          {hasPaper && (
-            <button type="button" onClick={onOpenPortfolio} className="btn btn-portfolio">MCS Portfolio</button>
-          )}
-          {certificateCourse && (
-            <Link
-              to="/learning#big-data-cert"
-              className="btn btn-certificate"
-              /* Shortened from "Big Data Certificate" so CSE 575's three
-                 pills stay on one row in the narrowest grid column. */
-              aria-label="Big Data Certificate"
-            >
-              Big Data Cert
-            </Link>
-          )}
-        </p>
+      {degree.honors && <p className="education-honors">{degree.honors}</p>}
+      {degree.certificate && (
+        <Link id="big-data-cert" to={certificateHref} className="education-credential">
+          <FiAward aria-hidden="true" />
+          <span><strong>{degree.certificate.name}</strong><small>{degree.certificate.status}</small></span>
+        </Link>
       )}
+      {degree.portfolio && <Link className="education-inline-link" to={reportHref}>{degree.portfolio.title}</Link>}
     </article>
   );
 }
 
-function DegreeHeader({ degree }: { degree: typeof mastersDegree }) {
+function CourseEntry({ course, degree, hash }: { course: Course; degree: Degree; hash: string }) {
+  const id = courseHref(course.code).split('#')[1];
+  const relatedProjects = projects.filter((project) => project.courseCode === course.code && project.id !== 'mcs-mnist');
+  const liveDemos = (['kmeans', 'robot-ml'] as const).filter((id) => experiments[id].course === course.code);
+  const [overview, ...details] = course.bullets;
+  const connections = relatedCoursework[course.code];
+
   return (
-    <div className="card degree-header">
-      <div className="degree-header-row">
-        <AsuLogo size="md" />
-        <div className="degree-header-text">
-          <h2>{degree.degree}</h2>
-          <p>{degree.school}</p>
-          <div className="degree-meta">
-            <span>Conferred {degree.conferred}</span>
-            {degree.gpa && <span>GPA {degree.gpa}</span>}
-            {degree.honors && <span>{degree.honors}</span>}
-          </div>
+    <details className="education-course" id={id} data-target={hash === `#${id}` || undefined}>
+      <summary>
+        <span className="education-course-meta">{course.code} · {degree.id === 'masters' ? 'Master’s coursework' : 'Bachelor’s coursework'} · {course.term}</span>
+        <strong>{course.title}</strong>
+        <span className="education-course-overview">{overview}</span>
+        <FiChevronDown aria-hidden="true" />
+      </summary>
+      <div className="education-course-details">
+        <ul>
+          {details.map((detail) => <li key={detail}>{detail}</li>)}
+        </ul>
+        <div className="education-course-links">
+          {relatedProjects.map((project) => (
+            <Link className="portfolio-pill" key={project.id} to={projectHref(project.id)}>Project · {project.title}</Link>
+          ))}
+          {liveDemos.map((id) => (
+            <Link className="portfolio-pill" key={id} to={demoHref(id)}>Demo · {experiments[id].title}</Link>
+          ))}
+          {hasPaperForCourse(course.code) && <Link className="portfolio-pill" to={reportHref}>MCS Portfolio Report</Link>}
+          {isCertificateCourse(course.code) && <Link className="portfolio-pill" to={certificateHref}>Big Data Certificate</Link>}
         </div>
+        {connections && (
+          <div className="education-connections">
+            <h4>Related coursework</h4>
+            <ul>
+              {connections.map(({ code, connection }) => {
+                const related = coursework.find((entry) => entry.course.code === code);
+                return related && (
+                  <li key={code}>
+                    <Link className="education-inline-link" to={courseHref(code)}>{related.course.title}</Link>
+                    <span>{connection}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
       </div>
-    </div>
+    </details>
   );
 }
-
-function DegreeCourses({
-  degree,
-  heading,
-  onOpenPortfolio,
-}: {
-  degree: typeof mastersDegree;
-  heading: string;
-  onOpenPortfolio: () => void;
-}) {
-  return (
-    <>
-      <h3 className="courses-heading">{heading}</h3>
-      <div className="courses-grid">
-        {degree.courses.map((c) => (
-          <CourseCard key={c.code} course={c} onOpenPortfolio={onOpenPortfolio} />
-        ))}
-      </div>
-    </>
-  );
-}
-
-/**
- * Course links elsewhere in the site are router Links, so arriving at
- * /education#course-cse-571 never triggers the browser's native anchor jump.
- * Scroll to the target ourselves, then flash its border so the card is
- * findable in a dense grid.
- */
-function useCourseHashTarget() {
-  const { hash } = useLocation();
-
-  useEffect(() => {
-    if (!hash) return;
-    const el = document.querySelector(hash);
-    if (!(el instanceof HTMLElement)) return;
-
-    const jump = (behavior: ScrollBehavior) => el.scrollIntoView({ behavior, block: 'start' });
-
-    // Wait a frame so layout has settled before measuring the scroll target.
-    const raf = requestAnimationFrame(() => {
-      jump(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
-      // Restart the animation even if the same hash is clicked twice.
-      el.classList.remove('course-card-flash');
-      void el.offsetWidth;
-      el.classList.add('course-card-flash');
-    });
-    // Each degree is a full-viewport sheet, so a webfont swap after that jump
-    // (fonts load with display: swap) reflows every sheet's height and throws
-    // off the scroll above; correct it once fonts have settled.
-    document.fonts?.ready.then(() => jump('auto'));
-
-    const clear = window.setTimeout(() => el.classList.remove('course-card-flash'), 3000);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.clearTimeout(clear);
-      el.classList.remove('course-card-flash');
-    };
-  }, [hash]);
-}
-
-const SHEETS = ['dots', 'ruled', 'hatched', 'graph'] as const;
 
 export function EducationPage() {
-  useCourseHashTarget();
-  const { hash } = useLocation();
+  const { hash, key } = useLocation();
   const navigate = useNavigate();
-  const portfolioOpen = hash === '#mcs-portfolio';
 
-  const openPortfolio = useCallback(() => {
-    navigate({ hash: '#mcs-portfolio' });
-  }, [navigate]);
+  useEffect(() => {
+    if (hash === '#mcs-portfolio') {
+      navigate(reportHref, { replace: true });
+      return;
+    }
 
-  const closePortfolio = useCallback(() => {
-    navigate({ hash: '' }, { replace: false });
-  }, [navigate]);
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+    if (target instanceof HTMLDetailsElement) {
+      target.open = true;
+      target.querySelector('summary')?.focus({ preventScroll: true });
+    } else if (target.hasAttribute('tabindex')) {
+      target.focus({ preventScroll: true });
+    }
+    const frame = requestAnimationFrame(() => {
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hash, key, navigate]);
 
   return (
-    <div className="nb-page education-page">
-      <section id="masters" className="nb-sheet" data-sheet={SHEETS[0]}>
-        <div className="page-header page-content container">
-          <p className="section-label">Academics</p>
-          <h1>Education</h1>
-          <p className="page-lead">Graduate and undergraduate degrees from Arizona State University.</p>
-          {/* Mirrors the side rail's "related" pills so these stay reachable
-              on mobile, where the rail is hidden. */}
-          <div className="education-related">
-            <button type="button" onClick={openPortfolio} className="side-rail-pill">
-              <span className="side-rail-pill-label">MCS Portfolio</span>
-            </button>
-            <Link to="/learning#big-data-cert" className="side-rail-pill">
-              <span className="side-rail-pill-label">Big Data Certificate</span>
+    <div className="portfolio-content education-page">
+      <header className="portfolio-section-intro">
+        <p className="portfolio-eyebrow">Academic Background</p>
+        <h1>Education</h1>
+        <p className="portfolio-summary">Graduate and undergraduate studies in computer science, software engineering, and related technical disciplines.</p>
+      </header>
+
+      <div className="education-degrees">
+        <DegreeCard degree={mastersDegree} />
+        <DegreeCard degree={bachelorsDegree} />
+      </div>
+
+      <section className="education-section" aria-labelledby="foundations-title">
+        <h2 id="foundations-title">Technical foundations</h2>
+        <div className="education-foundations">
+          {foundations.map(({ id, icon: Icon, title, summary }) => (
+            <Link key={id} className="portfolio-card education-foundation" to={`#${id}`}>
+              <Icon aria-hidden="true" />
+              <span><strong>{title}</strong><span>{summary}</span></span>
             </Link>
-          </div>
-        </div>
-        <div className="page-content container degree-block">
-          <DegreeHeader degree={mastersDegree} />
-          <DegreeCourses degree={mastersDegree} heading="Graduate Courses" onOpenPortfolio={openPortfolio} />
+          ))}
         </div>
       </section>
 
-      <section id="bachelors" className="nb-sheet" data-sheet={SHEETS[1]}>
-        <div className="page-content container degree-block">
-          <DegreeHeader degree={bachelorsDegree} />
-          <DegreeCourses degree={bachelorsDegree} heading="Relevant Coursework" onOpenPortfolio={openPortfolio} />
-        </div>
+      <section className="education-section" aria-labelledby="coursework-title">
+        <h2 id="coursework-title">Coursework in depth</h2>
+        {foundations.map(({ id, title, courses }) => (
+          <section className="education-course-group" tabIndex={-1} id={id} key={id} aria-labelledby={`${id}-title`}>
+            <h3 id={`${id}-title`}>{title}</h3>
+            {courses.map((code) => {
+              const entry = coursework.find(({ course }) => course.code === code);
+              return entry && <CourseEntry key={code} {...entry} hash={hash} />;
+            })}
+          </section>
+        ))}
       </section>
-
-      {portfolioOpen && (
-        <ArticleReader label="MCS Portfolio" onClose={closePortfolio}>
-          <LearningMcsPortfolioArticle />
-        </ArticleReader>
-      )}
     </div>
   );
 }

@@ -9,7 +9,7 @@ export function projectHref(id: string) {
 }
 
 export function demoHref(demoId: string) {
-  return `/demos#${demoId}`;
+  return `/explore/experiments/${demoId}`;
 }
 
 /**

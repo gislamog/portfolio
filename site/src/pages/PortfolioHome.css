@@ -14,7 +14,7 @@
 
 .portfolio-shell :is(.city-nav, .portfolio-footer),
 .portfolio-home .app-body,
-.portfolio-work .app-body {
+.portfolio-interior .app-body {
   color: #fcf2eb;
   color-scheme: dark;
   font-family: system-ui, sans-serif;
@@ -25,14 +25,14 @@
   background-color: rgb(15 16 26 / 42%);
 }
 
-.portfolio-shell:not(.portfolio-home, .portfolio-work) .city-nav {
+.portfolio-shell:not(.portfolio-home, .portfolio-interior) .city-nav {
   background-color: #151623;
 }
 
 .portfolio-shell .city-nav { z-index: 5; }
 
 .portfolio-home,
-.portfolio-work {
+.portfolio-interior {
   background: radial-gradient(ellipse at 87% 72%, #321e36 0%, transparent 58%), #10101b;
 }
 
@@ -830,5 +830,63 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .city-view {
     transform: scale(1.04);
+  }
+}
+
+.portfolio-interior {
+  --interior-peach: #ffc0a3;
+  --interior-muted: #e2d4d7;
+  --interior-line: rgb(237 219 226 / 23%);
+  --interior-serif: 'Newsreader', Georgia, serif;
+  user-select: auto;
+  -webkit-user-select: auto;
+  caret-color: auto;
+}
+
+.portfolio-interior::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 32%, rgb(13 16 26 / 82%), rgb(14 16 27 / 58%) 85%),
+    url('/images/city/city-front-on.webp') center / cover no-repeat;
+}
+
+.portfolio-interior .app-viewport > main {
+  display: block;
+  padding: clamp(1.4rem, 3vw, 2.5rem) clamp(1rem, 5vw, 5rem) 2.5rem;
+}
+
+.portfolio-content {
+  max-width: 72rem;
+  margin-inline: auto;
+}
+
+
+.portfolio-section-intro {
+  margin-block-end: clamp(1.15rem, 2.2vw, 1.65rem);
+}
+
+.portfolio-section-intro .portfolio-summary { font-size: 1rem; }
+
+.portfolio-section-intro h1 {
+  font: 400 clamp(2.15rem, 4.1vw, 3.7rem)/0.98 var(--interior-serif);
+  letter-spacing: -0.045em;
+  margin-block-end: 0.7rem;
+}
+
+.portfolio-card {
+  border: 1px solid var(--interior-line);
+  border-radius: 1.125rem;
+  background: linear-gradient(145deg, rgb(40 42 54 / 93%), rgb(29 31 41 / 94%));
+  box-shadow: inset 0 1px rgb(255 255 255 / 5%), 0 12px 36px rgb(9 10 16 / 19%);
+}
+
+@media (max-width: 760px) {
+  .portfolio-interior::before {
+    background-image: linear-gradient(rgb(14 16 27 / 70%), rgb(14 16 27 / 81%)),
+      url('/images/city/city-front-on-mobile.webp');
   }
 }

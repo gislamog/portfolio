@@ -20,12 +20,12 @@ export interface Degree {
 
 export const mastersDegree: Degree = {
   id: 'masters',
-  degree: 'Master of Science, Computer Science',
-  school: 'Arizona State University, Ira A. Fulton Schools of Engineering',
+  degree: 'Master of Computer Science',
+  school: 'Arizona State University — Ira A. Fulton Schools of Engineering',
   conferred: 'July 2026',
   gpa: '3.37',
   certificate: {
-    name: 'Graduate Certificate, Big Data',
+    name: 'Graduate Certificate in Big Data',
     status: 'Awarded 2026, Arizona State University',
     pdfUrl: `${import.meta.env.BASE_URL}docs/big-data-certificate.pdf`,
   },
@@ -154,11 +154,11 @@ export const mastersDegree: Degree = {
 
 export const bachelorsDegree: Degree = {
   id: 'bachelors',
-  degree: 'Bachelor of Science, Software Engineering',
-  school: 'Arizona State University, Ira A. Fulton Schools of Engineering',
+  degree: 'Bachelor of Science in Software Engineering',
+  school: 'Arizona State University — Ira A. Fulton Schools of Engineering',
   conferred: 'June 2024',
   gpa: '3.50',
-  honors: "Cum Laude, Dean's List (Fall 2022 to Spring 2024)",
+  honors: "Cum Laude · Dean's List, Fall 2022–Spring 2024",
   // Ordered by difficulty / software-engineering relevance for recruiters.
   courses: [
     { code: 'SER 401/402', title: 'Computing Capstone I & II', term: '2023 to 2024', bullets: ['Healthcare regulatory assessment web app for Nash Consulting', 'React frontend, FOSSA compliance, quality reporting'] },

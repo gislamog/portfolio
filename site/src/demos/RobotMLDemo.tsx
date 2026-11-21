@@ -466,12 +466,12 @@ export function RobotMLDemo() {
       'KeyA', 'KeyD', 'KeyW', 'KeyS', 'Space',
     ]);
     const down = (e: KeyboardEvent) => {
-      if (!TRACKED.has(e.code)) return;
+      if (!TRACKED.has(e.code) || (e.code === 'Space' && e.target instanceof HTMLButtonElement)) return;
       e.preventDefault();
       keysRef.current.add(e.code);
     };
     const up = (e: KeyboardEvent) => {
-      if (!TRACKED.has(e.code)) return;
+      if (!TRACKED.has(e.code) || (e.code === 'Space' && e.target instanceof HTMLButtonElement)) return;
       e.preventDefault();
       keysRef.current.delete(e.code);
     };
@@ -741,6 +741,26 @@ export function RobotMLDemo() {
             </button>
           )}
         </div>
+        {mode === 'drive' && (
+          <div className="robot-steering-controls" role="group" aria-label="Hold to steer the robot">
+            {[
+              ['ArrowLeft', 'Left'], ['ArrowUp', 'Forward'], ['ArrowDown', 'Reverse'],
+              ['ArrowRight', 'Right'], ['Space', 'Brake'],
+            ].map(([key, label]) => (
+              <button
+                className="btn btn-ghost"
+                key={key}
+                type="button"
+                onPointerDown={(event) => {
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                  keysRef.current.add(key);
+                }}
+                onPointerUp={() => keysRef.current.delete(key)}
+                onLostPointerCapture={() => keysRef.current.delete(key)}
+              >{label}</button>
+            ))}
+          </div>
+        )}
         <div className="demo-controls">
           <button
             type="button"

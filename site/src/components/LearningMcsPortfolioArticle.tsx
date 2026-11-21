@@ -294,13 +294,13 @@ function Paper({ paper, flashHeading }: { paper: ReportPaper; flashHeading: (id:
   );
 }
 
-export function LearningMcsPortfolioArticle() {
+export function LearningMcsPortfolioArticle({ includeTitle = true }: { includeTitle?: boolean }) {
   const { flashHeading } = useHashScrollFlash();
 
   return (
     <div className="report-page">
       <p className="section-label">Master&apos;s Degree</p>
-      <h1>{portfolioMeta.title}</h1>
+      {includeTitle && <h1>{portfolioMeta.title}</h1>}
       <p className="page-lead">
         The degree completion artifact for my M.S. in Computer Science at Arizona State University, collecting two
         graduate machine learning projects: an unsupervised clustering study from CSE 575 and a supervised
